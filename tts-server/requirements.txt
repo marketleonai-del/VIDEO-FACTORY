@@ -1,0 +1,17 @@
+# tts-server 依赖（方案 A 本地离线 TTS）
+fastapi>=0.110
+uvicorn>=0.29
+pydantic>=2.0
+
+# ── 后端按 TTS_BACKEND 三选一安装 ──
+# moss（默认，推荐：0.1B·CPU·中文·情绪·克隆·Apache-2.0）:
+#   git clone https://github.com/OpenMOSS/MOSS-TTS-Nano && pip install -e MOSS-TTS-Nano
+#   (需 pynini / WeTextProcessing)
+# kokoro（备选：82M·快·Apache-2.0·无情绪）:
+#   pip install kokoro soundfile numpy
+# piper（兜底：极轻·MIT）:
+#   pip install piper-tts   # 或下载 piper 可执行 + 中文模型 zh_CN-huayan-medium.onnx
+
+# kokoro 写 wav 需要：
+soundfile>=0.12
+numpy>=1.24

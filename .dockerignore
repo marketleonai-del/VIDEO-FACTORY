@@ -1,0 +1,8 @@
+node_modules
+dist
+dist-run
+.uvg-jobs.json
+.uvg-artifacts
+.git
+*.skill
+.env

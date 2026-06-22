@@ -1,0 +1,29 @@
+{
+  "name": "universal-video-generator",
+  "version": "3.2.0",
+  "description": "Universal AI video/TTS interface layer + dynamic workflow orchestrator with long-video stitching and self-evolution. Capability-driven selection, @voice1 voice lock, batch concurrency, multi-tenant SaaS, telemetry-driven evolution (SkillOpt/Hermes-inspired), ffmpeg assembly, CLI/HTTP server, plugin adapters.",
+  "type": "commonjs",
+  "main": "index.ts",
+  "bin": { "uvg": "dist/bin/cli.js" },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "cli": "ts-node bin/cli.ts",
+    "serve": "ts-node server.ts",
+    "hq": "ts-node hq/collector.ts",
+    "web": "ts-node web/server.ts",
+    "example": "ts-node examples/basic-usage.ts",
+    "example:matrix": "ts-node examples/matrix-workflow.ts",
+    "example:batch": "ts-node examples/batch.ts",
+    "example:long": "ts-node examples/long-video.ts",
+    "example:evolve": "ts-node examples/self-evolve.ts",
+    "test": "ts-node test/core.test.ts && ts-node test/runtime.test.ts && ts-node test/commercial.test.ts && ts-node test/server.test.ts && ts-node test/evolution.test.ts && ts-node test/longvideo.test.ts"
+  },
+  "keywords": ["ai-video", "tts", "voice-clone", "ugc", "long-video", "self-evolution", "workflow", "adapter", "skill", "saas"],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.4.0"
+  }
+}

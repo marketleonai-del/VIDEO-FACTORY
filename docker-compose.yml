@@ -1,0 +1,20 @@
+services:
+  uvg:
+    build: .
+    image: universal-video-generator:2.0.0
+    ports:
+      - "8787:8787"
+    env_file:
+      - .env
+    environment:
+      - PORT=8787
+    volumes:
+      - uvg-data:/app/.uvg-data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8787/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+volumes:
+  uvg-data:

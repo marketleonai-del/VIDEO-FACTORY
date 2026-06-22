@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>视频工厂 · Video Factory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root{
+    --bg:#0A0A0B; --panel:#121214; --ink:#EDEAE3; --mut:#9A968C; --mut2:#6b675f;
+    --line:rgba(237,234,227,.09); --line2:rgba(237,234,227,.16);
+    --ac:#C6F432; --ac2:#FF6A2C;
+    --sans:"Space Grotesk","Noto Sans SC","PingFang SC",system-ui,sans-serif;
+    --serif:"Instrument Serif","Noto Serif SC",Georgia,serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-font-smoothing:antialiased}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;overflow-x:hidden}
+  ::selection{background:var(--ac);color:#0A0A0B}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px;position:relative;z-index:2}
+
+  /* aurora bg + grain */
+  .aurora{position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(42% 52% at 18% 26%, rgba(198,244,50,.13), transparent 70%),
+      radial-gradient(46% 56% at 84% 72%, rgba(255,106,44,.10), transparent 72%),
+      radial-gradient(60% 70% at 50% 120%, rgba(198,244,50,.06), transparent 70%),
+      var(--bg);
+    filter:blur(30px); animation:drift 22s ease-in-out infinite alternate}
+  @keyframes drift{to{transform:translate3d(0,-2%,0) scale(1.06)}}
+  .grain{position:fixed;inset:0;width:100%;height:100%;opacity:.05;mix-blend-mode:overlay;pointer-events:none;z-index:60}
+
+  .badge{position:fixed;top:18px;right:18px;z-index:40;font-size:11.5px;letter-spacing:.04em;padding:7px 13px;border-radius:999px;border:1px solid var(--line2);background:rgba(18,18,20,.6);backdrop-filter:blur(14px);color:var(--mut)}
+  .badge b{color:var(--ac)}
+
+  /* hero */
+  header{position:relative;z-index:2;padding:140px 0 70px}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--mut)}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 12px var(--ac);animation:bk 2.2s infinite}
+  @keyframes bk{0%,100%{opacity:1}50%{opacity:.3}}
+  h1.hero{font-size:clamp(46px,9vw,108px);line-height:.96;letter-spacing:-.035em;font-weight:700;margin:30px 0 0}
+  h1.hero .row{display:block;overflow:hidden}
+  h1.hero i{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--ac);letter-spacing:-.01em}
+  .lead{color:var(--mut);font-size:clamp(15px,1.9vw,19px);max-width:520px;margin:28px 0 0;font-weight:400}
+  .cta{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap}
+  .btn{position:relative;font-family:inherit;font-size:15px;font-weight:500;padding:15px 28px;border-radius:100px;cursor:pointer;border:1px solid transparent;transition:background .25s,color .25s,border-color .25s;will-change:transform}
+  .btn.p{background:var(--ac);color:#0A0A0B}
+  .btn.s{background:transparent;border-color:var(--line2);color:var(--ink)}
+  .btn.s:hover{border-color:var(--ink)}
+
+  section{position:relative;z-index:2;padding:60px 0}
+  .kicker{font-family:var(--serif);font-style:italic;font-size:clamp(22px,3vw,30px);color:var(--mut);margin-bottom:30px}
+  .kicker b{font-family:var(--sans);font-style:normal;color:var(--ink);font-weight:500}
+
+  /* composer */
+  .composer{background:linear-gradient(180deg,#15151800,#121214);border:1px solid var(--line2);border-radius:26px;padding:12px;box-shadow:0 40px 120px -40px #000;backdrop-filter:blur(8px)}
+  .composer:focus-within{border-color:rgba(198,244,50,.4);box-shadow:0 0 0 1px rgba(198,244,50,.25),0 40px 120px -40px #000}
+  .keyhint{display:none;margin:6px 10px 0;font-size:12px;color:var(--ac2)}
+  .keyhint.show{display:block}
+  .keyhint input{width:100%;margin-top:7px;background:#0c0c0e;border:1px solid var(--line);border-radius:11px;color:var(--ink);padding:10px 13px;font-family:inherit;font-size:13px}
+  .ta{width:100%;min-height:104px;resize:vertical;background:transparent;border:0;color:var(--ink);font-family:inherit;font-size:18px;line-height:1.55;padding:20px 18px 10px}
+  .ta::placeholder{color:var(--mut2)}.ta:focus{outline:0}
+  .toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px}
+  .modepill{display:flex;background:#0c0c0e;border:1px solid var(--line);border-radius:100px;padding:4px}
+  .modepill button{border:0;background:transparent;color:var(--mut);font-family:inherit;font-size:13px;font-weight:500;padding:8px 15px;border-radius:100px;cursor:pointer;transition:.2s}
+  .modepill button.on{background:var(--ac);color:#0A0A0B}
+  .ctl{position:relative}
+  .ctl>.pill{display:inline-flex;align-items:center;gap:8px;background:#0c0c0e;border:1px solid var(--line);color:var(--mut);font-size:13px;font-weight:500;padding:9px 14px;border-radius:100px;cursor:pointer;transition:.2s;font-family:inherit}
+  .ctl>.pill:hover{border-color:var(--line2);color:var(--ink)}
+  .ctl>.pill .v{color:var(--ink)} .ctl>.pill::after{content:"";width:5px;height:5px;border-right:1.5px solid var(--mut);border-bottom:1.5px solid var(--mut);transform:rotate(45deg);margin-left:2px;margin-top:-3px}
+  .menu{position:absolute;bottom:calc(100% + 10px);left:0;min-width:158px;background:#161618;border:1px solid var(--line2);border-radius:16px;padding:7px;box-shadow:0 30px 80px -30px #000;z-index:30;display:none;max-height:260px;overflow:auto}
+  .menu.open{display:block;animation:pop .18s cubic-bezier(.2,.8,.2,1)}
+  @keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .menu button{display:flex;width:100%;justify-content:space-between;gap:12px;align-items:center;border:0;background:transparent;color:var(--mut);font-family:inherit;font-size:13.5px;padding:10px 12px;border-radius:11px;cursor:pointer;text-align:left}
+  .menu button:hover{background:rgba(237,234,227,.05);color:var(--ink)}
+  .menu button.sel{color:var(--ink)} .menu button.sel::after{content:"●";color:var(--ac);font-size:9px}
+  .menu button small{display:block;color:var(--mut2);font-size:11px;font-weight:400;margin-top:1px}
+  .up{display:inline-flex;align-items:center;gap:7px;background:#0c0c0e;border:1px dashed var(--line2);color:var(--mut);font-size:13px;padding:9px 14px;border-radius:100px;cursor:pointer;transition:.2s}
+  .up:hover{color:var(--ink);border-color:var(--ac)} .up.has{border-style:solid;border-color:var(--ac);color:var(--ac)}
+  .spacer{flex:1 1 30px}
+  .gen{border:0;border-radius:100px;padding:12px 26px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;background:var(--ac);color:#0A0A0B;will-change:transform}
+  .gen:disabled{opacity:.45;cursor:not-allowed}
+  .hidden{display:none!important}
+
+  .panel{margin:18px 0 0;background:#121214;border:1px solid var(--line);border-radius:20px;padding:22px}
+  .bar{height:5px;background:#0c0c0e;border-radius:99px;overflow:hidden} .bar i{display:block;height:100%;width:0;background:var(--ac);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+  .steps{margin-top:15px;display:flex;flex-direction:column;gap:10px}
+  .step{display:flex;align-items:center;gap:12px;font-size:13.5px;color:var(--mut)}
+  .step .d{width:15px;height:15px;border-radius:50%;border:1.5px solid var(--line2);flex:none}
+  .step.run .d{border-color:var(--ac);animation:pulse 1.1s infinite} .step.done .d{border-color:var(--ac);background:var(--ac)} .step.done{color:var(--ink)}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(198,244,50,.4)}50%{box-shadow:0 0 0 6px rgba(198,244,50,0)}}
+  .result{text-align:center} .vframe{aspect-ratio:9/16;max-width:264px;margin:0 auto;border-radius:18px;border:1px solid var(--line2);background:#000;display:grid;place-items:center;overflow:hidden}
+  .vframe video{width:100%;height:100%;object-fit:cover} .ph{color:var(--mut2);font-size:13px;padding:22px}.ph .e{font-size:32px;margin-bottom:10px}
+  .racts{display:flex;gap:10px;justify-content:center;margin-top:15px;flex-wrap:wrap}
+  .racts button{font-family:inherit;font-size:13.5px;font-weight:500;padding:10px 17px;border-radius:100px;cursor:pointer;border:1px solid var(--line2);background:transparent;color:var(--ink)} .racts button.p{background:var(--ac);color:#0A0A0B;border:0}
+  .err{margin-top:12px;color:#ffb4a2;font-size:13px;background:rgba(255,106,44,.08);border:1px solid rgba(255,106,44,.3);border-radius:12px;padding:11px 14px}
+
+  /* marquee */
+  .marq{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0;margin-top:20px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+  .marq .track{display:flex;gap:48px;white-space:nowrap;width:max-content}
+  .marq span{font-size:clamp(20px,3vw,30px);font-weight:500;color:var(--mut);letter-spacing:-.01em}
+  .marq i{font-family:var(--serif);font-style:italic;color:var(--ac);padding:0 6px}
+
+  /* matrix */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .card{position:relative;background:#121214;border:1px solid var(--line);border-radius:20px;padding:26px;transition:border-color .3s,box-shadow .3s;transform-style:preserve-3d;overflow:hidden}
+  .card::before{content:"";position:absolute;inset:0;background:radial-gradient(140px 140px at var(--mx,50%) var(--my,0%),rgba(198,244,50,.10),transparent 70%);opacity:0;transition:opacity .3s}
+  .card:hover{border-color:var(--line2)} .card:hover::before{opacity:1}
+  .card .n{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--ac)}
+  .card h3{font-size:18px;font-weight:700;margin:14px 0 6px;letter-spacing:-.01em} .card p{font-size:13.5px;color:var(--mut)}
+
+  .hl{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .hi .e{font-size:13px;font-family:var(--serif);font-style:italic;color:var(--ac)} .hi .t{font-weight:500;font-size:16px;margin:10px 0 5px} .hi .d{font-size:13px;color:var(--mut)}
+
+  footer{position:relative;z-index:2;text-align:center;color:var(--mut2);font-size:12.5px;padding:60px 0 70px;border-top:1px solid var(--line);margin-top:50px}
+  footer a{color:var(--mut)} footer a:hover{color:var(--ac)}
+  footer .tg{display:inline-flex;align-items:center;gap:8px;cursor:pointer;margin:0 10px}
+  footer .sw{width:32px;height:17px;border-radius:99px;background:var(--line2);position:relative;transition:.2s} footer .sw.on{background:var(--ac)}
+  footer .sw::after{content:"";position:absolute;top:2px;left:2px;width:13px;height:13px;border-radius:50%;background:var(--ink);transition:.2s} footer .sw.on::after{left:17px;background:#0A0A0B}
+
+  @media(max-width:760px){ .hl{grid-template-columns:1fr 1fr} header{padding:108px 0 48px} .spacer{flex-basis:100%} }
+  @media(prefers-reduced-motion:reduce){ .aurora{animation:none} }
+</style>
+</head>
+<body>
+<div class="aurora"></div>
+<svg class="grain"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
+<div class="badge" id="badge">检测模式…</div>
+
+<header>
+  <div class="wrap">
+    <span class="eyebrow"><span class="dot"></span> AI VIDEO FACTORY</span>
+    <h1 class="hero"><span class="row">一句话，</span><span class="row">生成<i>成片</i>。</span></h1>
+    <p class="lead reveal">短视频矩阵 · 长视频拼接 · 真人素材 + AI 混剪。选好时长、条数、平台、国家，一键生成——越用越聪明。</p>
+    <div class="cta reveal">
+      <button class="btn p magnetic" id="toCreate">立即生成</button>
+      <a class="btn s magnetic" id="gh" href="https://github.com/" target="_blank" rel="noopener">GitHub 开源</a>
+    </div>
+  </div>
+</header>
+
+<section id="create">
+  <div class="wrap">
+    <div class="composer reveal">
+      <div class="keyhint" id="keyhint">⚠ 纯前端模式：填你自己的视频模型 API Key（仅存本浏览器，不上传）
+        <input id="apiKey" type="password" placeholder="粘贴 API Key（Seedance / 可灵 / Veo …）" />
+      </div>
+      <textarea id="prompt" class="ta" placeholder="描述你想要的视频…例：摄像机跟踪一位黑衣人在老城区高速奔跑，被人群追赶，撞翻水果摊后爬起继续逃跑，电影感运镜">摄像机跟踪一位黑衣人在老城区高速奔跑，被人群追赶，撞翻水果摊后爬起继续逃跑，电影感运镜</textarea>
+      <div class="toolbar">
+        <div class="modepill" id="modepill">
+          <button class="on" data-v="ai">全 AI 生成</button>
+          <button data-v="mix">+ 我的素材</button>
+        </div>
+        <div class="ctl" data-k="len"><div class="pill">时长 <span class="v" id="v-len">10s</span></div>
+          <div class="menu"><button data-val="10" class="sel">10 秒<small>单段</small></button><button data-val="20">20 秒<small>2 段拼接</small></button><button data-val="30">30 秒<small>3 段拼接</small></button><button data-val="60">60 秒<small>6 段拼接</small></button></div>
+        </div>
+        <div class="ctl" data-k="count"><div class="pill">条数 <span class="v" id="v-count">1</span></div>
+          <div class="menu"><button data-val="1" class="sel">1 条</button><button data-val="3">3 条<small>小矩阵</small></button><button data-val="5">5 条</button><button data-val="10">10 条<small>矩阵投放</small></button><button data-val="20">20 条<small>大矩阵</small></button></div>
+        </div>
+        <div class="ctl" data-k="platform"><div class="pill">平台 <span class="v" id="v-platform">抖音</span></div>
+          <div class="menu"><button data-val="douyin" class="sel">抖音</button><button data-val="kuaishou">快手</button><button data-val="xiaohongshu">小红书</button><button data-val="videohao">视频号</button><button data-val="tiktok">TikTok</button><button data-val="youtube">YouTube Shorts</button></div>
+        </div>
+        <div class="ctl" data-k="country"><div class="pill">国家 <span class="v" id="v-country">中国</span></div>
+          <div class="menu"><button data-val="CN" class="sel">中国<small>中文</small></button><button data-val="US">美国<small>English</small></button><button data-val="JP">日本<small>日本語</small></button><button data-val="KR">韩国<small>한국어</small></button><button data-val="SEA">东南亚<small>EN/泰/越</small></button><button data-val="EU">欧洲<small>多语</small></button></div>
+        </div>
+        <div class="ctl" data-k="voice"><div class="pill">配音 <span class="v" id="v-voice">本地·中性</span></div>
+          <div class="menu"><button data-val="on:neutral" class="sel">开 · 中性</button><button data-val="on:happy">开 · 开心</button><button data-val="on:serious">开 · 严肃</button><button data-val="on:gentle">开 · 温柔</button><button data-val="on:excited">开 · 激动</button><button data-val="off:">关闭配音</button></div>
+        </div>
+        <label class="up hidden" id="upImg">🖼 参考图<input type="file" accept="image/*" class="hidden" id="fImg"></label>
+        <label class="up hidden" id="upVid">🎬 我的视频<input type="file" accept="video/*" class="hidden" id="fVid"></label>
+        <div class="spacer"></div>
+        <button class="gen magnetic" id="go">生成 →</button>
+      </div>
+    </div>
+
+    <div class="panel hidden" id="progress"><div class="bar"><i id="fill"></i></div><div class="steps" id="steps"></div></div>
+    <div class="panel result hidden" id="result"><div class="vframe" id="vframe"></div><div class="racts"><button class="p magnetic" id="dl">下载</button><button id="regen">重新生成</button><button id="adj">调参</button></div></div>
+    <div class="err hidden" id="err"></div>
+  </div>
+</section>
+
+<div class="marq" aria-hidden="true"><div class="track" id="track">
+  <span>全 AI 生成<i>·</i>长视频拼接<i>·</i>真人 + AI 混剪<i>·</i>本地配音<i>·</i>矩阵投放<i>·</i>自进化<i>·</i></span>
+  <span>全 AI 生成<i>·</i>长视频拼接<i>·</i>真人 + AI 混剪<i>·</i>本地配音<i>·</i>矩阵投放<i>·</i>自进化<i>·</i></span>
+</div></div>
+
+<section>
+  <div class="wrap">
+    <div class="kicker reveal">四种场景，<b>一个入口</b>。</div>
+    <div class="grid">
+      <div class="card reveal tilt"><div class="n">01</div><h3>全 AI · 短视频</h3><p>一句话生成 10–30s 爆款，矩阵走量。</p></div>
+      <div class="card reveal tilt"><div class="n">02</div><h3>全 AI · 长视频</h3><p>多段续帧拼接 60s+，主体恒定不漂移。</p></div>
+      <div class="card reveal tilt"><div class="n">03</div><h3>混合 · 短视频</h3><p>你的素材 + AI 钩子，信任与产能兼得。</p></div>
+      <div class="card reveal tilt"><div class="n">04</div><h3>混合 · 长视频</h3><p>真素材 + AI 续生成，归一化无缝拼接。</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="hl">
+      <div class="hi reveal"><div class="e">A</div><div class="t">智能拼接</div><div class="d">多段无缝衔接</div></div>
+      <div class="hi reveal"><div class="e">B</div><div class="t">自进化</div><div class="d">越用越聪明</div></div>
+      <div class="hi reveal"><div class="e">C</div><div class="t">本地配音</div><div class="d">离线 · 零云成本</div></div>
+      <div class="hi reveal"><div class="e">D</div><div class="t">开箱即用</div><div class="d">填 Key 就跑</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div style="margin-bottom:12px"><a id="gh2" href="https://github.com/" target="_blank" rel="noopener">★ GitHub</a> · <span class="tg" id="tg"><span class="sw" id="sw"></span> 匿名改进数据</span></div>
+    视频工厂 · 双模式（纯前端 / 后端 SaaS）· universal-video-generator 引擎驱动
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.23/dist/lenis.min.js"></script>
+<script>
+/* ============ 功能逻辑（与后端契约一致，独立于动效，CDN 挂了也能用） ============ */
+(function(){
+  "use strict";
+  var $=function(id){return document.getElementById(id);};
+  var S={ mode:"ai", len:10, count:1, platform:"douyin", country:"CN", voiceOn:true, emotion:"neutral", backend:false, apiKey:"", telemetry:false, busy:false };
+  var LANG={CN:"zh",US:"en",JP:"ja",KR:"ko",SEA:"en",EU:"en"};
+  var LABEL={ platform:{douyin:"抖音",kuaishou:"快手",xiaohongshu:"小红书",videohao:"视频号",tiktok:"TikTok",youtube:"YouTube Shorts"}, country:{CN:"中国",US:"美国",JP:"日本",KR:"韩国",SEA:"东南亚",EU:"欧洲"} };
+  var EMO={neutral:"中性",happy:"开心",serious:"严肃",gentle:"温柔",excited:"激动"};
+  var SEG={10:1,20:2,30:3,60:6};
+
+  fetch("/api/config",{cache:"no-store"}).then(function(r){return r.ok?r.json():Promise.reject();}).then(function(cfg){
+    S.backend=true; $("badge").innerHTML="模式 · <b>后端 SaaS</b>"; $("keyhint").classList.remove("show");
+    if(cfg.github){ $("gh").href=cfg.github; $("gh2").href=cfg.github; }
+  }).catch(function(){ S.backend=false; $("badge").innerHTML="模式 · <b>纯前端</b>"; $("keyhint").classList.add("show"); S.apiKey=localStorage.getItem("uvg_key")||""; $("apiKey").value=S.apiKey; });
+  $("apiKey").addEventListener("input",function(e){ S.apiKey=e.target.value; localStorage.setItem("uvg_key",S.apiKey); });
+
+  document.querySelectorAll("#modepill button").forEach(function(b){ b.addEventListener("click",function(){
+    document.querySelectorAll("#modepill button").forEach(function(x){x.classList.remove("on");}); b.classList.add("on");
+    S.mode=b.dataset.v; var mix=S.mode==="mix"; $("upImg").classList.toggle("hidden",!mix); $("upVid").classList.toggle("hidden",!mix); }); });
+  $("fImg").addEventListener("change",function(e){ mk($("upImg"),e.target.files[0]); });
+  $("fVid").addEventListener("change",function(e){ mk($("upVid"),e.target.files[0]); });
+  function mk(el,f){ if(f){ el.classList.add("has"); el.firstChild.textContent="✓ "+f.name.slice(0,14); } }
+
+  document.querySelectorAll(".ctl").forEach(function(ctl){
+    var pill=ctl.querySelector(".pill"), menu=ctl.querySelector(".menu"), k=ctl.dataset.k;
+    pill.addEventListener("click",function(e){ e.stopPropagation(); var o=menu.classList.contains("open"); closeMenus(); if(!o) menu.classList.add("open"); });
+    menu.querySelectorAll("button").forEach(function(b){ b.addEventListener("click",function(e){ e.stopPropagation();
+      menu.querySelectorAll("button").forEach(function(x){x.classList.remove("sel");}); b.classList.add("sel"); pick(k,b.dataset.val); menu.classList.remove("open"); }); });
+  });
+  document.addEventListener("click",closeMenus);
+  function closeMenus(){ document.querySelectorAll(".menu.open").forEach(function(m){m.classList.remove("open");}); }
+  function pick(k,val){
+    if(k==="len"){ S.len=Number(val); $("v-len").textContent=val+"s"; }
+    else if(k==="count"){ S.count=Number(val); $("v-count").textContent=val; }
+    else if(k==="platform"){ S.platform=val; $("v-platform").textContent=LABEL.platform[val]; }
+    else if(k==="country"){ S.country=val; $("v-country").textContent=LABEL.country[val]; }
+    else if(k==="voice"){ var p=val.split(":"); S.voiceOn=p[0]==="on"; S.emotion=p[1]||"neutral"; $("v-voice").textContent=S.voiceOn?("本地·"+(EMO[S.emotion]||"中性")):"关"; }
+  }
+
+  $("tg").addEventListener("click",function(){ S.telemetry=!S.telemetry; $("sw").classList.toggle("on",S.telemetry); localStorage.setItem("uvg_telemetry",S.telemetry?"on":"off"); });
+  if(localStorage.getItem("uvg_telemetry")==="on"){ S.telemetry=true; $("sw").classList.add("on"); }
+  $("toCreate").addEventListener("click",function(){ $("create").scrollIntoView({behavior:"smooth"}); setTimeout(function(){$("prompt").focus();},400); });
+
+  $("go").addEventListener("click",run); $("regen").addEventListener("click",run);
+  $("adj").addEventListener("click",function(){ $("result").classList.add("hidden"); $("prompt").focus(); });
+  function run(){
+    if(S.busy)return; var prompt=$("prompt").value.trim();
+    if(!prompt){ showErr("请先输入视频描述"); return; }
+    if(!S.backend&&!S.apiKey){ showErr("纯前端模式：请先填 API Key"); return; }
+    hideErr(); S.busy=true; $("go").disabled=true; $("result").classList.add("hidden");
+    var segN=SEG[S.len]||1; renderSteps(segN); var t0=Date.now();
+    (S.backend?viaBackend(prompt,segN):simulate(segN)).then(function(out){ done(out,Date.now()-t0); }).catch(function(e){ showErr(String(e&&e.message||e)); reset(); });
+  }
+  function viaBackend(prompt,segN){
+    return fetch("/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({prompt:prompt,mode:S.mode,durationSec:S.len,count:S.count,platform:S.platform,country:S.country,language:LANG[S.country]||"zh",voiceOn:S.voiceOn,emotion:S.emotion,voiceText:prompt})})
+      .then(function(r){return r.json();}).then(function(j){ if(j.error)throw new Error(j.error.message||j.error); return poll(j.jobId,segN); });
+  }
+  function poll(id,segN){ return new Promise(function(res,rej){ var n=0; (function tk(){
+    fetch("/api/jobs/"+id).then(function(r){return r.json();}).then(function(j){
+      if(j.segments) j.segments.forEach(function(s,i){ setStep(i,s.state==="succeeded"?"done":(s.state==="running"?"run":"")); });
+      if(j.stitch) setStep(segN, j.stitch==="succeeded"?"done":"run");
+      if(j.state==="succeeded"){ allDone(); res(j); } else if(j.state==="failed") rej(new Error(j.error||"生成失败"));
+      else if(n++>180) rej(new Error("超时")); else setTimeout(tk,1000);
+    }).catch(rej); })(); }); }
+  function simulate(segN){ return new Promise(function(res){ var i=0; (function nx(){
+    if(i<segN){ setStep(i,"run"); setBar((i+.5)/(segN+1)); setTimeout(function(){ setStep(i,"done"); i++; setBar(i/(segN+1)); nx(); },560); }
+    else { setStep(segN,"run"); setBar(.93); setTimeout(function(){ setStep(segN,"done"); setBar(1); res({demo:true}); },720); } })(); }); }
+
+  function renderSteps(segN){ $("progress").classList.remove("hidden"); var h="";
+    for(var i=0;i<segN;i++) h+=st(i,(segN>1?("生成第 "+(i+1)+"/"+segN+" 段 · 续帧一致"):"AI 生成视频"));
+    h+=st(segN,segN>1?("归一化拼接 + 转场（"+segN+"段→1条）"):"导出成片");
+    if(S.voiceOn) h+=st(segN+1,"本地 TTS 配音 + 合成（"+(EMO[S.emotion]||"中性")+"）");
+    if(S.count>1) h+=st(segN+2,"复制为 "+S.count+" 条矩阵（"+LABEL.platform[S.platform]+"·"+LABEL.country[S.country]+"）");
+    $("steps").innerHTML=h; setBar(.04); }
+  function st(i,t){ return '<div class="step" id="st'+i+'"><span class="d"></span><span>'+t+'</span></div>'; }
+  function setStep(i,c){ var el=$("st"+i); if(el) el.className="step "+c; }
+  function setBar(p){ $("fill").style.width=Math.min(100,Math.round(p*100))+"%"; }
+  function allDone(){ document.querySelectorAll(".step").forEach(function(s){s.className="step done";}); setBar(1); }
+  function done(out,ms){ reset(); var f=$("vframe");
+    if(out&&out.videoUrl&&/^https?:/.test(out.videoUrl)) f.innerHTML='<video src="'+out.videoUrl+'" controls playsinline></video>';
+    else f.innerHTML='<div class="ph"><div class="e">●</div>成片就绪 · '+S.len+'s'+(S.count>1?(" ×"+S.count+"条"):"")+'<br><span style="color:var(--mut2)">'+(S.backend?"后端已生成":"demo 预览")+' · 接真实 Key 后此处可播放</span></div>';
+    $("result").classList.remove("hidden");
+    if(S.telemetry&&S.backend){ try{ fetch("/api/telemetry",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({events:[{type:"generate",mode:S.mode,durationSec:S.len,emotion:S.emotion,success:true,ms:ms}]})}); }catch(e){} } }
+  function reset(){ S.busy=false; $("go").disabled=false; }
+  function showErr(m){ $("err").textContent="⚠ "+m; $("err").classList.remove("hidden"); }
+  function hideErr(){ $("err").classList.add("hidden"); }
+  $("dl").addEventListener("click",function(){ var v=$("vframe").querySelector("video"); if(v&&v.src){ var a=document.createElement("a"); a.href=v.src; a.download="video.mp4"; a.click(); } else showErr("demo 预览无文件；接真实 Key/后端后可下载"); });
+})();
+
+/* ============ 动效层（GSAP + Lenis，缺失则优雅跳过，不影响功能/可读性） ============ */
+(function(){
+  "use strict";
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion:reduce)").matches;
+  if(reduce || !window.gsap){ return; }
+  var gsap=window.gsap; if(window.ScrollTrigger) gsap.registerPlugin(window.ScrollTrigger);
+
+  // Lenis 平滑滚动
+  if(window.Lenis){ var lenis=new Lenis({lerp:.09,wheelMultiplier:1}); function raf(t){ lenis.raf(t); requestAnimationFrame(raf);} requestAnimationFrame(raf);
+    if(window.ScrollTrigger){ lenis.on("scroll",ScrollTrigger.update); } }
+
+  // 标题：行遮罩入场
+  try{
+    if(window.SplitText){ var sp=new SplitText("h1.hero",{type:"lines"});
+      gsap.from(sp.lines,{yPercent:120,duration:1.1,ease:"expo.out",stagger:.12,delay:.1}); }
+    else { gsap.from("h1.hero .row",{yPercent:120,duration:1.1,ease:"expo.out",stagger:.12,delay:.1}); }
+  }catch(e){}
+
+  // hero 其余元素
+  gsap.from(".eyebrow",{y:14,opacity:0,duration:.8,ease:"power3.out",delay:.05});
+  gsap.from(".lead, .cta",{y:22,opacity:0,duration:.9,ease:"power3.out",stagger:.1,delay:.5});
+  gsap.from(".composer",{y:34,opacity:0,duration:1,ease:"power3.out",delay:.7});
+
+  // 滚动入场 + blur-in
+  if(window.ScrollTrigger){
+    gsap.utils.toArray(".reveal").forEach(function(el){
+      gsap.from(el,{scrollTrigger:{trigger:el,start:"top 86%"},y:42,opacity:0,filter:"blur(12px)",duration:1,ease:"power3.out"});
+    });
+    document.querySelectorAll(".grid .card").forEach(function(el,i){
+      gsap.from(el,{scrollTrigger:{trigger:el,start:"top 88%"},y:50,opacity:0,filter:"blur(14px)",duration:.9,delay:(i%2)*.08,ease:"power3.out"});
+    });
+  }
+
+  // marquee 无限滚动
+  var track=document.getElementById("track"); if(track){ gsap.to(track,{xPercent:-50,repeat:-1,duration:24,ease:"none"}); }
+
+  // 磁性按钮
+  document.querySelectorAll(".magnetic").forEach(function(el){
+    el.addEventListener("mousemove",function(e){ var r=el.getBoundingClientRect(); gsap.to(el,{x:(e.clientX-r.left-r.width/2)*.35,y:(e.clientY-r.top-r.height/2)*.45,duration:.4}); });
+    el.addEventListener("mouseleave",function(){ gsap.to(el,{x:0,y:0,duration:.6,ease:"elastic.out(1,.4)"}); });
+  });
+  // 卡片 3D 倾斜 + 光斑
+  document.querySelectorAll(".tilt").forEach(function(card){
+    card.addEventListener("mousemove",function(e){ var r=card.getBoundingClientRect(); var px=(e.clientX-r.left)/r.width-.5, py=(e.clientY-r.top)/r.height-.5;
+      card.style.setProperty("--mx",(e.clientX-r.left)+"px"); card.style.setProperty("--my",(e.clientY-r.top)+"px");
+      gsap.to(card,{rotateY:px*7,rotateX:-py*7,transformPerspective:900,duration:.4,ease:"power2.out"}); });
+    card.addEventListener("mouseleave",function(){ gsap.to(card,{rotateY:0,rotateX:0,duration:.6,ease:"power2.out"}); });
+  });
+})();
+</script>
+</body>
+</html>

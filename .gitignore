@@ -1,0 +1,45 @@
+# ===== 依赖 / 构建产物 =====
+node_modules/
+dist/
+build/
+release/
+*.tsbuildinfo
+
+# ===== 密钥 / 环境变量（务必不进仓库）=====
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# ===== 本地生成的媒体 / 临时产物 =====
+*.mp4
+*.mov
+*.wav
+*.mp3
+*.m4a
+frames/
+output/
+outputs/
+tmp/
+*.log
+
+# ===== 总部端：私有，不公开（你选的"公开开源版"）=====
+# 说明：没有任何项目内代码 import hq/，排除它不影响别人 clone 后编译。
+hq/
+
+# ===== 内部策略/发布文档：含私有架构、反作弊细节、公私拆分地图，不公开 =====
+# 想公开某份，删掉对应这一行即可。
+OPEN-SOURCE-PLAN.md
+GITHUB-LAUNCH.md
+SELF-CHECK.md
+
+# ===== 个人推送脚本（含邮箱/仓库地址），不公开 =====
+push-to-github.bat
+push-to-github.command
+
+# ===== 系统 / 编辑器 =====
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

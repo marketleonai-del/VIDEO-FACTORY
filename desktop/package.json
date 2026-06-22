@@ -1,0 +1,38 @@
+{
+  "name": "video-factory-desktop",
+  "version": "3.2.0",
+  "private": true,
+  "description": "视频工厂 桌面版（macOS .app/.dmg + Windows .exe）— Electron 外壳，加载本地 web 引擎",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder",
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win",
+    "dist:all": "electron-builder -mw"
+  },
+  "build": {
+    "appId": "com.videofactory.app",
+    "productName": "视频工厂",
+    "directories": { "output": "release" },
+    "files": ["main.js"],
+    "extraResources": [
+      { "from": "../dist", "to": "dist" },
+      { "from": "../web/public", "to": "dist/web/public" }
+    ],
+    "mac": {
+      "category": "public.app-category.video",
+      "target": ["dmg", "zip"],
+      "arch": ["arm64", "x64"],
+      "icon": "icon.icns",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false
+    },
+    "dmg": { "title": "视频工厂", "window": { "width": 540, "height": 380 } },
+    "win": { "target": ["nsis"], "icon": "icon.ico" }
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3"
+  }
+}
