@@ -40,10 +40,12 @@ const kz = (p, body, key) => reqJSON(KZ_BASE, p, { "ApiKey": key || KEY }, body)
 const gw = (p, body, key) => reqJSON(GW_BASE, p, { "Authorization": "Bearer " + (key || GW_KEY) }, body);
 
 // 网关文生图 → 返回公网 URL（供丽帧作参考图，锁人物/产品一致）
-async function genImage(prompt, gKey) {
+async function genImage(prompt, gKey, refs) {
   if (!(gKey || GW_KEY)) return "";
   try {
-    const r = await gw("/v1/images/generations", { model: process.env.IMAGE_MODEL_IMG || "gpt-image-2pro", prompt, size: "720x1280", n: 1, response_format: "b64_json" }, gKey);
+    const body = { model: process.env.IMAGE_MODEL_IMG || "gpt-image-2pro", prompt, size: "720x1280", n: 1, response_format: "b64_json" };
+    if (refs && refs.length) body.reference_images = refs.slice(0, 6); // 图生图：引用产品/人物参考图锁一致
+    const r = await gw("/v1/images/generations", body, gKey);
     const it = (r.json && r.json.data && r.json.data[0]) || {};
     return it.url || "";
   } catch (e) { return ""; }
@@ -95,36 +97,58 @@ function createJob(input) {
   const N = durations.length;
   const ratio = "9:16";
   const topic = (input.prompt && input.prompt.trim()) || (input.product && input.product.trim()) || "产品";
-  const job = { id, state: "running", videos: [], error: undefined, topic: topic, built: false, kKey: (input.kuaiziKey || "").trim(), gKey: (input.imageKey || "").trim() };
+  const job = { id, state: "running", videos: [], error: undefined, topic: topic, built: false, phase: "准备中…", storyboard: [], kKey: (input.kuaiziKey || "").trim(), gKey: (input.imageKey || "").trim() };
   jobs[id] = job;
   void buildJob(job, input, count, durations, N, ratio, topic); // 后台跑：秒回 jobId
   return job;
 }
 
 async function buildJob(job, input, count, durations, N, ratio, topic) {
-  // ★一致性锁：先生成"产品三视图 + 人物三视图"参考图（公网URL），所有分镜都引用 → 跨镜人物/产品不漂移
-  const refImages = [];
-  try {
-    const pRef = await genImage("电商产品三视图：正面/侧面/背面三个角度并排展示同一件【" + topic + "】，纯白背景，统一光照，高清产品摄影，无文字无水印", job.gKey);
-    if (pRef) refImages.push({ url: pRef, role: "reference_image" });
-    const cRef = await genImage("带货主播人物三视图：正面/侧面/背面，同一张脸、同一发型、同一套服装，自然微笑，竖屏，纯色背景，高清写真，无文字", job.gKey);
-    if (cRef) refImages.push({ url: cRef, role: "reference_image" });
-  } catch (e) { /* 无参考图则退回普通生成 */ }
-  job.refs = { product: (refImages[0] || {}).url || "", character: (refImages[1] || {}).url || "" };
+  // ① 写分镜故事板脚本（按产品+时长自动匹配镜数）
+  job.phase = "① 写分镜故事板脚本";
+  let scenes;
+  if (N === 1 && input.prompt && input.prompt.trim()) scenes = [input.prompt.trim()];
+  else scenes = await llmScenes(topic, N, Number(input.durationSec) || 5, input.imageB64, job.gKey);
+  job.storyboard = scenes;
 
-  // 分镜脚本：单段且用户给了描述 → 直接用；否则 LLM 自动写（免描述）
+  // ② 生成产品/人物参考图（锁一致），两张并发
+  job.phase = "② 生成参考图（锁产品/人物）";
+  let pRef = "", cRef = "";
+  try {
+    const rr = await Promise.all([
+      genImage("电商产品参考图：同一件【" + topic + "】，正面清晰展示，纯白背景，统一光照，高清产品摄影，无文字无水印", job.gKey),
+      genImage("带货主播人物参考图：同一张脸、同一发型、同一套服装，自然微笑，竖屏写真，纯色背景，高清，无文字", job.gKey),
+    ]);
+    pRef = rr[0] || ""; cRef = rr[1] || "";
+  } catch (e) { /* 无参考图则退回纯文生视频 */ }
+  job.refs = { product: pRef, character: cRef };
+  const refOnly = [];
+  if (pRef) refOnly.push({ url: pRef, role: "reference_image" });
+  if (cRef) refOnly.push({ url: cRef, role: "reference_image" });
+  const refUrls = [pRef, cRef].filter(Boolean);
+
+  // ③ 用 gpt-image-2 把每个分镜画成"分镜图"（引用产品+人物参考图保持一致），并发
+  job.phase = "③ 用 gpt-image-2 画分镜图";
+  job.sheets = new Array(N).fill("");
+  const sheetUrls = await Promise.all(scenes.map(function (sc, i) {
+    return genImage("竖屏9:16分镜关键帧（第" + (i + 1) + "/" + N + "镜，电影感带货）：" + sc + "。务必保持与参考图完全相同的产品外观与人物（同脸/同发型/同服装），写实风格，无文字水印", job.gKey, refUrls)
+      .then(function (u) { job.sheets[i] = u || ""; return u || ""; })
+      .catch(function () { job.sheets[i] = ""; return ""; });
+  }));
+
+  // ④ 逐镜出片：分镜图 → 图生视频（首帧=分镜图 + 产品/人物参考兜底）
+  job.phase = "④ 逐镜生成视频（图生视频）";
   for (let v = 0; v < count; v++) {
-    let scenes;
-    if (N === 1 && input.prompt && input.prompt.trim()) scenes = [input.prompt.trim()];
-    else scenes = await llmScenes(topic, N, Number(input.durationSec) || 5, v === 0 ? input.imageB64 : undefined, job.gKey);
     const segs = [];
     for (let k = 0; k < N; k++) {
+      const sheet = sheetUrls[k] || "";
+      const imgs = sheet ? [{ url: sheet, role: "first_frame" }] : (refOnly.length ? refOnly : undefined);
       try {
         const r = await kz("/ai-open-platform-api/v1/lz/video/task/create",
-          { prompt: scenes[k] || topic, mode: "fast", resolution: "720p", ratio, duration: durations[k], generate_audio: input.voiceOn !== false, images: refImages.length ? refImages : undefined }, job.kKey);
-        if (r && r.json && r.json.code === 0 && r.json.data && r.json.data.task_id) segs.push({ taskId: r.json.data.task_id, state: "running", dur: durations[k] });
-        else segs.push({ state: "failed", error: (r && r.json && r.json.message) || "create failed", dur: durations[k] });
-      } catch (e) { segs.push({ state: "failed", error: String((e && e.message) || e), dur: durations[k] }); }
+          { prompt: scenes[k] || topic, mode: "fast", resolution: "720p", ratio, duration: durations[k], generate_audio: input.voiceOn !== false, images: imgs }, job.kKey);
+        if (r && r.json && r.json.code === 0 && r.json.data && r.json.data.task_id) segs.push({ taskId: r.json.data.task_id, state: "running", dur: durations[k], scene: scenes[k] || topic, sheet: sheet });
+        else segs.push({ state: "failed", error: (r && r.json && r.json.message) || "create failed", dur: durations[k], scene: scenes[k] || topic, sheet: sheet });
+      } catch (e) { segs.push({ state: "failed", error: String((e && e.message) || e), dur: durations[k], scene: scenes[k] || topic, sheet: sheet }); }
     }
     job.videos.push({ segs, out: undefined, state: "running" });
   }
@@ -152,7 +176,7 @@ async function refreshJob(job) {
       if (!okUrls.length) { video.state = "failed"; video.error = "全部分段失败"; continue; }
       if (okUrls.length === 1) { video.out = okUrls[0]; video.state = "succeeded"; continue; }
       // 多段 → 下载 + ffmpeg 拼接
-      video.state = "stitching";
+      video.state = "stitching"; job.phase = "④ 拼接成片";
       try {
         const dir = path.join(OUT, job.id + "_" + vi); fs.mkdirSync(dir, { recursive: true });
         const files = [];
@@ -173,6 +197,7 @@ async function refreshJob(job) {
   const allVideosDone = job.videos.every((vd) => vd.state === "succeeded" || vd.state === "failed");
   if (allVideosDone) {
     job.state = job.videos.some((vd) => vd.state === "succeeded") ? "succeeded" : "failed";
+    job.phase = job.state === "succeeded" ? "✅ 完成" : "❌ 失败";
     if (job.state === "succeeded" && !job.saved) { job.saved = true; saveWork({ id: job.id, ts: Date.now(), topic: job.topic, refs: job.refs, urls: job.videos.filter((vd) => vd.out).map((vd) => vd.out) }); }
   }
 }
@@ -203,9 +228,9 @@ const server = http.createServer(async (req, res) => {
       if (!job) return send(404, { error: "not found" });
       await refreshJob(job);
       const segments = []; let gi = 0;
-      job.videos.forEach((vd, vidx) => vd.segs.forEach((s) => segments.push({ index: gi++, video: vidx, state: s.state === "succeeded" ? "succeeded" : (s.state === "failed" ? "failed" : "running") })));
+      job.videos.forEach((vd, vidx) => vd.segs.forEach((s) => segments.push({ index: gi++, video: vidx, state: s.state === "succeeded" ? "succeeded" : (s.state === "failed" ? "failed" : "running"), scene: s.scene || "", sheet: s.sheet || "" })));
       const urls = job.videos.filter((vd) => vd.state === "succeeded" && vd.out).map((vd) => /^https?:/.test(vd.out) ? vd.out : ("http://" + (req.headers.host || ("localhost:" + PORT)) + vd.out));
-      return send(200, { state: job.state, segments, stitch: job.state === "succeeded" ? "succeeded" : "running", videoUrl: urls[0], videoUrls: urls, refs: job.refs, error: job.error });
+      return send(200, { state: job.state, phase: job.phase, storyboard: job.storyboard || [], segments, stitch: job.state === "succeeded" ? "succeeded" : "running", videoUrl: urls[0], videoUrls: urls, refs: job.refs, error: job.error });
     }
     // 技能包下载
     if (p === "/skill.zip") {

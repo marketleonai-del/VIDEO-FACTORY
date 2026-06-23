@@ -111,6 +111,14 @@
   .vgrid video{width:100%;aspect-ratio:9/16;border-radius:14px;border:1px solid var(--line2);background:#000;object-fit:cover}
   .refbar{display:flex;gap:8px;align-items:center;justify-content:center;margin:0 0 12px;flex-wrap:wrap}
   .refbar img{width:54px;height:54px;object-fit:cover;border-radius:10px;border:1px solid var(--line2);background:#000}
+  .shot{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--line);font-size:13px}
+  .shot:first-child{border-top:0}
+  .shot .si{flex:none;width:16px;text-align:center}
+  .shot .sn{flex:none;color:var(--mut2);font-size:12px;width:32px}
+  .shot .stx{flex:1;color:var(--ink);line-height:1.5}
+  .shot img.sheet{width:42px;height:74px;object-fit:cover;border-radius:6px;border:1px solid var(--line2);flex:none;background:#000}
+  .spin{display:inline-block;animation:rot 1s linear infinite;color:var(--ac)}
+  @keyframes rot{to{transform:rotate(360deg)}}
   .racts{display:flex;gap:10px;justify-content:center;margin-top:15px;flex-wrap:wrap}
   .racts button{font-family:inherit;font-size:13.5px;font-weight:500;padding:10px 17px;border-radius:100px;cursor:pointer;border:1px solid var(--line2);background:transparent;color:var(--ink)} .racts button.p{background:var(--ac);color:#0A0A0B;border:0}
   .err{margin-top:12px;color:#ffb4a2;font-size:13px;background:rgba(255,106,44,.08);border:1px solid rgba(255,106,44,.3);border-radius:12px;padding:11px 14px}
@@ -335,18 +343,37 @@
   }
   function poll(id){ return new Promise(function(res,rej){ var n=0; (function tk(){
     fetch(API+"/api/jobs/"+id).then(function(r){return r.json();}).then(function(j){
-      if(j.segments) j.segments.forEach(function(s,i){ setStep(i, s.state==="succeeded"?"done":(s.state==="failed"?"done":"run")); });
-      if(j.state==="succeeded"){ allDone(); res(j); }
+      renderProgress(j);
+      if(j.state==="succeeded"){ res(j); }
       else if(j.state==="failed") rej(new Error(j.error||"生成失败"));
-      else if(n++>300) rej(new Error("超时（10 分钟）")); else setTimeout(tk,2000);
+      else if(n++>400) rej(new Error("超时")); else setTimeout(tk,2000);
     }).catch(rej); })(); }); }
+  function esc(t){ return String(t||"").replace(/[<>&]/g,function(c){return c==="<"?"&lt;":c===">"?"&gt;":"&amp;";}); }
+  function renderProgress(j){
+    var h='<div style="font-size:14px;color:var(--ac);font-weight:600;margin-bottom:10px">'+esc(j.phase||"处理中…")+'</div>';
+    if(j.refs&&(j.refs.product||j.refs.character)){
+      h+='<div class="refbar" style="justify-content:flex-start;margin:0 0 12px">'+(j.refs.product?'<img title="产品三视图" src="'+j.refs.product+'">':'')+(j.refs.character?'<img title="人物三视图" src="'+j.refs.character+'">':'')+'<span style="font-size:11.5px;color:var(--mut2);align-self:center">已锁定 人物/产品（三视图）</span></div>';
+    }
+    var shots=(j.segments||[]).filter(function(s){return s.video===0;});
+    if(shots.length){
+      h+='<div style="font-size:12px;color:var(--mut2);margin:4px 0 6px">分镜故事板 · '+shots.length+' 镜</div>';
+      shots.forEach(function(s,i){
+        var ic=s.state==="succeeded"?'<span style="color:var(--ac)">✓</span>':(s.state==="failed"?'<span style="color:#ff6a2c">✗</span>':'<span class="spin">◌</span>');
+        var tx=(j.storyboard&&j.storyboard[i])||s.scene||('镜 '+(i+1));
+        var sh=s.sheet?'<img class="sheet" src="'+s.sheet+'" title="分镜图">':'';
+        h+='<div class="shot"><span class="si">'+ic+'</span><span class="sn">镜'+(i+1)+'</span>'+sh+'<span class="stx">'+esc(tx)+'</span></div>';
+      });
+    }
+    $("steps").innerHTML=h;
+    var done=(j.segments||[]).filter(function(s){return s.state==="succeeded";}).length;
+    var tot=(j.segments||[]).length||1;
+    setBar(j.state==="succeeded"?1:Math.max(.06, done/(tot+0.6)));
+  }
   function simulate(count){ return new Promise(function(res){ var i=0; (function nx(){
     if(i<count){ setStep(i,"run"); setBar((i+.5)/(count+1)); setTimeout(function(){ setStep(i,"done"); i++; setBar(i/(count+1)); nx(); },560); }
     else { setBar(1); res({demo:true}); } })(); }); }
 
-  function renderSteps(count){ $("progress").classList.remove("hidden"); var h="";
-    for(var i=0;i<count;i++) h+=st(i,(count>1?("生成第 "+(i+1)+"/"+count+" 条 · "+S.len+"s"):("AI 生成视频 · "+S.len+"s")));
-    $("steps").innerHTML=h; setBar(.04); }
+  function renderSteps(count){ $("progress").classList.remove("hidden"); $("steps").innerHTML='<div style="color:var(--mut);font-size:13px">准备中…</div>'; setBar(.04); }
   function st(i,t){ return '<div class="step" id="st'+i+'"><span class="d"></span><span>'+t+'</span></div>'; }
   function setStep(i,c){ var el=$("st"+i); if(el) el.className="step "+c; }
   function setBar(p){ $("fill").style.width=Math.min(100,Math.round(p*100))+"%"; }
