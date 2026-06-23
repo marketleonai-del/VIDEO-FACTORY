@@ -21,6 +21,9 @@ release/
 frames/
 output/
 outputs/
+.uvg-out/
+.uvg-web-jobs.json
+.uvg-web-stats.json
 tmp/
 *.log
 
@@ -41,6 +44,9 @@ push-to-github.command
 # ===== 本地临时辅助脚本（调试/校验用，不进仓）=====
 _*.bat
 _*.txt
+_*.js
+_test-*.mp4
+_test-*.png
 
 # ===== 系统 / 编辑器 =====
 .DS_Store

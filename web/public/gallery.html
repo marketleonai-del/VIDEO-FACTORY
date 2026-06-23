@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>我的作品 · My Works · 视频工厂</title>
+<style>
+  :root{--bg:#0A0A0B;--panel:#121214;--ink:#EDEAE3;--mut:#9A968C;--mut2:#6b675f;--line:rgba(237,234,227,.1);--line2:rgba(237,234,227,.18);--ac:#C6F432}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:"Space Grotesk","PingFang SC",system-ui,sans-serif;line-height:1.5}
+  .top{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:14px;padding:16px 28px;background:rgba(10,10,11,.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .top h1{font-size:18px;font-weight:700} .top .sp{flex:1}
+  a.btn,.lang button{font-family:inherit;font-size:13px;border:1px solid var(--line2);background:transparent;color:var(--ink);padding:8px 14px;border-radius:100px;cursor:pointer;text-decoration:none}
+  a.btn.p{background:var(--ac);color:#0A0A0B;border:0}
+  .lang{display:inline-flex;border:1px solid var(--line2);border-radius:100px;overflow:hidden}
+  .lang button{border:0;border-radius:0;color:var(--mut);padding:8px 12px} .lang button.on{background:var(--ac);color:#0A0A0B}
+  .wrap{max-width:1120px;margin:0 auto;padding:28px}
+  .empty{color:var(--mut2);text-align:center;padding:80px 0;font-size:15px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+  .card video{width:100%;aspect-ratio:9/16;background:#000;object-fit:cover;display:block}
+  .card .meta{padding:12px 14px}
+  .card .t{font-weight:600;font-size:14px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card .d{font-size:11.5px;color:var(--mut2)}
+  .refs{display:flex;gap:6px;margin-top:10px}
+  .refs img{width:46px;height:46px;object-fit:cover;border-radius:8px;border:1px solid var(--line2);background:#000}
+  .refs .lab{font-size:10px;color:var(--mut2);align-self:center}
+  .acts{display:flex;gap:8px;margin-top:10px}
+  .acts a{flex:1;text-align:center;font-size:12.5px;border:1px solid var(--line2);border-radius:9px;padding:7px;color:var(--ink);text-decoration:none}
+  .acts a.p{background:var(--ac);color:#0A0A0B;border:0}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1 data-i="title">我的作品</h1>
+  <div class="sp"></div>
+  <a class="btn p" id="back" data-i="back">＋ 去生成</a>
+  <div class="lang"><button id="zh" class="on">中</button><button id="en">EN</button></div>
+</div>
+<div class="wrap"><div id="list" class="grid"></div><div id="empty" class="empty" style="display:none" data-i="empty">还没有作品。去生成第一条吧。</div></div>
+
+<script>
+(function(){
+  var API = (location.protocol==="file:") ? "http://localhost:8088" : "";
+  var T = {
+    zh:{title:"我的作品",back:"＋ 去生成",empty:"还没有作品。去生成第一条吧。",product:"产品图",person:"人物图",play:"播放",dl:"下载"},
+    en:{title:"My Works",back:"＋ Create",empty:"No works yet. Generate your first one.",product:"Product",person:"Character",play:"Play",dl:"Download"}
+  };
+  var lang = localStorage.getItem("vf_lang")||"zh";
+  function applyLang(){ document.documentElement.lang = lang==="zh"?"zh-CN":"en";
+    document.querySelectorAll("[data-i]").forEach(function(el){ var k=el.getAttribute("data-i"); if(T[lang][k])el.textContent=T[lang][k]; });
+    document.getElementById("zh").classList.toggle("on",lang==="zh"); document.getElementById("en").classList.toggle("on",lang==="en");
+    render(); }
+  document.getElementById("zh").onclick=function(){lang="zh";localStorage.setItem("vf_lang",lang);applyLang();};
+  document.getElementById("en").onclick=function(){lang="en";localStorage.setItem("vf_lang",lang);applyLang();};
+  document.getElementById("back").onclick=function(){ location.href="index.html"; };
+
+  var WORKS=[];
+  function fmt(ts){ try{var d=new Date(ts);return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2)+" "+("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2);}catch(e){return"";} }
+  function render(){
+    var L=document.getElementById("list"), E=document.getElementById("empty");
+    if(!WORKS.length){ L.innerHTML=""; E.style.display="block"; E.textContent=T[lang].empty; return; }
+    E.style.display="none";
+    L.innerHTML = WORKS.map(function(w){
+      var vids=(w.urls||[]).map(function(u){return '<video src="'+u+'" controls playsinline preload="metadata"></video>';}).join("");
+      var refs="";
+      if(w.refs&&(w.refs.product||w.refs.character)){
+        refs='<div class="refs">'+
+          (w.refs.product?'<span class="lab">'+T[lang].product+'</span><img src="'+w.refs.product+'">':'')+
+          (w.refs.character?'<span class="lab">'+T[lang].person+'</span><img src="'+w.refs.character+'">':'')+'</div>';
+      }
+      var first=(w.urls||[])[0]||"";
+      var acts='<div class="acts">'+(first?'<a class="p" href="'+first+'" target="_blank">'+T[lang].play+'</a><a href="'+first+'" download>'+T[lang].dl+'</a>':'')+'</div>';
+      return '<div class="card">'+vids+'<div class="meta"><div class="t">'+(w.topic||"-")+'</div><div class="d">'+fmt(w.ts)+(w.urls&&w.urls.length>1?(" · "+w.urls.length+"P"):"")+'</div>'+refs+acts+'</div></div>';
+    }).join("");
+  }
+  fetch(API+"/api/works",{cache:"no-store"}).then(function(r){return r.json();}).then(function(a){ WORKS=Array.isArray(a)?a:[]; applyLang(); })
+    .catch(function(){ WORKS=[]; applyLang(); document.getElementById("empty").textContent = (lang==="zh"?"服务未连接：请先启动 start-video-factory.vbs":"Server offline: run start-video-factory.vbs"); document.getElementById("empty").style.display="block"; });
+  applyLang();
+})();
+</script>
+</body>
+</html>

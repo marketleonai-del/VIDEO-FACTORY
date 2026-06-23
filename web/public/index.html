@@ -62,6 +62,13 @@
   .keyhint{display:none;margin:6px 10px 0;font-size:12px;color:var(--ac2)}
   .keyhint.show{display:block}
   .keyhint input{width:100%;margin-top:7px;background:#0c0c0e;border:1px solid var(--line);border-radius:11px;color:var(--ink);padding:10px 13px;font-family:inherit;font-size:13px}
+  /* 顶部素材预览条 */
+  .previews{display:flex;flex-wrap:wrap;gap:8px;padding:12px 12px 0}
+  .previews:empty{display:none}
+  .previews .pv{position:relative;width:66px;height:66px;border-radius:13px;overflow:hidden;border:1px solid var(--line2);background:#000}
+  .previews .pv img,.previews .pv video{width:100%;height:100%;object-fit:cover}
+  .previews .pv .tag{position:absolute;left:0;bottom:0;right:0;font-size:9px;text-align:center;background:rgba(0,0,0,.55);color:var(--mut);padding:1px 0}
+  .previews .pv b{position:absolute;top:3px;right:3px;width:16px;height:16px;border-radius:50%;background:rgba(0,0,0,.7);color:#fff;font-size:11px;line-height:15px;text-align:center;cursor:pointer;font-weight:400}
   .ta{width:100%;min-height:104px;resize:vertical;background:transparent;border:0;color:var(--ink);font-family:inherit;font-size:18px;line-height:1.55;padding:20px 18px 10px}
   .ta::placeholder{color:var(--mut2)}.ta:focus{outline:0}
   .toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px}
@@ -72,15 +79,19 @@
   .ctl>.pill{display:inline-flex;align-items:center;gap:8px;background:#0c0c0e;border:1px solid var(--line);color:var(--mut);font-size:13px;font-weight:500;padding:9px 14px;border-radius:100px;cursor:pointer;transition:.2s;font-family:inherit}
   .ctl>.pill:hover{border-color:var(--line2);color:var(--ink)}
   .ctl>.pill .v{color:var(--ink)} .ctl>.pill::after{content:"";width:5px;height:5px;border-right:1.5px solid var(--mut);border-bottom:1.5px solid var(--mut);transform:rotate(45deg);margin-left:2px;margin-top:-3px}
-  .menu{position:absolute;bottom:calc(100% + 10px);left:0;min-width:158px;background:#161618;border:1px solid var(--line2);border-radius:16px;padding:7px;box-shadow:0 30px 80px -30px #000;z-index:30;display:none;max-height:260px;overflow:auto}
+  .menu{position:absolute;bottom:calc(100% + 10px);left:0;min-width:158px;background:#161618;border:1px solid var(--line2);border-radius:16px;padding:7px;box-shadow:0 30px 80px -30px #000;z-index:30;display:none;max-height:280px;overflow:auto}
   .menu.open{display:block;animation:pop .18s cubic-bezier(.2,.8,.2,1)}
   @keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
   .menu button{display:flex;width:100%;justify-content:space-between;gap:12px;align-items:center;border:0;background:transparent;color:var(--mut);font-family:inherit;font-size:13.5px;padding:10px 12px;border-radius:11px;cursor:pointer;text-align:left}
   .menu button:hover{background:rgba(237,234,227,.05);color:var(--ink)}
   .menu button.sel{color:var(--ink)} .menu button.sel::after{content:"●";color:var(--ac);font-size:9px}
   .menu button small{display:block;color:var(--mut2);font-size:11px;font-weight:400;margin-top:1px}
+  .menu .cust{display:flex;gap:7px;align-items:center;padding:9px 10px 5px;border-top:1px solid var(--line);margin-top:5px}
+  .menu .cust input{width:78px;background:#0c0c0e;border:1px solid var(--line2);border-radius:9px;color:var(--ink);padding:7px 9px;font-family:inherit;font-size:13px}
+  .menu .cust span{font-size:12px;color:var(--mut2)}
   .up{display:inline-flex;align-items:center;gap:7px;background:#0c0c0e;border:1px dashed var(--line2);color:var(--mut);font-size:13px;padding:9px 14px;border-radius:100px;cursor:pointer;transition:.2s}
   .up:hover{color:var(--ink);border-color:var(--ac)} .up.has{border-style:solid;border-color:var(--ac);color:var(--ac)}
+  .up svg{width:15px;height:15px;flex:none}
   .spacer{flex:1 1 30px}
   .gen{border:0;border-radius:100px;padding:12px 26px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;background:var(--ac);color:#0A0A0B;will-change:transform}
   .gen:disabled{opacity:.45;cursor:not-allowed}
@@ -95,6 +106,11 @@
   @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(198,244,50,.4)}50%{box-shadow:0 0 0 6px rgba(198,244,50,0)}}
   .result{text-align:center} .vframe{aspect-ratio:9/16;max-width:264px;margin:0 auto;border-radius:18px;border:1px solid var(--line2);background:#000;display:grid;place-items:center;overflow:hidden}
   .vframe video{width:100%;height:100%;object-fit:cover} .ph{color:var(--mut2);font-size:13px;padding:22px}.ph .e{font-size:32px;margin-bottom:10px}
+  /* 多条结果网格 */
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;max-width:580px;margin:0 auto}
+  .vgrid video{width:100%;aspect-ratio:9/16;border-radius:14px;border:1px solid var(--line2);background:#000;object-fit:cover}
+  .refbar{display:flex;gap:8px;align-items:center;justify-content:center;margin:0 0 12px;flex-wrap:wrap}
+  .refbar img{width:54px;height:54px;object-fit:cover;border-radius:10px;border:1px solid var(--line2);background:#000}
   .racts{display:flex;gap:10px;justify-content:center;margin-top:15px;flex-wrap:wrap}
   .racts button{font-family:inherit;font-size:13.5px;font-weight:500;padding:10px 17px;border-radius:100px;cursor:pointer;border:1px solid var(--line2);background:transparent;color:var(--ink)} .racts button.p{background:var(--ac);color:#0A0A0B;border:0}
   .err{margin-top:12px;color:#ffb4a2;font-size:13px;background:rgba(255,106,44,.08);border:1px solid rgba(255,106,44,.3);border-radius:12px;padding:11px 14px}
@@ -130,6 +146,10 @@
 <div class="aurora"></div>
 <svg class="grain"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
 <div class="badge" id="badge">检测模式…</div>
+<div id="topbar" style="position:fixed;top:16px;left:18px;z-index:40;display:flex;gap:8px;align-items:center">
+  <a id="navWorks" href="gallery.html" style="font-size:12px;color:var(--mut);border:1px solid var(--line2);padding:6px 13px;border-radius:99px;background:rgba(18,18,20,.6);backdrop-filter:blur(10px);text-decoration:none">我的作品</a>
+  <span style="display:inline-flex;border:1px solid var(--line2);border-radius:99px;overflow:hidden;background:rgba(18,18,20,.6);backdrop-filter:blur(10px)"><button id="langZh" style="border:0;background:var(--ac);color:#0A0A0B;font-family:inherit;font-size:12px;padding:6px 11px;cursor:pointer">中</button><button id="langEn" style="border:0;background:transparent;color:var(--mut);font-family:inherit;font-size:12px;padding:6px 11px;cursor:pointer">EN</button></span>
+</div>
 
 <header>
   <div class="wrap">
@@ -146,9 +166,11 @@
 <section id="create">
   <div class="wrap">
     <div class="composer reveal">
-      <div class="keyhint" id="keyhint">⚠ 纯前端模式：填你自己的视频模型 API Key（仅存本浏览器，不上传）
-        <input id="apiKey" type="password" placeholder="粘贴 API Key（Seedance / 可灵 / Veo …）" />
+      <div class="keyhint" id="keyhint">🔑 填你自己的 API Key（仅存本浏览器，随请求直发服务器调用、不入库）
+        <input id="apiKey" type="password" placeholder="丽帧 API Key（kz-… 出视频必填）" />
+        <input id="imgKey" type="password" placeholder="网关 Key（sk-… 免描述写脚本/锁人物，可留空）" />
       </div>
+      <div class="previews" id="previews"></div>
       <textarea id="prompt" class="ta" placeholder="描述你想要的视频…例：摄像机跟踪一位黑衣人在老城区高速奔跑，被人群追赶，撞翻水果摊后爬起继续逃跑，电影感运镜">摄像机跟踪一位黑衣人在老城区高速奔跑，被人群追赶，撞翻水果摊后爬起继续逃跑，电影感运镜</textarea>
       <div class="toolbar">
         <div class="modepill" id="modepill">
@@ -156,10 +178,14 @@
           <button data-v="mix">+ 我的素材</button>
         </div>
         <div class="ctl" data-k="len"><div class="pill">时长 <span class="v" id="v-len">10s</span></div>
-          <div class="menu"><button data-val="10" class="sel">10 秒<small>单段</small></button><button data-val="20">20 秒<small>2 段拼接</small></button><button data-val="30">30 秒<small>3 段拼接</small></button><button data-val="60">60 秒<small>6 段拼接</small></button></div>
+          <div class="menu"><button data-val="5">5 秒</button><button data-val="10" class="sel">10 秒</button><button data-val="15">15 秒<small>单段</small></button><button data-val="30">30 秒<small>2 段拼接</small></button><button data-val="50">50 秒<small>4 段拼接</small></button><button data-val="60">60 秒<small>4 段拼接</small></button>
+            <div class="cust"><input type="number" id="cust-len" min="4" max="60" placeholder="自定义"><span>秒 (4–60)</span></div>
+          </div>
         </div>
         <div class="ctl" data-k="count"><div class="pill">条数 <span class="v" id="v-count">1</span></div>
-          <div class="menu"><button data-val="1" class="sel">1 条</button><button data-val="3">3 条<small>小矩阵</small></button><button data-val="5">5 条</button><button data-val="10">10 条<small>矩阵投放</small></button><button data-val="20">20 条<small>大矩阵</small></button></div>
+          <div class="menu"><button data-val="1" class="sel">1 条</button><button data-val="3">3 条<small>小矩阵</small></button><button data-val="5">5 条</button><button data-val="10">10 条<small>矩阵投放</small></button>
+            <div class="cust"><input type="number" id="cust-count" min="1" max="20" placeholder="自定义"><span>条 (1–20)</span></div>
+          </div>
         </div>
         <div class="ctl" data-k="platform"><div class="pill">平台 <span class="v" id="v-platform">抖音</span></div>
           <div class="menu"><button data-val="douyin" class="sel">抖音</button><button data-val="kuaishou">快手</button><button data-val="xiaohongshu">小红书</button><button data-val="videohao">视频号</button><button data-val="tiktok">TikTok</button><button data-val="youtube">YouTube Shorts</button></div>
@@ -170,15 +196,17 @@
         <div class="ctl" data-k="voice"><div class="pill">配音 <span class="v" id="v-voice">本地·中性</span></div>
           <div class="menu"><button data-val="on:neutral" class="sel">开 · 中性</button><button data-val="on:happy">开 · 开心</button><button data-val="on:serious">开 · 严肃</button><button data-val="on:gentle">开 · 温柔</button><button data-val="on:excited">开 · 激动</button><button data-val="off:">关闭配音</button></div>
         </div>
-        <label class="up hidden" id="upImg">🖼 参考图<input type="file" accept="image/*" class="hidden" id="fImg"></label>
-        <label class="up hidden" id="upVid">🎬 我的视频<input type="file" accept="video/*" class="hidden" id="fVid"></label>
+        <label class="up" id="upBtn" title="上传图片 / 视频素材">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          上传素材<input type="file" accept="image/*,video/*" multiple class="hidden" id="fUp">
+        </label>
         <div class="spacer"></div>
         <button class="gen magnetic" id="go">生成 →</button>
       </div>
     </div>
 
     <div class="panel hidden" id="progress"><div class="bar"><i id="fill"></i></div><div class="steps" id="steps"></div></div>
-    <div class="panel result hidden" id="result"><div class="vframe" id="vframe"></div><div class="racts"><button class="p magnetic" id="dl">下载</button><button id="regen">重新生成</button><button id="adj">调参</button></div></div>
+    <div class="panel result hidden" id="result"><div class="refbar" id="refbar"></div><div class="vframe" id="vframe"></div><div class="racts"><button class="p magnetic" id="dl">下载全部</button><button id="regen">重新生成</button><button id="adj">调参</button></div></div>
     <div class="err hidden" id="err"></div>
   </div>
 </section>
@@ -213,7 +241,7 @@
 
 <footer>
   <div class="wrap">
-    <div style="margin-bottom:12px"><a id="gh2" href="https://github.com/" target="_blank" rel="noopener">★ GitHub</a> · <span class="tg" id="tg"><span class="sw" id="sw"></span> 匿名改进数据</span></div>
+    <div style="margin-bottom:12px"><a id="gh2" href="https://github.com/" target="_blank" rel="noopener">★ GitHub</a> · <a id="dlZip">📦 下载技能包</a> · <a id="docZong" target="_blank">📖 总纲</a> · <a id="docUse" target="_blank">📖 使用说明</a> · <span class="tg" id="tg"><span class="sw" id="sw"></span> 匿名改进数据</span></div>
     视频工厂 · 双模式（纯前端 / 后端 SaaS）· universal-video-generator 引擎驱动
   </div>
 </footer>
@@ -227,31 +255,54 @@
 (function(){
   "use strict";
   var $=function(id){return document.getElementById(id);};
-  var S={ mode:"ai", len:10, count:1, platform:"douyin", country:"CN", voiceOn:true, emotion:"neutral", backend:false, apiKey:"", telemetry:false, busy:false };
+  var S={ mode:"ai", len:10, count:1, platform:"douyin", country:"CN", voiceOn:true, emotion:"neutral", backend:false, live:false, apiKey:"", kKey:"", gKey:"", telemetry:false, busy:false, media:[] };
   var LANG={CN:"zh",US:"en",JP:"ja",KR:"ko",SEA:"en",EU:"en"};
   var LABEL={ platform:{douyin:"抖音",kuaishou:"快手",xiaohongshu:"小红书",videohao:"视频号",tiktok:"TikTok",youtube:"YouTube Shorts"}, country:{CN:"中国",US:"美国",JP:"日本",KR:"韩国",SEA:"东南亚",EU:"欧洲"} };
   var EMO={neutral:"中性",happy:"开心",serious:"严肃",gentle:"温柔",excited:"激动"};
-  var SEG={10:1,20:2,30:3,60:6};
+  var LAST=[];
 
-  fetch("/api/config",{cache:"no-store"}).then(function(r){return r.ok?r.json():Promise.reject();}).then(function(cfg){
-    S.backend=true; $("badge").innerHTML="模式 · <b>后端 SaaS</b>"; $("keyhint").classList.remove("show");
-    if(cfg.github){ $("gh").href=cfg.github; $("gh2").href=cfg.github; }
-  }).catch(function(){ S.backend=false; $("badge").innerHTML="模式 · <b>纯前端</b>"; $("keyhint").classList.add("show"); S.apiKey=localStorage.getItem("uvg_key")||""; $("apiKey").value=S.apiKey; });
-  $("apiKey").addEventListener("input",function(e){ S.apiKey=e.target.value; localStorage.setItem("uvg_key",S.apiKey); });
+  var API = (location.protocol==="file:") ? "http://localhost:8088" : "";  /* 部署到服务器时同源相对路径自动生效；本地 file:// 双击才指向 8088 */
+  (function(){ var z=$("dlZip"); if(z)z.href=API+"/skill.zip"; var a=$("docZong"); if(a)a.href=API+"/doc?f="+encodeURIComponent("MASTER/视频工厂-总纲.md"); var b=$("docUse"); if(b)b.href=API+"/doc?f="+encodeURIComponent("使用说明.md"); })();
+  (function connect(){
+    fetch(API+"/api/config",{cache:"no-store"}).then(function(r){return r.ok?r.json():Promise.reject();}).then(function(cfg){
+      S.backend=true; S.live=!!cfg.live; $("badge").innerHTML="模式 · <b>"+(cfg.live?"实时·接丽帧":"后端 SaaS")+"</b>"; hideErr();
+      if(cfg.needUserKey){$("keyhint").classList.add("show");}else{$("keyhint").classList.remove("show");}
+      S.kKey=localStorage.getItem("vf_kkey")||""; S.gKey=localStorage.getItem("vf_gkey")||""; if($("apiKey"))$("apiKey").value=S.kKey; if($("imgKey"))$("imgKey").value=S.gKey;
+      if(cfg.github){ $("gh").href=cfg.github; $("gh2").href=cfg.github; }
+    }).catch(function(){ S.backend=false; $("badge").innerHTML="模式 · <b>未连接</b>";
+      showErr("服务未启动：请双击项目里的 start-video-factory.bat（黑色窗口保持打开），本页将自动连接…");
+      setTimeout(connect,2500); });
+  })();
+  $("apiKey").addEventListener("input",function(e){ S.kKey=e.target.value.trim(); localStorage.setItem("vf_kkey",S.kKey); });
+  if($("imgKey"))$("imgKey").addEventListener("input",function(e){ S.gKey=e.target.value.trim(); localStorage.setItem("vf_gkey",S.gKey); });
 
+  // 模式切换（上传按钮始终可见，不再随模式隐藏）
   document.querySelectorAll("#modepill button").forEach(function(b){ b.addEventListener("click",function(){
-    document.querySelectorAll("#modepill button").forEach(function(x){x.classList.remove("on");}); b.classList.add("on");
-    S.mode=b.dataset.v; var mix=S.mode==="mix"; $("upImg").classList.toggle("hidden",!mix); $("upVid").classList.toggle("hidden",!mix); }); });
-  $("fImg").addEventListener("change",function(e){ mk($("upImg"),e.target.files[0]); });
-  $("fVid").addEventListener("change",function(e){ mk($("upVid"),e.target.files[0]); });
-  function mk(el,f){ if(f){ el.classList.add("has"); el.firstChild.textContent="✓ "+f.name.slice(0,14); } }
+    document.querySelectorAll("#modepill button").forEach(function(x){x.classList.remove("on");}); b.classList.add("on"); S.mode=b.dataset.v; }); });
 
+  // 上传图片/视频 → 顶部预览
+  $("fUp").addEventListener("change",function(e){ var files=e.target.files||[]; for(var i=0;i<files.length;i++) addMedia(files[i]); e.target.value=""; });
+  function addMedia(f){ if(!f) return; var url=URL.createObjectURL(f); var isVid=/^video\//.test(f.type||"");
+    var item={name:f.name,url:url,isVid:isVid,b64:""}; S.media.push(item);
+    if(!isVid){ var fr=new FileReader(); fr.onload=function(){ item.b64=fr.result; }; fr.readAsDataURL(f); }
+    var d=document.createElement("div"); d.className="pv";
+    d.innerHTML=(isVid?'<video src="'+url+'" muted playsinline></video>':'<img src="'+url+'" alt="">')+'<span class="tag">'+(isVid?'视频':'图片')+'</span><b title="移除">×</b>';
+    d.querySelector("b").addEventListener("click",function(){ var k=S.media.indexOf(item); if(k>=0)S.media.splice(k,1); d.remove(); if(!S.media.length)$("upBtn").classList.remove("has"); });
+    $("previews").appendChild(d); $("upBtn").classList.add("has");
+  }
+
+  // 下拉控件
   document.querySelectorAll(".ctl").forEach(function(ctl){
     var pill=ctl.querySelector(".pill"), menu=ctl.querySelector(".menu"), k=ctl.dataset.k;
     pill.addEventListener("click",function(e){ e.stopPropagation(); var o=menu.classList.contains("open"); closeMenus(); if(!o) menu.classList.add("open"); });
     menu.querySelectorAll("button").forEach(function(b){ b.addEventListener("click",function(e){ e.stopPropagation();
       menu.querySelectorAll("button").forEach(function(x){x.classList.remove("sel");}); b.classList.add("sel"); pick(k,b.dataset.val); menu.classList.remove("open"); }); });
   });
+  // 自定义数值输入（条数 / 秒数）
+  var cc=$("cust-count"); if(cc) cc.addEventListener("input",function(){ var n=Math.max(1,Math.min(20,Math.round(Number(this.value)||1))); S.count=n; $("v-count").textContent=n; document.querySelectorAll('[data-k=count] .menu>button').forEach(function(x){x.classList.remove("sel");}); });
+  var cl=$("cust-len"); if(cl) cl.addEventListener("input",function(){ var n=Math.max(4,Math.min(15,Math.round(Number(this.value)||10))); S.len=n; $("v-len").textContent=n+"s"; document.querySelectorAll('[data-k=len] .menu>button').forEach(function(x){x.classList.remove("sel");}); });
+  document.querySelectorAll(".menu .cust").forEach(function(c){ c.addEventListener("click",function(e){e.stopPropagation();}); });
+
   document.addEventListener("click",closeMenus);
   function closeMenus(){ document.querySelectorAll(".menu.open").forEach(function(m){m.classList.remove("open");}); }
   function pick(k,val){
@@ -270,47 +321,47 @@
   $("adj").addEventListener("click",function(){ $("result").classList.add("hidden"); $("prompt").focus(); });
   function run(){
     if(S.busy)return; var prompt=$("prompt").value.trim();
-    if(!prompt){ showErr("请先输入视频描述"); return; }
-    if(!S.backend&&!S.apiKey){ showErr("纯前端模式：请先填 API Key"); return; }
+    if(!prompt && !S.media.length){ showErr("请输入描述，或上传一张产品图（可免描述，AI 自动写带货脚本）"); return; }
+    if(!S.backend){ showErr("服务未连接：请先双击 start-video-factory.bat 启动服务，再试"); return; }
     hideErr(); S.busy=true; $("go").disabled=true; $("result").classList.add("hidden");
-    var segN=SEG[S.len]||1; renderSteps(segN); var t0=Date.now();
-    (S.backend?viaBackend(prompt,segN):simulate(segN)).then(function(out){ done(out,Date.now()-t0); }).catch(function(e){ showErr(String(e&&e.message||e)); reset(); });
+    renderSteps(S.count); var t0=Date.now();
+    (S.backend?viaBackend(prompt):simulate(S.count)).then(function(out){ done(out,Date.now()-t0); }).catch(function(e){ showErr(String(e&&e.message||e)); reset(); });
   }
-  function viaBackend(prompt,segN){
-    return fetch("/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({prompt:prompt,mode:S.mode,durationSec:S.len,count:S.count,platform:S.platform,country:S.country,language:LANG[S.country]||"zh",voiceOn:S.voiceOn,emotion:S.emotion,voiceText:prompt})})
-      .then(function(r){return r.json();}).then(function(j){ if(j.error)throw new Error(j.error.message||j.error); return poll(j.jobId,segN); });
+  function viaBackend(prompt){
+    var img=null,prod=""; for(var i=0;i<S.media.length;i++){ if(!prod) prod=S.media[i].name.replace(/\.[^.]+$/,""); if(!img&&!S.media[i].isVid&&S.media[i].b64) img=S.media[i].b64; }
+    return fetch(API+"/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({prompt:prompt,product:prod,imageB64:img,kuaiziKey:S.kKey,imageKey:S.gKey,mode:S.mode,durationSec:S.len,count:S.count,platform:S.platform,country:S.country,language:LANG[S.country]||"zh",voiceOn:S.voiceOn,emotion:S.emotion,voiceText:prompt})})
+      .then(function(r){return r.json();}).then(function(j){ if(j.error)throw new Error(j.error.message||j.error); return poll(j.jobId); });
   }
-  function poll(id,segN){ return new Promise(function(res,rej){ var n=0; (function tk(){
-    fetch("/api/jobs/"+id).then(function(r){return r.json();}).then(function(j){
-      if(j.segments) j.segments.forEach(function(s,i){ setStep(i,s.state==="succeeded"?"done":(s.state==="running"?"run":"")); });
-      if(j.stitch) setStep(segN, j.stitch==="succeeded"?"done":"run");
-      if(j.state==="succeeded"){ allDone(); res(j); } else if(j.state==="failed") rej(new Error(j.error||"生成失败"));
-      else if(n++>180) rej(new Error("超时")); else setTimeout(tk,1000);
+  function poll(id){ return new Promise(function(res,rej){ var n=0; (function tk(){
+    fetch(API+"/api/jobs/"+id).then(function(r){return r.json();}).then(function(j){
+      if(j.segments) j.segments.forEach(function(s,i){ setStep(i, s.state==="succeeded"?"done":(s.state==="failed"?"done":"run")); });
+      if(j.state==="succeeded"){ allDone(); res(j); }
+      else if(j.state==="failed") rej(new Error(j.error||"生成失败"));
+      else if(n++>300) rej(new Error("超时（10 分钟）")); else setTimeout(tk,2000);
     }).catch(rej); })(); }); }
-  function simulate(segN){ return new Promise(function(res){ var i=0; (function nx(){
-    if(i<segN){ setStep(i,"run"); setBar((i+.5)/(segN+1)); setTimeout(function(){ setStep(i,"done"); i++; setBar(i/(segN+1)); nx(); },560); }
-    else { setStep(segN,"run"); setBar(.93); setTimeout(function(){ setStep(segN,"done"); setBar(1); res({demo:true}); },720); } })(); }); }
+  function simulate(count){ return new Promise(function(res){ var i=0; (function nx(){
+    if(i<count){ setStep(i,"run"); setBar((i+.5)/(count+1)); setTimeout(function(){ setStep(i,"done"); i++; setBar(i/(count+1)); nx(); },560); }
+    else { setBar(1); res({demo:true}); } })(); }); }
 
-  function renderSteps(segN){ $("progress").classList.remove("hidden"); var h="";
-    for(var i=0;i<segN;i++) h+=st(i,(segN>1?("生成第 "+(i+1)+"/"+segN+" 段 · 续帧一致"):"AI 生成视频"));
-    h+=st(segN,segN>1?("归一化拼接 + 转场（"+segN+"段→1条）"):"导出成片");
-    if(S.voiceOn) h+=st(segN+1,"本地 TTS 配音 + 合成（"+(EMO[S.emotion]||"中性")+"）");
-    if(S.count>1) h+=st(segN+2,"复制为 "+S.count+" 条矩阵（"+LABEL.platform[S.platform]+"·"+LABEL.country[S.country]+"）");
+  function renderSteps(count){ $("progress").classList.remove("hidden"); var h="";
+    for(var i=0;i<count;i++) h+=st(i,(count>1?("生成第 "+(i+1)+"/"+count+" 条 · "+S.len+"s"):("AI 生成视频 · "+S.len+"s")));
     $("steps").innerHTML=h; setBar(.04); }
   function st(i,t){ return '<div class="step" id="st'+i+'"><span class="d"></span><span>'+t+'</span></div>'; }
   function setStep(i,c){ var el=$("st"+i); if(el) el.className="step "+c; }
   function setBar(p){ $("fill").style.width=Math.min(100,Math.round(p*100))+"%"; }
   function allDone(){ document.querySelectorAll(".step").forEach(function(s){s.className="step done";}); setBar(1); }
-  function done(out,ms){ reset(); var f=$("vframe");
-    if(out&&out.videoUrl&&/^https?:/.test(out.videoUrl)) f.innerHTML='<video src="'+out.videoUrl+'" controls playsinline></video>';
-    else f.innerHTML='<div class="ph"><div class="e">●</div>成片就绪 · '+S.len+'s'+(S.count>1?(" ×"+S.count+"条"):"")+'<br><span style="color:var(--mut2)">'+(S.backend?"后端已生成":"demo 预览")+' · 接真实 Key 后此处可播放</span></div>';
+  function done(out,ms){ reset(); var f=$("vframe"); var urls=(out&&out.videoUrls)||(out&&out.videoUrl?[out.videoUrl]:[]); LAST=urls;
+    var rb=$("refbar"); if(rb){ var rf=out&&out.refs; rb.innerHTML=(rf&&(rf.product||rf.character))?('<span style="font-size:11.5px;color:var(--mut2)">锁定 ▸</span>'+(rf.product?'<img title="产品三视图" src="'+rf.product+'">':'')+(rf.character?'<img title="人物三视图" src="'+rf.character+'">':'')):""; }
+    if(urls.length){ f.className=""; f.innerHTML='<div class="vgrid">'+urls.map(function(u){return '<video src="'+u+'" controls playsinline></video>';}).join("")+'</div>'; }
+    else { f.className="vframe"; f.innerHTML='<div class="ph"><div class="e">●</div>成片就绪 · '+S.len+'s'+(S.count>1?(" ×"+S.count+"条"):"")+'<br><span style="color:var(--mut2)">'+(S.live?"已生成（无返回地址）":"demo 预览 · 接真实 Key 后此处可播放")+'</span></div>'; }
     $("result").classList.remove("hidden");
-    if(S.telemetry&&S.backend){ try{ fetch("/api/telemetry",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({events:[{type:"generate",mode:S.mode,durationSec:S.len,emotion:S.emotion,success:true,ms:ms}]})}); }catch(e){} } }
+    if(S.telemetry&&S.backend){ try{ fetch(API+"/api/telemetry",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({events:[{type:"generate",mode:S.mode,durationSec:S.len,count:S.count,emotion:S.emotion,success:true,ms:ms}]})}); }catch(e){} } }
   function reset(){ S.busy=false; $("go").disabled=false; }
   function showErr(m){ $("err").textContent="⚠ "+m; $("err").classList.remove("hidden"); }
   function hideErr(){ $("err").classList.add("hidden"); }
-  $("dl").addEventListener("click",function(){ var v=$("vframe").querySelector("video"); if(v&&v.src){ var a=document.createElement("a"); a.href=v.src; a.download="video.mp4"; a.click(); } else showErr("demo 预览无文件；接真实 Key/后端后可下载"); });
+  $("dl").addEventListener("click",function(){ if(!LAST.length){ showErr("还没有可下载的成片"); return; }
+    LAST.forEach(function(u,i){ var a=document.createElement("a"); a.href=u; a.download="video-"+(i+1)+".mp4"; a.target="_blank"; document.body.appendChild(a); a.click(); a.remove(); }); });
 })();
 
 /* ============ 动效层（GSAP + Lenis，缺失则优雅跳过，不影响功能/可读性） ============ */
@@ -361,6 +412,38 @@
       gsap.to(card,{rotateY:px*7,rotateX:-py*7,transformPerspective:900,duration:.4,ease:"power2.out"}); });
     card.addEventListener("mouseleave",function(){ gsap.to(card,{rotateY:0,rotateX:0,duration:.6,ease:"power2.out"}); });
   });
+})();
+</script>
+<script>
+/* 中英互译（上部切换） */
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  var lang=localStorage.getItem("vf_lang")||"zh";
+  var L={
+    lead:{zh:"短视频矩阵 · 长视频拼接 · 真人素材 + AI 混剪。选好时长、条数、平台、国家，一键生成——越用越聪明。",en:"Short-video matrix · long-video stitching · real footage + AI. Pick duration, count, platform, country — one click, smarter every time."},
+    toCreate:{zh:"立即生成",en:"Start"},gh:{zh:"GitHub 开源",en:"GitHub"},go:{zh:"生成 →",en:"Generate →"},navWorks:{zh:"我的作品",en:"My Works"},
+    dl:{zh:"下载全部",en:"Download all"},regen:{zh:"重新生成",en:"Regenerate"},adj:{zh:"调参",en:"Tweak"},
+    dlZip:{zh:"📦 下载技能包",en:"📦 Download pack"},docZong:{zh:"📖 总纲",en:"📖 Guide"},docUse:{zh:"📖 使用说明",en:"📖 How-to"}
+  };
+  var heroL={zh:'<span class="row">一句话，</span><span class="row">生成<i>成片</i>。</span>',en:'<span class="row">One line,</span><span class="row">a <i>finished</i> ad.</span>'};
+  var modes={zh:["全 AI 生成","+ 我的素材"],en:["All-AI","+ My footage"]};
+  var pills={len:{zh:"时长 ",en:"Duration "},count:{zh:"条数 ",en:"Count "},platform:{zh:"平台 ",en:"Platform "},country:{zh:"国家 ",en:"Country "},voice:{zh:"配音 ",en:"Voice "}};
+  function st(id,o){var e=$(id);if(e&&o)e.textContent=o[lang];}
+  function setHero(){var h=document.querySelector("h1.hero");if(h)h.innerHTML=heroL[lang];}
+  function apply(){
+    var ld=document.querySelector(".lead");if(ld)ld.textContent=L.lead[lang];
+    st("toCreate",L.toCreate);st("gh",L.gh);st("go",L.go);st("navWorks",L.navWorks);st("dl",L.dl);st("regen",L.regen);st("adj",L.adj);st("dlZip",L.dlZip);st("docZong",L.docZong);st("docUse",L.docUse);
+    var mb=document.querySelectorAll("#modepill button");if(mb[0])mb[0].textContent=modes[lang][0];if(mb[1])mb[1].textContent=modes[lang][1];
+    document.querySelectorAll(".ctl").forEach(function(c){var k=c.dataset.k,p=c.querySelector(".pill");if(p&&pills[k]){var tn=p.firstChild;if(tn&&tn.nodeType===3)tn.nodeValue=pills[k][lang];}});
+    var ub=$("upBtn");if(ub){for(var i=0;i<ub.childNodes.length;i++){var n=ub.childNodes[i];if(n.nodeType===3&&n.nodeValue.trim())n.nodeValue=lang==="zh"?"上传素材":"Upload";}}
+    var pr=$("prompt");if(pr)pr.setAttribute("placeholder",lang==="zh"?"描述你想要的视频…或上传产品图，留空也能自动写带货脚本":"Describe your video… or upload a product image; leave blank to auto-write the sales script");
+    var z=$("langZh"),e=$("langEn");if(z&&e){z.style.background=lang==="zh"?"var(--ac)":"transparent";z.style.color=lang==="zh"?"#0A0A0B":"var(--mut)";e.style.background=lang==="en"?"var(--ac)":"transparent";e.style.color=lang==="en"?"#0A0A0B":"var(--mut)";}
+    document.documentElement.lang=lang==="zh"?"zh-CN":"en";
+  }
+  var z=$("langZh"),e=$("langEn");
+  if(z)z.onclick=function(){lang="zh";localStorage.setItem("vf_lang",lang);setHero();apply();};
+  if(e)e.onclick=function(){lang="en";localStorage.setItem("vf_lang",lang);setHero();apply();};
+  apply(); if(lang==="en"){ setHero(); setTimeout(setHero,1600); }
 })();
 </script>
 </body>
