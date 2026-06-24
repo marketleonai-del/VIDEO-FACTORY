@@ -1,481 +1,1226 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>视频工厂 · Video Factory</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIDEO-FACTORY AI带货视频工厂</title>
 <style>
-  :root{
-    --bg:#0A0A0B; --panel:#121214; --ink:#EDEAE3; --mut:#9A968C; --mut2:#6b675f;
-    --line:rgba(237,234,227,.09); --line2:rgba(237,234,227,.16);
-    --ac:#C6F432; --ac2:#FF6A2C;
-    --sans:"Space Grotesk","Noto Sans SC","PingFang SC",system-ui,sans-serif;
-    --serif:"Instrument Serif","Noto Serif SC",Georgia,serif;
+  /* ===== 基础变量与重置 ===== */
+  :root {
+    --bg: #0a0a0f;
+    --card: #12121a;
+    --accent: #00d4ff;
+    --accent2: #ff6b6b;
+    --accent3: #7b68ee;
+    --text: #e0e0e0;
+    --text2: #888;
+    --border: #222;
+    --success: #4caf50;
+    --warning: #ffa726;
   }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{-webkit-font-smoothing:antialiased}
-  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;overflow-x:hidden}
-  ::selection{background:var(--ac);color:#0A0A0B}
-  a{color:inherit;text-decoration:none}
-  .wrap{max-width:1120px;margin:0 auto;padding:0 28px;position:relative;z-index:2}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.6;
+  }
 
-  /* aurora bg + grain */
-  .aurora{position:fixed;inset:0;z-index:0;pointer-events:none;
-    background:
-      radial-gradient(42% 52% at 18% 26%, rgba(198,244,50,.13), transparent 70%),
-      radial-gradient(46% 56% at 84% 72%, rgba(255,106,44,.10), transparent 72%),
-      radial-gradient(60% 70% at 50% 120%, rgba(198,244,50,.06), transparent 70%),
-      var(--bg);
-    filter:blur(30px); animation:drift 22s ease-in-out infinite alternate}
-  @keyframes drift{to{transform:translate3d(0,-2%,0) scale(1.06)}}
-  .grain{position:fixed;inset:0;width:100%;height:100%;opacity:.05;mix-blend-mode:overlay;pointer-events:none;z-index:60}
+  /* ===== 头部区域 ===== */
+  .header {
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 50%, rgba(0,212,255,0.03) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .header h1 {
+    font-size: 2.5em;
+    background: linear-gradient(90deg, var(--accent), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    z-index: 1;
+  }
+  .header p { color: var(--text2); margin-top: 10px; position: relative; z-index: 1; }
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba(0,212,255,0.1);
+    border: 1px solid var(--accent);
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--accent);
+    margin-top: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .badge-group { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
 
-  .badge{position:fixed;top:18px;right:18px;z-index:40;font-size:11.5px;letter-spacing:.04em;padding:7px 13px;border-radius:999px;border:1px solid var(--line2);background:rgba(18,18,20,.6);backdrop-filter:blur(14px);color:var(--mut)}
-  .badge b{color:var(--ac)}
+  /* ===== 布局容器 ===== */
+  .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media(max-width: 768px) { .grid { grid-template-columns: 1fr; } }
 
-  /* hero */
-  header{position:relative;z-index:2;padding:140px 0 70px}
-  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--mut)}
-  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 12px var(--ac);animation:bk 2.2s infinite}
-  @keyframes bk{0%,100%{opacity:1}50%{opacity:.3}}
-  h1.hero{font-size:clamp(46px,9vw,108px);line-height:.96;letter-spacing:-.035em;font-weight:700;margin:30px 0 0}
-  h1.hero .row{display:block;overflow:hidden}
-  h1.hero i{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--ac);letter-spacing:-.01em}
-  .lead{color:var(--mut);font-size:clamp(15px,1.9vw,19px);max-width:520px;margin:28px 0 0;font-weight:400}
-  .cta{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap}
-  .btn{position:relative;font-family:inherit;font-size:15px;font-weight:500;padding:15px 28px;border-radius:100px;cursor:pointer;border:1px solid transparent;transition:background .25s,color .25s,border-color .25s;will-change:transform}
-  .btn.p{background:var(--ac);color:#0A0A0B}
-  .btn.s{background:transparent;border-color:var(--line2);color:var(--ink)}
-  .btn.s:hover{border-color:var(--ink)}
+  /* ===== 卡片组件 ===== */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    position: relative;
+  }
+  .card h2 {
+    font-size: 1.2em;
+    margin-bottom: 16px;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card h2::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 20px;
+    background: linear-gradient(180deg, var(--accent), var(--accent3));
+    border-radius: 2px;
+  }
 
-  section{position:relative;z-index:2;padding:60px 0}
-  .kicker{font-family:var(--serif);font-style:italic;font-size:clamp(22px,3vw,30px);color:var(--mut);margin-bottom:30px}
-  .kicker b{font-family:var(--sans);font-style:normal;color:var(--ink);font-weight:500}
+  /* ===== 表单组件 ===== */
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--text2);
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .form-group input[type="text"],
+  .form-group input[type="number"],
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    background: #1a1a2e;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(0,212,255,0.1);
+  }
+  .form-group textarea { resize: vertical; min-height: 80px; }
 
-  /* composer */
-  .composer{background:linear-gradient(180deg,#15151800,#121214);border:1px solid var(--line2);border-radius:26px;padding:12px;box-shadow:0 40px 120px -40px #000;backdrop-filter:blur(8px)}
-  .composer:focus-within{border-color:rgba(198,244,50,.4);box-shadow:0 0 0 1px rgba(198,244,50,.25),0 40px 120px -40px #000}
-  .keyhint{display:none;margin:6px 10px 0;font-size:12px;color:var(--ac2)}
-  .keyhint.show{display:block}
-  .keyhint input{width:100%;margin-top:7px;background:#0c0c0e;border:1px solid var(--line);border-radius:11px;color:var(--ink);padding:10px 13px;font-family:inherit;font-size:13px}
-  /* 顶部素材预览条 */
-  .previews{display:flex;flex-wrap:wrap;gap:8px;padding:12px 12px 0}
-  .previews:empty{display:none}
-  .previews .pv{position:relative;width:66px;height:66px;border-radius:13px;overflow:hidden;border:1px solid var(--line2);background:#000}
-  .previews .pv img,.previews .pv video{width:100%;height:100%;object-fit:cover}
-  .previews .pv .tag{position:absolute;left:0;bottom:0;right:0;font-size:9px;text-align:center;background:rgba(0,0,0,.55);color:var(--mut);padding:1px 0}
-  .previews .pv b{position:absolute;top:3px;right:3px;width:16px;height:16px;border-radius:50%;background:rgba(0,0,0,.7);color:#fff;font-size:11px;line-height:15px;text-align:center;cursor:pointer;font-weight:400}
-  .ta{width:100%;min-height:104px;resize:vertical;background:transparent;border:0;color:var(--ink);font-family:inherit;font-size:18px;line-height:1.55;padding:20px 18px 10px}
-  .ta::placeholder{color:var(--mut2)}.ta:focus{outline:0}
-  .toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px}
-  .modepill{display:flex;background:#0c0c0e;border:1px solid var(--line);border-radius:100px;padding:4px}
-  .modepill button{border:0;background:transparent;color:var(--mut);font-family:inherit;font-size:13px;font-weight:500;padding:8px 15px;border-radius:100px;cursor:pointer;transition:.2s}
-  .modepill button.on{background:var(--ac);color:#0A0A0B}
-  .ctl{position:relative}
-  .ctl>.pill{display:inline-flex;align-items:center;gap:8px;background:#0c0c0e;border:1px solid var(--line);color:var(--mut);font-size:13px;font-weight:500;padding:9px 14px;border-radius:100px;cursor:pointer;transition:.2s;font-family:inherit}
-  .ctl>.pill:hover{border-color:var(--line2);color:var(--ink)}
-  .ctl>.pill .v{color:var(--ink)} .ctl>.pill::after{content:"";width:5px;height:5px;border-right:1.5px solid var(--mut);border-bottom:1.5px solid var(--mut);transform:rotate(45deg);margin-left:2px;margin-top:-3px}
-  .menu{position:absolute;bottom:calc(100% + 10px);left:0;min-width:158px;background:#161618;border:1px solid var(--line2);border-radius:16px;padding:7px;box-shadow:0 30px 80px -30px #000;z-index:30;display:none;max-height:280px;overflow:auto}
-  .menu.open{display:block;animation:pop .18s cubic-bezier(.2,.8,.2,1)}
-  @keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-  .menu button{display:flex;width:100%;justify-content:space-between;gap:12px;align-items:center;border:0;background:transparent;color:var(--mut);font-family:inherit;font-size:13.5px;padding:10px 12px;border-radius:11px;cursor:pointer;text-align:left}
-  .menu button:hover{background:rgba(237,234,227,.05);color:var(--ink)}
-  .menu button.sel{color:var(--ink)} .menu button.sel::after{content:"●";color:var(--ac);font-size:9px}
-  .menu button small{display:block;color:var(--mut2);font-size:11px;font-weight:400;margin-top:1px}
-  .menu .cust{display:flex;gap:7px;align-items:center;padding:9px 10px 5px;border-top:1px solid var(--line);margin-top:5px}
-  .menu .cust input{width:78px;background:#0c0c0e;border:1px solid var(--line2);border-radius:9px;color:var(--ink);padding:7px 9px;font-family:inherit;font-size:13px}
-  .menu .cust span{font-size:12px;color:var(--mut2)}
-  .up{display:inline-flex;align-items:center;gap:7px;background:#0c0c0e;border:1px dashed var(--line2);color:var(--mut);font-size:13px;padding:9px 14px;border-radius:100px;cursor:pointer;transition:.2s}
-  .up:hover{color:var(--ink);border-color:var(--ac)} .up.has{border-style:solid;border-color:var(--ac);color:var(--ac)}
-  .up svg{width:15px;height:15px;flex:none}
-  .spacer{flex:1 1 30px}
-  .gen{border:0;border-radius:100px;padding:12px 26px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;background:var(--ac);color:#0A0A0B;will-change:transform}
-  .gen:disabled{opacity:.45;cursor:not-allowed}
-  .hidden{display:none!important}
+  /* ===== 按钮组件 ===== */
+  .btn {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+  .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+  }
+  .btn-secondary:hover { background: rgba(0,212,255,0.05); }
+  .btn-danger { background: linear-gradient(135deg, var(--accent2), #ff5252); }
+  .btn-success { background: linear-gradient(135deg, var(--success), #66bb6a); }
+  .btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
 
-  .panel{margin:18px 0 0;background:#121214;border:1px solid var(--line);border-radius:20px;padding:22px}
-  .bar{height:5px;background:#0c0c0e;border-radius:99px;overflow:hidden} .bar i{display:block;height:100%;width:0;background:var(--ac);transition:width .5s cubic-bezier(.2,.8,.2,1)}
-  .steps{margin-top:15px;display:flex;flex-direction:column;gap:10px}
-  .step{display:flex;align-items:center;gap:12px;font-size:13.5px;color:var(--mut)}
-  .step .d{width:15px;height:15px;border-radius:50%;border:1.5px solid var(--line2);flex:none}
-  .step.run .d{border-color:var(--ac);animation:pulse 1.1s infinite} .step.done .d{border-color:var(--ac);background:var(--ac)} .step.done{color:var(--ink)}
-  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(198,244,50,.4)}50%{box-shadow:0 0 0 6px rgba(198,244,50,0)}}
-  .result{text-align:center} .vframe{aspect-ratio:9/16;max-width:264px;margin:0 auto;border-radius:18px;border:1px solid var(--line2);background:#000;display:grid;place-items:center;overflow:hidden}
-  .vframe video{width:100%;height:100%;object-fit:cover} .ph{color:var(--mut2);font-size:13px;padding:22px}.ph .e{font-size:32px;margin-bottom:10px}
-  /* 多条结果网格 */
-  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;max-width:580px;margin:0 auto}
-  .vgrid video{width:100%;aspect-ratio:9/16;border-radius:14px;border:1px solid var(--line2);background:#000;object-fit:cover}
-  .refbar{display:flex;gap:8px;align-items:center;justify-content:center;margin:0 0 12px;flex-wrap:wrap}
-  .refbar img{width:54px;height:54px;object-fit:cover;border-radius:10px;border:1px solid var(--line2);background:#000}
-  .shot{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--line);font-size:13px}
-  .shot:first-child{border-top:0}
-  .shot .si{flex:none;width:16px;text-align:center}
-  .shot .sn{flex:none;color:var(--mut2);font-size:12px;width:32px}
-  .shot .stx{flex:1;color:var(--ink);line-height:1.5}
-  .shot img.sheet{width:42px;height:74px;object-fit:cover;border-radius:6px;border:1px solid var(--line2);flex:none;background:#000}
-  .spin{display:inline-block;animation:rot 1s linear infinite;color:var(--ac)}
-  @keyframes rot{to{transform:rotate(360deg)}}
-  .racts{display:flex;gap:10px;justify-content:center;margin-top:15px;flex-wrap:wrap}
-  .racts button{font-family:inherit;font-size:13.5px;font-weight:500;padding:10px 17px;border-radius:100px;cursor:pointer;border:1px solid var(--line2);background:transparent;color:var(--ink)} .racts button.p{background:var(--ac);color:#0A0A0B;border:0}
-  .err{margin-top:12px;color:#ffb4a2;font-size:13px;background:rgba(255,106,44,.08);border:1px solid rgba(255,106,44,.3);border-radius:12px;padding:11px 14px}
+  /* ===== 进度条 ===== */
+  .progress { margin-top: 20px; }
+  .progress-bar {
+    height: 8px;
+    background: #1a1a2e;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent3));
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    width: 0%;
+    position: relative;
+  }
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 20px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2));
+    animation: shimmer 1.5s infinite;
+  }
+  @keyframes shimmer {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(20px); }
+  }
+  .progress-steps {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+  .progress-steps span { transition: color 0.3s; text-align: center; flex: 1; }
+  .progress-steps .active { color: var(--accent); font-weight: 600; }
+  .progress-steps .done { color: var(--success); }
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--text2);
+    margin-top: 6px;
+  }
 
-  /* marquee */
-  .marq{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0;margin-top:20px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
-  .marq .track{display:flex;gap:48px;white-space:nowrap;width:max-content}
-  .marq span{font-size:clamp(20px,3vw,30px);font-weight:500;color:var(--mut);letter-spacing:-.01em}
-  .marq i{font-family:var(--serif);font-style:italic;color:var(--ac);padding:0 6px}
+  /* ===== 分镜预览 ===== */
+  .storyboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .shot-card {
+    background: #1a1a2e;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    transition: border-color 0.2s;
+  }
+  .shot-card:hover { border-color: var(--accent); }
+  .shot-card .shot-num {
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+  }
+  .shot-card .shot-desc { font-size: 13px; margin-top: 6px; line-height: 1.4; }
+  .shot-card img {
+    width: 100%;
+    border-radius: 6px;
+    margin-top: 8px;
+    display: block;
+    background: #0a0a0f;
+  }
 
-  /* matrix */
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-  .card{position:relative;background:#121214;border:1px solid var(--line);border-radius:20px;padding:26px;transition:border-color .3s,box-shadow .3s;transform-style:preserve-3d;overflow:hidden}
-  .card::before{content:"";position:absolute;inset:0;background:radial-gradient(140px 140px at var(--mx,50%) var(--my,0%),rgba(198,244,50,.10),transparent 70%);opacity:0;transition:opacity .3s}
-  .card:hover{border-color:var(--line2)} .card:hover::before{opacity:1}
-  .card .n{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--ac)}
-  .card h3{font-size:18px;font-weight:700;margin:14px 0 6px;letter-spacing:-.01em} .card p{font-size:13.5px;color:var(--mut)}
+  /* ===== 视频结果 ===== */
+  .video-result { margin-top: 20px; }
+  .video-result video {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: block;
+  }
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .video-item {
+    background: #1a1a2e;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .video-item video { width: 100%; display: block; }
+  .video-item .video-info { padding: 10px; font-size: 12px; color: var(--text2); }
 
-  .hl{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-  .hi .e{font-size:13px;font-family:var(--serif);font-style:italic;color:var(--ac)} .hi .t{font-weight:500;font-size:16px;margin:10px 0 5px} .hi .d{font-size:13px;color:var(--mut)}
+  /* ===== 矩阵批量生成面板 ===== */
+  .matrix-presets { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .matrix-preset {
+    padding: 6px 12px;
+    background: #1a1a2e;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+    color: var(--text2);
+  }
+  .matrix-preset:hover { border-color: var(--accent); color: var(--text); }
+  .matrix-preset.active {
+    background: rgba(0,212,255,0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
 
-  footer{position:relative;z-index:2;text-align:center;color:var(--mut2);font-size:12.5px;padding:60px 0 70px;border-top:1px solid var(--line);margin-top:50px}
-  footer a{color:var(--mut)} footer a:hover{color:var(--ac)}
-  footer .tg{display:inline-flex;align-items:center;gap:8px;cursor:pointer;margin:0 10px}
-  footer .sw{width:32px;height:17px;border-radius:99px;background:var(--line2);position:relative;transition:.2s} footer .sw.on{background:var(--ac)}
-  footer .sw::after{content:"";position:absolute;top:2px;left:2px;width:13px;height:13px;border-radius:50%;background:var(--ink);transition:.2s} footer .sw.on::after{left:17px;background:#0A0A0B}
+  /* ===== 素材上传区 ===== */
+  .upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text2);
+  }
+  .upload-zone:hover { border-color: var(--accent); color: var(--text); }
+  .upload-zone.has-files {
+    border-color: var(--success);
+    color: var(--success);
+    background: rgba(76,175,80,0.05);
+  }
+  .upload-zone .upload-icon { font-size: 32px; margin-bottom: 8px; }
+  .upload-zone p { font-size: 14px; }
 
-  @media(max-width:760px){ .hl{grid-template-columns:1fr 1fr} header{padding:108px 0 48px} .spacer{flex-basis:100%} }
-  @media(prefers-reduced-motion:reduce){ .aurora{animation:none} }
+  /* ===== 成本估算 ===== */
+  .cost-estimate {
+    margin-top: 16px;
+    padding: 16px;
+    background: rgba(0,212,255,0.05);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 8px;
+  }
+  .cost-row { display: flex; justify-content: space-between; margin: 6px 0; font-size: 14px; }
+  .cost-row .cost-value { color: var(--accent); font-weight: 600; }
+  .cost-divider { border: none; border-top: 1px solid rgba(0,212,255,0.1); margin: 8px 0; }
+  .cost-total { font-size: 15px; font-weight: 600; }
+
+  /* ===== 统计面板 ===== */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 20px; }
+  .stat {
+    text-align: center;
+    padding: 16px;
+    background: #1a1a2e;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .stat:hover { border-color: var(--accent); }
+  .stat-value { font-size: 24px; color: var(--accent); font-weight: bold; }
+  .stat-label { font-size: 12px; color: var(--text2); margin-top: 4px; }
+
+  /* ===== 日志面板 ===== */
+  .log {
+    background: #0a0a0f;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 16px;
+    max-height: 200px;
+    overflow-y: auto;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+  .log::-webkit-scrollbar { width: 6px; }
+  .log::-webkit-scrollbar-track { background: transparent; }
+  .log::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  .log-line { margin: 2px 0; word-break: break-all; }
+  .log-line.error { color: var(--accent2); }
+  .log-line.success { color: var(--success); }
+  .log-line.warn { color: var(--warning); }
+  .log-line.info { color: var(--accent); }
+
+  /* ===== 标签页 ===== */
+  .tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .tab {
+    padding: 10px 16px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+    font-size: 14px;
+    color: var(--text2);
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ===== 提示消息 ===== */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    z-index: 1000;
+    animation: slideIn 0.3s ease;
+    max-width: 320px;
+    word-break: break-all;
+    backdrop-filter: blur(10px);
+  }
+  @keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  .toast.success { background: rgba(76,175,80,0.15); border: 1px solid var(--success); color: var(--success); }
+  .toast.error { background: rgba(255,107,107,0.15); border: 1px solid var(--accent2); color: var(--accent2); }
+  .toast.info { background: rgba(0,212,255,0.1); border: 1px solid var(--accent); color: var(--accent); }
+
+  /* ===== 空状态 ===== */
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: var(--text2);
+  }
+  .empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+
+  /* ===== 加载动画 ===== */
+  .spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(0,212,255,0.2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ===== 响应式调整 ===== */
+  @media(max-width: 768px) {
+    .header h1 { font-size: 1.8em; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .progress-steps { font-size: 10px; }
+    .btn-group { flex-direction: column; }
+    .btn { width: 100%; justify-content: center; }
+  }
 </style>
 </head>
 <body>
-<div class="aurora"></div>
-<svg class="grain"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
-<div class="badge" id="badge">检测模式…</div>
-<div id="topbar" style="position:fixed;top:16px;left:18px;z-index:40;display:flex;gap:8px;align-items:center">
-  <a id="navWorks" href="gallery.html" style="font-size:12px;color:var(--mut);border:1px solid var(--line2);padding:6px 13px;border-radius:99px;background:rgba(18,18,20,.6);backdrop-filter:blur(10px);text-decoration:none">我的作品</a>
-  <span style="display:inline-flex;border:1px solid var(--line2);border-radius:99px;overflow:hidden;background:rgba(18,18,20,.6);backdrop-filter:blur(10px)"><button id="langZh" style="border:0;background:var(--ac);color:#0A0A0B;font-family:inherit;font-size:12px;padding:6px 11px;cursor:pointer">中</button><button id="langEn" style="border:0;background:transparent;color:var(--mut);font-family:inherit;font-size:12px;padding:6px 11px;cursor:pointer">EN</button></span>
-</div>
-
-<header>
-  <div class="wrap">
-    <span class="eyebrow"><span class="dot"></span> AI VIDEO FACTORY</span>
-    <h1 class="hero"><span class="row">一句话，</span><span class="row">生成<i>成片</i>。</span></h1>
-    <p class="lead reveal">短视频矩阵 · 长视频拼接 · 真人素材 + AI 混剪。选好时长、条数、平台、国家，一键生成——越用越聪明。</p>
-    <div class="cta reveal">
-      <button class="btn p magnetic" id="toCreate">立即生成</button>
-      <a class="btn s magnetic" id="gh" href="https://github.com/" target="_blank" rel="noopener">GitHub 开源</a>
+  <!-- ===== 头部 ===== -->
+  <div class="header">
+    <h1>VIDEO-FACTORY</h1>
+    <p>AI带货视频工厂 · SkillOpt自进化 · 300-Agent蜂群</p>
+    <div class="badge-group">
+      <span class="badge">v3.0 SkillOpt Engine</span>
+      <span class="badge" style="border-color: var(--accent3); color: var(--accent3); background: rgba(123,104,238,0.1);">300-Agent Swarm</span>
+      <span class="badge" style="border-color: var(--success); color: var(--success); background: rgba(76,175,80,0.1);">实时质检</span>
     </div>
   </div>
-</header>
 
-<section id="create">
-  <div class="wrap">
-    <div class="composer reveal">
-      <div class="keyhint" id="keyhint">🔑 填你自己的 API Key（仅存本浏览器，随请求直发服务器调用、不入库）
-        <input id="apiKey" type="password" placeholder="丽帧 API Key（kz-… 出视频必填）" />
-        <input id="imgKey" type="password" placeholder="网关 Key（sk-… 免描述写脚本/锁人物，可留空）" />
-      </div>
-      <div class="previews" id="previews"></div>
-      <textarea id="prompt" class="ta" placeholder="描述你想要的视频…例：摄像机跟踪一位黑衣人在老城区高速奔跑，被人群追赶，撞翻水果摊后爬起继续逃跑，电影感运镜">摄像机跟踪一位黑衣人在老城区高速奔跑，被人群追赶，撞翻水果摊后爬起继续逃跑，电影感运镜</textarea>
-      <div class="toolbar">
-        <div class="modepill" id="modepill">
-          <button class="on" data-v="ai">全 AI 生成</button>
-          <button data-v="mix">+ 我的素材</button>
-        </div>
-        <div class="ctl" data-k="len"><div class="pill">时长 <span class="v" id="v-len">10s</span></div>
-          <div class="menu"><button data-val="5">5 秒</button><button data-val="10" class="sel">10 秒</button><button data-val="15">15 秒<small>单段</small></button><button data-val="30">30 秒<small>2 段拼接</small></button><button data-val="50">50 秒<small>4 段拼接</small></button><button data-val="60">60 秒<small>4 段拼接</small></button>
-            <div class="cust"><input type="number" id="cust-len" min="4" max="60" placeholder="自定义"><span>秒 (4–60)</span></div>
-          </div>
-        </div>
-        <div class="ctl" data-k="count"><div class="pill">条数 <span class="v" id="v-count">1</span></div>
-          <div class="menu"><button data-val="1" class="sel">1 条</button><button data-val="3">3 条<small>小矩阵</small></button><button data-val="5">5 条</button><button data-val="10">10 条<small>矩阵投放</small></button>
-            <div class="cust"><input type="number" id="cust-count" min="1" max="20" placeholder="自定义"><span>条 (1–20)</span></div>
-          </div>
-        </div>
-        <div class="ctl" data-k="platform"><div class="pill">平台 <span class="v" id="v-platform">抖音</span></div>
-          <div class="menu"><button data-val="douyin" class="sel">抖音</button><button data-val="kuaishou">快手</button><button data-val="xiaohongshu">小红书</button><button data-val="videohao">视频号</button><button data-val="tiktok">TikTok</button><button data-val="youtube">YouTube Shorts</button></div>
-        </div>
-        <div class="ctl" data-k="country"><div class="pill">国家 <span class="v" id="v-country">中国</span></div>
-          <div class="menu"><button data-val="CN" class="sel">中国<small>中文</small></button><button data-val="US">美国<small>English</small></button><button data-val="JP">日本<small>日本語</small></button><button data-val="KR">韩国<small>한국어</small></button><button data-val="SEA">东南亚<small>EN/泰/越</small></button><button data-val="EU">欧洲<small>多语</small></button></div>
-        </div>
-        <div class="ctl" data-k="voice"><div class="pill">配音 <span class="v" id="v-voice">本地·中性</span></div>
-          <div class="menu"><button data-val="on:neutral" class="sel">开 · 中性</button><button data-val="on:happy">开 · 开心</button><button data-val="on:serious">开 · 严肃</button><button data-val="on:gentle">开 · 温柔</button><button data-val="on:excited">开 · 激动</button><button data-val="off:">关闭配音</button></div>
-        </div>
-        <label class="up" id="upBtn" title="上传图片 / 视频素材">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-          上传素材<input type="file" accept="image/*,video/*" multiple class="hidden" id="fUp">
-        </label>
-        <div class="spacer"></div>
-        <button class="gen magnetic" id="go">生成 →</button>
-      </div>
-    </div>
-
-    <div class="panel hidden" id="progress"><div class="bar"><i id="fill"></i></div><div class="steps" id="steps"></div></div>
-    <div class="panel result hidden" id="result"><div class="refbar" id="refbar"></div><div class="vframe" id="vframe"></div><div class="racts"><button class="p magnetic" id="dl">下载全部</button><button id="regen">重新生成</button><button id="adj">调参</button></div></div>
-    <div class="err hidden" id="err"></div>
-  </div>
-</section>
-
-<div class="marq" aria-hidden="true"><div class="track" id="track">
-  <span>全 AI 生成<i>·</i>长视频拼接<i>·</i>真人 + AI 混剪<i>·</i>本地配音<i>·</i>矩阵投放<i>·</i>自进化<i>·</i></span>
-  <span>全 AI 生成<i>·</i>长视频拼接<i>·</i>真人 + AI 混剪<i>·</i>本地配音<i>·</i>矩阵投放<i>·</i>自进化<i>·</i></span>
-</div></div>
-
-<section>
-  <div class="wrap">
-    <div class="kicker reveal">四种场景，<b>一个入口</b>。</div>
+  <!-- ===== 主容器 ===== -->
+  <div class="container">
     <div class="grid">
-      <div class="card reveal tilt"><div class="n">01</div><h3>全 AI · 短视频</h3><p>一句话生成 10–30s 爆款，矩阵走量。</p></div>
-      <div class="card reveal tilt"><div class="n">02</div><h3>全 AI · 长视频</h3><p>多段续帧拼接 60s+，主体恒定不漂移。</p></div>
-      <div class="card reveal tilt"><div class="n">03</div><h3>混合 · 短视频</h3><p>你的素材 + AI 钩子，信任与产能兼得。</p></div>
-      <div class="card reveal tilt"><div class="n">04</div><h3>混合 · 长视频</h3><p>真素材 + AI 续生成，归一化无缝拼接。</p></div>
+
+      <!-- ===== 左侧：生成配置面板 ===== -->
+      <div class="card">
+        <h2>生成配置</h2>
+
+        <!-- 产品信息 -->
+        <div class="form-group">
+          <label>产品名称或描述</label>
+          <input type="text" id="productInput" placeholder="例如：便携榨汁杯 - 30秒出汁，USB充电" />
+        </div>
+
+        <!-- 产品图片上传 -->
+        <div class="form-group">
+          <label>产品图片</label>
+          <div class="upload-zone" id="uploadZone">
+            <div class="upload-icon">📷</div>
+            <p>点击上传产品图，或拖拽到此处</p>
+            <p style="font-size: 12px; margin-top: 4px;">支持 JPG, PNG (最大 10MB)</p>
+            <input type="file" id="imageInput" accept="image/*" style="display:none" />
+          </div>
+        </div>
+
+        <!-- 目标平台 -->
+        <div class="form-group">
+          <label>目标平台</label>
+          <select id="platformSelect">
+            <option value="douyin">抖音 (9:16 竖屏)</option>
+            <option value="kuaishou">快手 (9:16 竖屏)</option>
+            <option value="tiktok">TikTok (9:16 竖屏)</option>
+            <option value="xiaohongshu">小红书 (4:3 横屏)</option>
+            <option value="shipinhao">视频号 (9:16 竖屏)</option>
+          </select>
+        </div>
+
+        <!-- 视频时长 -->
+        <div class="form-group">
+          <label>视频时长</label>
+          <select id="durationSelect">
+            <option value="15">15秒（快节奏）</option>
+            <option value="30" selected>30秒（标准推荐）</option>
+            <option value="60">60秒（深度种草）</option>
+          </select>
+        </div>
+
+        <!-- 生成数量 -->
+        <div class="form-group">
+          <label>生成数量（矩阵模式）</label>
+          <select id="countSelect">
+            <option value="1" selected>1条（单条精品模式）</option>
+            <option value="10">10条（小矩阵测试）</option>
+            <option value="50">50条（中规模投放）</option>
+            <option value="100">100条（大规模矩阵）</option>
+            <option value="200">200条（满负荷蜂群）</option>
+          </select>
+        </div>
+
+        <!-- 矩阵差异化策略 -->
+        <div class="form-group" id="matrixOptions">
+          <label>矩阵差异化策略</label>
+          <div class="matrix-presets">
+            <div class="matrix-preset active" data-strategy="all">全维度差异</div>
+            <div class="matrix-preset" data-strategy="hook">仅换钩子开头</div>
+            <div class="matrix-preset" data-strategy="persona">仅换人设角度</div>
+            <div class="matrix-preset" data-strategy="scene">仅换使用场景</div>
+            <div class="matrix-preset" data-strategy="cta">仅换结尾CTA</div>
+          </div>
+          <p style="font-size: 12px; color: var(--text2); margin-top: 6px;">
+            全维度 = 钩子+人设+场景+CTA全部变化，最大化差异化
+          </p>
+        </div>
+
+        <!-- 自有素材上传 -->
+        <div class="form-group">
+          <label>自有素材（可选，用于混剪增强真实感）</label>
+          <div class="upload-zone" id="materialUploadZone">
+            <div class="upload-icon">🎬</div>
+            <p>上传真人口播 / 产品实拍 / 效果对比等素材</p>
+            <p style="font-size: 12px; margin-top: 4px;">支持 MP4, MOV, JPG, PNG (可批量选择)</p>
+            <input type="file" id="materialInput" accept="video/*,image/*" multiple style="display:none" />
+          </div>
+        </div>
+
+        <!-- 高级选项开关 -->
+        <div class="form-group">
+          <label style="cursor:pointer;" onclick="toggleAdvanced()">
+            <span id="advancedToggle">▶ 高级选项（脚本/配音/音乐自定义）</span>
+          </label>
+          <div id="advancedPanel" style="display:none; margin-top:12px; padding:16px; background:#0a0a0f; border-radius:8px;">
+            <div class="form-group">
+              <label>自定义脚本风格</label>
+              <select id="scriptStyle">
+                <option value="auto">自动选择（推荐）</option>
+                <option value="emotional">情感共鸣型</option>
+                <option value="rational">理性种草型</option>
+                <option value="story">故事叙事型</option>
+                <option value="usp">痛点解决型</option>
+                <option value="comparison">对比评测型</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>配音音色</label>
+              <select id="voiceSelect">
+                <option value="auto">自动匹配</option>
+                <option value="female-young">女声-年轻活力</option>
+                <option value="female-warm">女声-温暖亲切</option>
+                <option value="male-young">男声-年轻阳光</option>
+                <option value="male-professional">男声-专业沉稳</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>背景音乐风格</label>
+              <select id="musicSelect">
+                <option value="auto">自动匹配</option>
+                <option value="upbeat">轻快动感</option>
+                <option value="emotional">温暖抒情</option>
+                <option value="trendy">潮流电子</option>
+                <option value="none">无背景音乐</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>字幕样式</label>
+              <select id="subtitleSelect">
+                <option value="auto">自动</option>
+                <option value="highlight">高亮关键词</option>
+                <option value="emoji">Emoji点缀</option>
+                <option value="minimal">极简文字</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 成本估算 -->
+        <div class="cost-estimate" id="costEstimate">
+          <div class="cost-row"><span>单条预估成本</span><span class="cost-value" id="singleCost">¥4-7</span></div>
+          <div class="cost-row"><span>矩阵总成本</span><span class="cost-value" id="totalCost">¥4-7</span></div>
+          <div class="cost-row"><span>API调用预估</span><span class="cost-value" id="apiEstimate">约 1 次</span></div>
+          <hr class="cost-divider" />
+          <div class="cost-row cost-total"><span>预计耗时</span><span class="cost-value" id="timeEstimate">2-5 分钟</span></div>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="btn-group">
+          <button class="btn" id="generateBtn" onclick="startGenerate()">
+            <span>🚀</span> 开始生成
+          </button>
+          <button class="btn btn-secondary" onclick="resetForm()">
+            <span>🔄</span> 重置
+          </button>
+        </div>
+      </div>
+
+      <!-- ===== 右侧：进度与结果面板 ===== -->
+      <div class="card">
+        <!-- 标签页切换 -->
+        <div class="tabs">
+          <div class="tab active" data-tab="progress" onclick="switchTab('progress')">生成进度</div>
+          <div class="tab" data-tab="results" onclick="switchTab('results')">结果预览</div>
+          <div class="tab" data-tab="evolution" onclick="switchTab('evolution')">进化日志</div>
+        </div>
+
+        <!-- 进度标签页 -->
+        <div class="tab-panel active" id="tab-progress">
+          <!-- 统计面板 -->
+          <div class="stats" id="statsPanel">
+            <div class="stat">
+              <div class="stat-value" id="statTotal">0</div>
+              <div class="stat-label">总任务</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value" id="statDone">0</div>
+              <div class="stat-label">已完成</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value" id="statQa">0</div>
+              <div class="stat-label">质检通过</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value" id="statEvolve">0</div>
+              <div class="stat-label">进化轮次</div>
+            </div>
+          </div>
+
+          <!-- 进度条 -->
+          <div class="progress">
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            <div class="progress-info">
+              <span id="progressText">等待开始...</span>
+              <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-steps">
+              <span id="step1">产品洞察</span>
+              <span id="step2">角度分析</span>
+              <span id="step3">故事板</span>
+              <span id="step4">视频生成</span>
+              <span id="step5">智能质检</span>
+              <span id="step6">SkillOpt进化</span>
+            </div>
+          </div>
+
+          <!-- 运行日志 -->
+          <div class="log" id="logPanel">
+            <div class="log-line">等待任务开始...</div>
+          </div>
+        </div>
+
+        <!-- 结果预览标签页 -->
+        <div class="tab-panel" id="tab-results">
+          <!-- 空状态 -->
+          <div class="empty-state" id="emptyResult">
+            <div class="empty-icon">🎬</div>
+            <p>生成结果将在此显示</p>
+            <p style="font-size: 12px; margin-top: 8px;">在左侧配置参数后点击"开始生成"</p>
+          </div>
+
+          <!-- 分镜预览 -->
+          <div id="storyboardPreview" style="display:none;">
+            <h3 style="color:var(--accent); margin-bottom:12px;">📋 分镜脚本</h3>
+            <div class="storyboard" id="storyboardGrid"></div>
+          </div>
+
+          <!-- 视频结果 -->
+          <div class="video-result" id="videoResult" style="display:none;">
+            <h3 style="color:var(--accent); margin-bottom:12px;">🎬 生成视频</h3>
+            <video id="resultVideo" controls poster=""></video>
+            <div style="margin-top:12px;">
+              <a class="btn btn-secondary" id="downloadBtn">⬇ 下载视频</a>
+              <button class="btn btn-secondary" onclick="startMatrix()">🔀 生成矩阵变体</button>
+            </div>
+          </div>
+
+          <!-- 矩阵批量结果 -->
+          <div id="matrixResults" style="display:none;">
+            <h3 style="color:var(--accent); margin:20px 0 12px;">📦 矩阵批量结果</h3>
+            <div class="video-grid" id="matrixVideoGrid"></div>
+          </div>
+        </div>
+
+        <!-- 进化日志标签页 -->
+        <div class="tab-panel" id="tab-evolution">
+          <div class="empty-state" id="emptyEvolution">
+            <div class="empty-icon">🧬</div>
+            <p>SkillOpt 自进化日志</p>
+            <p style="font-size: 12px; margin-top: 8px;">进化数据将在生成过程中自动记录</p>
+          </div>
+          <div class="log" id="evolutionLog" style="display:none;"></div>
+        </div>
+      </div>
     </div>
   </div>
-</section>
 
-<section>
-  <div class="wrap">
-    <div class="hl">
-      <div class="hi reveal"><div class="e">A</div><div class="t">智能拼接</div><div class="d">多段无缝衔接</div></div>
-      <div class="hi reveal"><div class="e">B</div><div class="t">自进化</div><div class="d">越用越聪明</div></div>
-      <div class="hi reveal"><div class="e">C</div><div class="t">本地配音</div><div class="d">离线 · 零云成本</div></div>
-      <div class="hi reveal"><div class="e">D</div><div class="t">开箱即用</div><div class="d">填 Key 就跑</div></div>
-    </div>
-  </div>
-</section>
+  <!-- ===== JavaScript 逻辑 ===== -->
+  <script>
+    // ==================== 全局状态 ====================
+    const AppState = {
+      currentJobId: null,
+      pollInterval: null,
+      uploadedImage: null,
+      uploadedMaterials: [],
+      activeStrategy: 'all',
+      isGenerating: false,
+      completedJobs: [],
+      evolutionData: []
+    };
 
-<footer>
-  <div class="wrap">
-    <div style="margin-bottom:12px"><a id="gh2" href="https://github.com/" target="_blank" rel="noopener">★ GitHub</a> · <a id="dlZip">📦 下载技能包</a> · <a id="docZong" target="_blank">📖 总纲</a> · <a id="docUse" target="_blank">📖 使用说明</a> · <span class="tg" id="tg"><span class="sw" id="sw"></span> 匿名改进数据</span></div>
-    视频工厂 · 双模式（纯前端 / 后端 SaaS）· universal-video-generator 引擎驱动
-  </div>
-</footer>
+    // ==================== DOM 引用 ====================
+    const $ = id => document.getElementById(id);
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
-<script src="https://unpkg.com/lenis@1.3.23/dist/lenis.min.js"></script>
-<script>
-/* ============ 功能逻辑（与后端契约一致，独立于动效，CDN 挂了也能用） ============ */
-(function(){
-  "use strict";
-  var $=function(id){return document.getElementById(id);};
-  var S={ mode:"ai", len:10, count:1, platform:"douyin", country:"CN", voiceOn:true, emotion:"neutral", backend:false, live:false, apiKey:"", kKey:"", gKey:"", telemetry:false, busy:false, media:[] };
-  var LANG={CN:"zh",US:"en",JP:"ja",KR:"ko",SEA:"en",EU:"en"};
-  var LABEL={ platform:{douyin:"抖音",kuaishou:"快手",xiaohongshu:"小红书",videohao:"视频号",tiktok:"TikTok",youtube:"YouTube Shorts"}, country:{CN:"中国",US:"美国",JP:"日本",KR:"韩国",SEA:"东南亚",EU:"欧洲"} };
-  var EMO={neutral:"中性",happy:"开心",serious:"严肃",gentle:"温柔",excited:"激动"};
-  var LAST=[];
+    // ==================== 文件上传处理 ====================
+    $('uploadZone').addEventListener('click', () => $('imageInput').click());
+    $('imageInput').addEventListener('change', handleImageUpload);
 
-  var API = (location.protocol==="file:") ? "http://localhost:8088" : "";  /* 部署到服务器时同源相对路径自动生效；本地 file:// 双击才指向 8088 */
-  (function(){ var z=$("dlZip"); if(z)z.href=API+"/skill.zip"; var a=$("docZong"); if(a)a.href=API+"/doc?f="+encodeURIComponent("MASTER/视频工厂-总纲.md"); var b=$("docUse"); if(b)b.href=API+"/doc?f="+encodeURIComponent("使用说明.md"); })();
-  (function connect(){
-    fetch(API+"/api/config",{cache:"no-store"}).then(function(r){return r.ok?r.json():Promise.reject();}).then(function(cfg){
-      S.backend=true; S.live=!!cfg.live; $("badge").innerHTML="模式 · <b>"+(cfg.live?"实时·接丽帧":"后端 SaaS")+"</b>"; hideErr();
-      if(cfg.needUserKey){$("keyhint").classList.add("show");}else{$("keyhint").classList.remove("show");}
-      S.kKey=localStorage.getItem("vf_kkey")||""; S.gKey=localStorage.getItem("vf_gkey")||""; if($("apiKey"))$("apiKey").value=S.kKey; if($("imgKey"))$("imgKey").value=S.gKey;
-      if(cfg.github){ $("gh").href=cfg.github; $("gh2").href=cfg.github; }
-    }).catch(function(){ S.backend=false; $("badge").innerHTML="模式 · <b>未连接</b>";
-      showErr("服务未启动：请双击项目里的 start-video-factory.bat（黑色窗口保持打开），本页将自动连接…");
-      setTimeout(connect,2500); });
-  })();
-  $("apiKey").addEventListener("input",function(e){ S.kKey=e.target.value.trim(); localStorage.setItem("vf_kkey",S.kKey); });
-  if($("imgKey"))$("imgKey").addEventListener("input",function(e){ S.gKey=e.target.value.trim(); localStorage.setItem("vf_gkey",S.gKey); });
+    // 拖拽上传支持
+    const dropZone = $('uploadZone');
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = 'var(--accent)'; });
+    dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = ''; });
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.style.borderColor = '';
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        handleImageFile(file);
+      } else {
+        showToast('请上传图片文件', 'error');
+      }
+    });
 
-  // 模式切换（上传按钮始终可见，不再随模式隐藏）
-  document.querySelectorAll("#modepill button").forEach(function(b){ b.addEventListener("click",function(){
-    document.querySelectorAll("#modepill button").forEach(function(x){x.classList.remove("on");}); b.classList.add("on"); S.mode=b.dataset.v; }); });
+    $('materialUploadZone').addEventListener('click', () => $('materialInput').click());
+    $('materialInput').addEventListener('change', handleMaterialUpload);
 
-  // 上传图片/视频 → 顶部预览
-  $("fUp").addEventListener("change",function(e){ var files=e.target.files||[]; for(var i=0;i<files.length;i++) addMedia(files[i]); e.target.value=""; });
-  function addMedia(f){ if(!f) return; var url=URL.createObjectURL(f); var isVid=/^video\//.test(f.type||"");
-    var item={name:f.name,url:url,isVid:isVid,b64:""}; S.media.push(item);
-    if(!isVid){ var fr=new FileReader(); fr.onload=function(){ item.b64=fr.result; }; fr.readAsDataURL(f); }
-    var d=document.createElement("div"); d.className="pv";
-    d.innerHTML=(isVid?'<video src="'+url+'" muted playsinline></video>':'<img src="'+url+'" alt="">')+'<span class="tag">'+(isVid?'视频':'图片')+'</span><b title="移除">×</b>';
-    d.querySelector("b").addEventListener("click",function(){ var k=S.media.indexOf(item); if(k>=0)S.media.splice(k,1); d.remove(); if(!S.media.length)$("upBtn").classList.remove("has"); });
-    $("previews").appendChild(d); $("upBtn").classList.add("has");
-  }
+    // 素材拖拽上传
+    const matZone = $('materialUploadZone');
+    matZone.addEventListener('dragover', (e) => { e.preventDefault(); matZone.style.borderColor = 'var(--accent)'; });
+    matZone.addEventListener('dragleave', () => { matZone.style.borderColor = ''; });
+    matZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      matZone.style.borderColor = '';
+      const files = Array.from(e.dataTransfer.files).filter(f =>
+        f.type.startsWith('video/') || f.type.startsWith('image/')
+      );
+      if (files.length > 0) handleMaterialFiles(files);
+    });
 
-  // 下拉控件
-  document.querySelectorAll(".ctl").forEach(function(ctl){
-    var pill=ctl.querySelector(".pill"), menu=ctl.querySelector(".menu"), k=ctl.dataset.k;
-    pill.addEventListener("click",function(e){ e.stopPropagation(); var o=menu.classList.contains("open"); closeMenus(); if(!o) menu.classList.add("open"); });
-    menu.querySelectorAll("button").forEach(function(b){ b.addEventListener("click",function(e){ e.stopPropagation();
-      menu.querySelectorAll("button").forEach(function(x){x.classList.remove("sel");}); b.classList.add("sel"); pick(k,b.dataset.val); menu.classList.remove("open"); }); });
-  });
-  // 自定义数值输入（条数 / 秒数）
-  var cc=$("cust-count"); if(cc) cc.addEventListener("input",function(){ var n=Math.max(1,Math.min(20,Math.round(Number(this.value)||1))); S.count=n; $("v-count").textContent=n; document.querySelectorAll('[data-k=count] .menu>button').forEach(function(x){x.classList.remove("sel");}); });
-  var cl=$("cust-len"); if(cl) cl.addEventListener("input",function(){ var n=Math.max(4,Math.min(15,Math.round(Number(this.value)||10))); S.len=n; $("v-len").textContent=n+"s"; document.querySelectorAll('[data-k=len] .menu>button').forEach(function(x){x.classList.remove("sel");}); });
-  document.querySelectorAll(".menu .cust").forEach(function(c){ c.addEventListener("click",function(e){e.stopPropagation();}); });
-
-  document.addEventListener("click",closeMenus);
-  function closeMenus(){ document.querySelectorAll(".menu.open").forEach(function(m){m.classList.remove("open");}); }
-  function pick(k,val){
-    if(k==="len"){ S.len=Number(val); $("v-len").textContent=val+"s"; }
-    else if(k==="count"){ S.count=Number(val); $("v-count").textContent=val; }
-    else if(k==="platform"){ S.platform=val; $("v-platform").textContent=LABEL.platform[val]; }
-    else if(k==="country"){ S.country=val; $("v-country").textContent=LABEL.country[val]; }
-    else if(k==="voice"){ var p=val.split(":"); S.voiceOn=p[0]==="on"; S.emotion=p[1]||"neutral"; $("v-voice").textContent=S.voiceOn?("本地·"+(EMO[S.emotion]||"中性")):"关"; }
-  }
-
-  $("tg").addEventListener("click",function(){ S.telemetry=!S.telemetry; $("sw").classList.toggle("on",S.telemetry); localStorage.setItem("uvg_telemetry",S.telemetry?"on":"off"); });
-  if(localStorage.getItem("uvg_telemetry")==="on"){ S.telemetry=true; $("sw").classList.add("on"); }
-  $("toCreate").addEventListener("click",function(){ $("create").scrollIntoView({behavior:"smooth"}); setTimeout(function(){$("prompt").focus();},400); });
-
-  $("go").addEventListener("click",run); $("regen").addEventListener("click",run);
-  $("adj").addEventListener("click",function(){ $("result").classList.add("hidden"); $("prompt").focus(); });
-  function run(){
-    if(S.busy)return; var prompt=$("prompt").value.trim();
-    if(!prompt && !S.media.length){ showErr("请输入描述，或上传一张产品图（可免描述，AI 自动写带货脚本）"); return; }
-    if(!S.backend){ showErr("服务未连接：请先双击 start-video-factory.bat 启动服务，再试"); return; }
-    hideErr(); S.busy=true; $("go").disabled=true; $("result").classList.add("hidden");
-    renderSteps(S.count); var t0=Date.now();
-    (S.backend?viaBackend(prompt):simulate(S.count)).then(function(out){ done(out,Date.now()-t0); }).catch(function(e){ showErr(String(e&&e.message||e)); reset(); });
-  }
-  function viaBackend(prompt){
-    var img=null,prod=""; for(var i=0;i<S.media.length;i++){ if(!prod) prod=S.media[i].name.replace(/\.[^.]+$/,""); if(!img&&!S.media[i].isVid&&S.media[i].b64) img=S.media[i].b64; }
-    return fetch(API+"/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({prompt:prompt,product:prod,imageB64:img,kuaiziKey:S.kKey,imageKey:S.gKey,mode:S.mode,durationSec:S.len,count:S.count,platform:S.platform,country:S.country,language:LANG[S.country]||"zh",voiceOn:S.voiceOn,emotion:S.emotion,voiceText:prompt})})
-      .then(function(r){return r.json();}).then(function(j){ if(j.error)throw new Error(j.error.message||j.error); return poll(j.jobId); });
-  }
-  function poll(id){ return new Promise(function(res,rej){ var n=0; (function tk(){
-    fetch(API+"/api/jobs/"+id).then(function(r){return r.json();}).then(function(j){
-      renderProgress(j);
-      if(j.state==="succeeded"){ res(j); }
-      else if(j.state==="failed") rej(new Error(j.error||"生成失败"));
-      else if(n++>400) rej(new Error("超时")); else setTimeout(tk,2000);
-    }).catch(rej); })(); }); }
-  function esc(t){ return String(t||"").replace(/[<>&]/g,function(c){return c==="<"?"&lt;":c===">"?"&gt;":"&amp;";}); }
-  function renderProgress(j){
-    var h='<div style="font-size:14px;color:var(--ac);font-weight:600;margin-bottom:10px">'+esc(j.phase||"处理中…")+'</div>';
-    if(j.insight){ var ins=j.insight;
-      var col=function(t,arr){ return '<div><div style="font-size:11.5px;color:var(--mut2);font-weight:700;margin:2px 0 3px">'+t+'</div>'+(arr||[]).map(function(x,k){return '<div style="font-size:12px;color:var(--fg,#e6e9f0);line-height:1.6">'+(k+1)+'. '+esc(x)+'</div>';}).join('')+'</div>'; };
-      h+='<div style="border:1px solid var(--line,#2a2f3a);border-radius:14px;padding:12px 14px;margin:0 0 12px;background:rgba(127,224,80,.04)"><div style="font-size:13px;font-weight:700;color:var(--ac);margin-bottom:8px">第一张故事板 · 产品洞察：'+esc(ins.name||"")+'</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 16px">'+col("5 产品特性",ins.features)+col("5 核心卖点",ins.sellingPoints)+col("5 目标人群",ins.audiences)+col("5 使用场景",ins.scenarios)+'</div></div>';
+    /**
+     * 处理产品图片上传
+     */
+    function handleImageUpload(e) {
+      const file = e.target.files[0];
+      if (file) handleImageFile(file);
     }
-    if(j.refs&&(j.refs.product||j.refs.character)){
-      h+='<div class="refbar" style="justify-content:flex-start;margin:0 0 12px">'+(j.refs.product?'<img title="产品三视图" src="'+j.refs.product+'">':'')+(j.refs.character?'<img title="人物三视图" src="'+j.refs.character+'">':'')+'<span style="font-size:11.5px;color:var(--mut2);align-self:center">已锁定 人物/产品（三视图）</span></div>';
+
+    function handleImageFile(file) {
+      if (file.size > 10 * 1024 * 1024) {
+        showToast('图片大小不能超过 10MB', 'error');
+        return;
+      }
+      AppState.uploadedImage = file;
+      const zone = $('uploadZone');
+      zone.classList.add('has-files');
+      zone.innerHTML = `<div class="upload-icon">✅</div><p>已选择: ${file.name}</p><p style="font-size:12px;">${(file.size/1024/1024).toFixed(2)} MB</p>`;
+      log(`产品图片已上传: ${file.name}`, 'success');
     }
-    var shots=(j.segments||[]).filter(function(s){return s.video===0;});
-    if(shots.length){
-      h+='<div style="font-size:12px;color:var(--mut2);margin:4px 0 6px">分镜故事板 · '+shots.length+' 镜</div>';
-      shots.forEach(function(s,i){
-        var ic=s.state==="succeeded"?'<span style="color:var(--ac)">✓</span>':(s.state==="failed"?'<span style="color:#ff6a2c">✗</span>':'<span class="spin">◌</span>');
-        var tx=(j.storyboard&&j.storyboard[i])||s.scene||('镜 '+(i+1));
-        var sh=s.sheet?'<img class="sheet" src="'+s.sheet+'" title="分镜图">':'';
-        h+='<div class="shot"><span class="si">'+ic+'</span><span class="sn">镜'+(i+1)+'</span>'+sh+'<span class="stx">'+esc(tx)+'</span></div>';
+
+    /**
+     * 处理自有素材上传
+     */
+    function handleMaterialUpload(e) {
+      const files = Array.from(e.target.files);
+      if (files.length > 0) handleMaterialFiles(files);
+    }
+
+    function handleMaterialFiles(files) {
+      AppState.uploadedMaterials = files;
+      const zone = $('materialUploadZone');
+      zone.classList.add('has-files');
+      const totalSize = files.reduce((s, f) => s + f.size, 0);
+      zone.innerHTML = `<div class="upload-icon">✅</div><p>已选择 ${files.length} 个素材</p><p style="font-size:12px;">总大小: ${(totalSize/1024/1024).toFixed(1)} MB</p>`;
+      log(`素材已上传: ${files.length} 个文件`, 'success');
+    }
+
+    // ==================== 矩阵策略切换 ====================
+    document.querySelectorAll('.matrix-preset').forEach(el => {
+      el.addEventListener('click', () => {
+        document.querySelectorAll('.matrix-preset').forEach(e => e.classList.remove('active'));
+        el.classList.add('active');
+        AppState.activeStrategy = el.dataset.strategy;
+        log(`矩阵策略切换为: ${el.textContent}`);
       });
+    });
+
+    // ==================== 高级选项 ====================
+    let advancedOpen = false;
+    function toggleAdvanced() {
+      advancedOpen = !advancedOpen;
+      $('advancedPanel').style.display = advancedOpen ? 'block' : 'none';
+      $('advancedToggle').textContent = (advancedOpen ? '▼ ' : '▶ ') +
+        '高级选项（脚本/配音/音乐自定义）';
     }
-    $("steps").innerHTML=h;
-    var done=(j.segments||[]).filter(function(s){return s.state==="succeeded";}).length;
-    var tot=(j.segments||[]).length||1;
-    setBar(j.state==="succeeded"?1:Math.max(.06, done/(tot+0.6)));
-  }
-  function simulate(count){ return new Promise(function(res){ var i=0; (function nx(){
-    if(i<count){ setStep(i,"run"); setBar((i+.5)/(count+1)); setTimeout(function(){ setStep(i,"done"); i++; setBar(i/(count+1)); nx(); },560); }
-    else { setBar(1); res({demo:true}); } })(); }); }
 
-  function renderSteps(count){ $("progress").classList.remove("hidden"); $("steps").innerHTML='<div style="color:var(--mut);font-size:13px">准备中…</div>'; setBar(.04); }
-  function st(i,t){ return '<div class="step" id="st'+i+'"><span class="d"></span><span>'+t+'</span></div>'; }
-  function setStep(i,c){ var el=$("st"+i); if(el) el.className="step "+c; }
-  function setBar(p){ $("fill").style.width=Math.min(100,Math.round(p*100))+"%"; }
-  function allDone(){ document.querySelectorAll(".step").forEach(function(s){s.className="step done";}); setBar(1); }
-  function done(out,ms){ reset(); var f=$("vframe"); var urls=(out&&out.videoUrls)||(out&&out.videoUrl?[out.videoUrl]:[]); LAST=urls;
-    var rb=$("refbar"); if(rb){ var rf=out&&out.refs; rb.innerHTML=(rf&&(rf.product||rf.character))?('<span style="font-size:11.5px;color:var(--mut2)">锁定 ▸</span>'+(rf.product?'<img title="产品三视图" src="'+rf.product+'">':'')+(rf.character?'<img title="人物三视图" src="'+rf.character+'">':'')):""; }
-    if(urls.length){ f.className=""; f.innerHTML='<div class="vgrid">'+urls.map(function(u){return '<video src="'+u+'" controls playsinline></video>';}).join("")+'</div>'; }
-    else { f.className="vframe"; f.innerHTML='<div class="ph"><div class="e">●</div>成片就绪 · '+S.len+'s'+(S.count>1?(" ×"+S.count+"条"):"")+'<br><span style="color:var(--mut2)">'+(S.live?"已生成（无返回地址）":"demo 预览 · 接真实 Key 后此处可播放")+'</span></div>'; }
-    $("result").classList.remove("hidden");
-    if(S.telemetry&&S.backend){ try{ fetch(API+"/api/telemetry",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({events:[{type:"generate",mode:S.mode,durationSec:S.len,count:S.count,emotion:S.emotion,success:true,ms:ms}]})}); }catch(e){} } }
-  function reset(){ S.busy=false; $("go").disabled=false; }
-  function showErr(m){ $("err").textContent="⚠ "+m; $("err").classList.remove("hidden"); }
-  function hideErr(){ $("err").classList.add("hidden"); }
-  $("dl").addEventListener("click",function(){ if(!LAST.length){ showErr("还没有可下载的成片"); return; }
-    LAST.forEach(function(u,i){ var a=document.createElement("a"); a.href=u; a.download="video-"+(i+1)+".mp4"; a.target="_blank"; document.body.appendChild(a); a.click(); a.remove(); }); });
-})();
+    // ==================== 标签页切换 ====================
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
+      $(`tab-${tabName}`).classList.add('active');
+    }
 
-/* ============ 动效层（GSAP + Lenis，缺失则优雅跳过，不影响功能/可读性） ============ */
-(function(){
-  "use strict";
-  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion:reduce)").matches;
-  if(reduce || !window.gsap){ return; }
-  var gsap=window.gsap; if(window.ScrollTrigger) gsap.registerPlugin(window.ScrollTrigger);
+    // ==================== 成本估算 ====================
+    $('countSelect').addEventListener('change', updateCostEstimate);
+    $('durationSelect').addEventListener('change', updateCostEstimate);
 
-  // Lenis 平滑滚动
-  if(window.Lenis){ var lenis=new Lenis({lerp:.09,wheelMultiplier:1}); function raf(t){ lenis.raf(t); requestAnimationFrame(raf);} requestAnimationFrame(raf);
-    if(window.ScrollTrigger){ lenis.on("scroll",ScrollTrigger.update); } }
+    /**
+     * 根据当前配置更新成本估算
+     */
+    function updateCostEstimate() {
+      const count = parseInt($('countSelect').value);
+      const duration = parseInt($('durationSelect').value);
+      // 基础成本计算 (模拟)
+      const singleCost = duration <= 15 ? 2 : duration <= 30 ? 4 : 6;
+      const singleMax = singleCost + 3;
+      const totalMin = singleCost * count;
+      const totalMax = singleMax * count;
 
-  // 标题：行遮罩入场
-  try{
-    if(window.SplitText){ var sp=new SplitText("h1.hero",{type:"lines"});
-      gsap.from(sp.lines,{yPercent:120,duration:1.1,ease:"expo.out",stagger:.12,delay:.1}); }
-    else { gsap.from("h1.hero .row",{yPercent:120,duration:1.1,ease:"expo.out",stagger:.12,delay:.1}); }
-  }catch(e){}
+      $('singleCost').textContent = `¥${singleCost}-${singleMax}`;
+      $('totalCost').textContent = `¥${totalMin}-${totalMax}`;
+      $('apiEstimate').textContent = `约 ${count} 次 API 调用`;
 
-  // hero 其余元素
-  gsap.from(".eyebrow",{y:14,opacity:0,duration:.8,ease:"power3.out",delay:.05});
-  gsap.from(".lead, .cta",{y:22,opacity:0,duration:.9,ease:"power3.out",stagger:.1,delay:.5});
-  gsap.from(".composer",{y:34,opacity:0,duration:1,ease:"power3.out",delay:.7});
+      const timeMap = {
+        1: '2-5 分钟',
+        10: '8-15 分钟',
+        50: '20-40 分钟',
+        100: '40-80 分钟',
+        200: '80-150 分钟'
+      };
+      $('timeEstimate').textContent = timeMap[count] || '未知';
+    }
 
-  // 滚动入场 + blur-in
-  if(window.ScrollTrigger){
-    gsap.utils.toArray(".reveal").forEach(function(el){
-      gsap.from(el,{scrollTrigger:{trigger:el,start:"top 86%"},y:42,opacity:0,filter:"blur(12px)",duration:1,ease:"power3.out"});
+    // ==================== 日志系统 ====================
+    /**
+     * 添加日志行
+     * @param {string} msg - 日志消息
+     * @param {string} type - 类型: info/success/error/warn
+     */
+    function log(msg, type = 'info') {
+      const panel = $('logPanel');
+      // 清除初始提示
+      if (panel.querySelector('.log-line')?.textContent === '等待任务开始...') {
+        panel.innerHTML = '';
+      }
+      const line = document.createElement('div');
+      line.className = `log-line ${type}`;
+      const time = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+      line.textContent = `[${time}] ${msg}`;
+      panel.appendChild(line);
+      panel.scrollTop = panel.scrollHeight;
+    }
+
+    /**
+     * 显示 Toast 提示
+     */
+    function showToast(msg, type = 'info') {
+      const existing = document.querySelector('.toast');
+      if (existing) existing.remove();
+
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.textContent = msg;
+      document.body.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.animation = 'slideIn 0.3s ease reverse';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    // ==================== 表单重置 ====================
+    function resetForm() {
+      $('productInput').value = '';
+      $('imageInput').value = '';
+      $('materialInput').value = '';
+      $('platformSelect').selectedIndex = 0;
+      $('durationSelect').selectedIndex = 1;
+      $('countSelect').selectedIndex = 0;
+      document.querySelectorAll('.matrix-preset').forEach(e => e.classList.remove('active'));
+      document.querySelector('.matrix-preset[data-strategy="all"]').classList.add('active');
+
+      // 重置上传区
+      AppState.uploadedImage = null;
+      AppState.uploadedMaterials = [];
+      $('uploadZone').classList.remove('has-files');
+      $('uploadZone').innerHTML = `<div class="upload-icon">📷</div><p>点击上传产品图，或拖拽到此处</p><p style="font-size:12px;margin-top:4px;">支持 JPG, PNG (最大 10MB)</p><input type="file" id="imageInput" accept="image/*" style="display:none" />`;
+      $('uploadZone').addEventListener('click', () => $('imageInput').click());
+      $('imageInput').addEventListener('change', handleImageUpload);
+
+      $('materialUploadZone').classList.remove('has-files');
+      $('materialUploadZone').innerHTML = `<div class="upload-icon">🎬</div><p>上传真人口播 / 产品实拍 / 效果对比等素材</p><p style="font-size:12px;margin-top:4px;">支持 MP4, MOV, JPG, PNG (可批量选择)</p><input type="file" id="materialInput" accept="video/*,image/*" multiple style="display:none" />`;
+      $('materialUploadZone').addEventListener('click', () => $('materialInput').click());
+      $('materialInput').addEventListener('change', handleMaterialUpload);
+
+      updateCostEstimate();
+      log('表单已重置');
+    }
+
+    // ==================== 核心生成逻辑 ====================
+    /**
+     * 启动视频生成任务
+     */
+    async function startGenerate() {
+      const product = $('productInput').value.trim();
+      const platform = $('platformSelect').value;
+      const duration = parseInt($('durationSelect').value);
+      const count = parseInt($('countSelect').value);
+
+      if (!product && !AppState.uploadedImage) {
+        showToast('请输入产品名称或上传产品图片', 'error');
+        $('productInput').focus();
+        return;
+      }
+
+      // 防止重复提交
+      if (AppState.isGenerating) {
+        showToast('已有任务正在运行，请等待完成', 'warn');
+        return;
+      }
+
+      AppState.isGenerating = true;
+      $('generateBtn').disabled = true;
+      $('generateBtn').innerHTML = '<div class="spinner"></div> 生成中...';
+
+      // 重置UI状态
+      resetProgress();
+      log('===== 开始生成任务 =====');
+      log(`产品: ${product || '(仅图片)'} | 平台: ${platform} | 时长: ${duration}s | 数量: ${count}`);
+
+      // 构建 FormData 请求
+      const formData = new FormData();
+      formData.append('product', product);
+      formData.append('platform', platform);
+      formData.append('durationSec', duration);
+      formData.append('count', count);
+      formData.append('strategy', AppState.activeStrategy);
+
+      // 高级选项
+      formData.append('scriptStyle', $('scriptStyle')?.value || 'auto');
+      formData.append('voiceType', $('voiceSelect')?.value || 'auto');
+      formData.append('musicStyle', $('musicSelect')?.value || 'auto');
+      formData.append('subtitleStyle', $('subtitleSelect')?.value || 'auto');
+
+      if (AppState.uploadedImage) formData.append('image', AppState.uploadedImage);
+      AppState.uploadedMaterials.forEach((f, i) => formData.append(`material_${i}`, f));
+
+      try {
+        log('正在发送请求到后端服务...');
+        const response = await fetch('/api/generate', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          const errText = await response.text();
+          throw new Error(`HTTP ${response.status}: ${errText}`);
+        }
+
+        const data = await response.json();
+        if (data.jobId) {
+          AppState.currentJobId = data.jobId;
+          log(`任务已创建: ${data.jobId}`, 'success');
+          $('statTotal').textContent = count;
+          pollJobStatus(data.jobId);
+        } else {
+          throw new Error('响应中没有 jobId');
+        }
+      } catch (e) {
+        log(`请求失败: ${e.message}`, 'error');
+        log('提示: 请确保后端服务已启动 (node live-server.js)', 'warn');
+        // 演示模式: 模拟进度
+        log('进入演示模式 (3秒模拟)...', 'warn');
+        simulateDemoProgress();
+      }
+    }
+
+    /**
+     * 重置进度条UI
+     */
+    function resetProgress() {
+      $('progressFill').style.width = '0%';
+      $('progressText').textContent = '等待开始...';
+      $('progressPercent').textContent = '0%';
+      for (let i = 1; i <= 6; i++) {
+        $(`step${i}`).className = '';
+      }
+      $('statDone').textContent = '0';
+      $('statQa').textContent = '0';
+      $('statEvolve').textContent = '0';
+      $('logPanel').innerHTML = '';
+      $('emptyResult').style.display = 'block';
+      $('storyboardPreview').style.display = 'none';
+      $('videoResult').style.display = 'none';
+      $('matrixResults').style.display = 'none';
+    }
+
+    /**
+     * 演示模式: 模拟任务进度 (用于前端独立测试)
+     */
+    function simulateDemoProgress() {
+      const steps = [
+        { pct: 5, step: 0, msg: 'Agent蜂群启动，分配任务...' },
+        { pct: 15, step: 1, msg: '产品洞察完成: 便携榨汁杯，目标人群18-35岁女性', type: 'success' },
+        { pct: 25, step: 1, msg: '角度分析: 发现6个高转化角度', type: 'success' },
+        { pct: 35, step: 2, msg: '生成故事板: 5个镜头已设计', type: 'success' },
+        { pct: 45, step: 2, msg: '分镜渲染中...' },
+        { pct: 60, step: 3, msg: '视频生成中 (Agent 15/300 工作中)...' },
+        { pct: 75, step: 3, msg: '视频主体生成完成，添加字幕...' },
+        { pct: 85, step: 4, msg: '智能质检: 通过 (得分 92/100)', type: 'success' },
+        { pct: 95, step: 5, msg: 'SkillOpt进化: 本轮CTR提升 +12%', type: 'success' },
+        { pct: 100, step: 5, msg: '生成完成！', type: 'success' }
+      ];
+
+      let idx = 0;
+      const interval = setInterval(() => {
+        if (idx >= steps.length) {
+          clearInterval(interval);
+          finishDemo();
+          return;
+        }
+        const s = steps[idx];
+        $('progressFill').style.width = s.pct + '%';
+        $('progressText').textContent = s.msg;
+        $('progressPercent').textContent = s.pct + '%';
+        if (s.step >= 0) {
+          for (let i = 1; i <= 6; i++) {
+            $(`step${i}`).className = i <= s.step ? 'done' : i === s.step + 1 ? 'active' : '';
+          }
+        }
+        log(s.msg, s.type || 'info');
+        idx++;
+      }, 800);
+
+      AppState.pollInterval = interval;
+    }
+
+    /**
+     * 演示完成回调
+     */
+    function finishDemo() {
+      AppState.isGenerating = false;
+      $('generateBtn').disabled = false;
+      $('generateBtn').innerHTML = '<span>🚀</span> 开始生成';
+      $('statDone').textContent = '1';
+      $('statQa').textContent = '1';
+      $('statEvolve').textContent = '1';
+
+      // 显示模拟结果
+      showMockResults();
+      showToast('演示生成完成！', 'success');
+    }
+
+    /**
+     * 显示模拟分镜和视频结果
+     */
+    function showMockResults() {
+      $('emptyResult').style.display = 'none';
+      switchTab('results');
+
+      // 分镜预览
+      $('storyboardPreview').style.display = 'block';
+      const mockStoryboard = [
+        { scene: '特写: 疲惫的上班族看着外卖盒', time: '0-3', hook: '痛点共鸣' },
+        { scene: '产品出现: 便携榨汁杯旋转展示', time: '3-8', hook: '视觉冲击' },
+        { scene: '使用演示: 放入水果，30秒出汁', time: '8-18', hook: '功能展示' },
+        { scene: '效果对比: 喝果汁前后状态变化', time: '18-25', hook: '前后对比' },
+        { scene: 'CTA: 限时优惠+购买引导', time: '25-30', hook: '紧迫感' }
+      ];
+      $('storyboardGrid').innerHTML = mockStoryboard.map((shot, i) => `
+        <div class="shot-card">
+          <div class="shot-num">
+            <span>镜${i+1} | ${shot.time}s</span>
+            <span style="color:var(--accent3);">${shot.hook}</span>
+          </div>
+          <div class="shot-desc">${shot.scene}</div>
+        </div>
+      `).join('');
+
+      // 视频结果 (模拟)
+      $('videoResult').style.display = 'block';
+      $('resultVideo').poster = '';
+      // 视频源留空，在实际部署时填充真实URL
+    }
+
+    // ==================== 轮询任务状态 ====================
+    /**
+     * 轮询后端任务状态
+     * @param {string} jobId - 任务ID
+     */
+    async function pollJobStatus(jobId) {
+      const interval = setInterval(async () => {
+        try {
+          const res = await fetch(`/api/jobs/${jobId}`);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const job = await res.json();
+
+          updateJobUI(job);
+
+          if (job.state === 'succeeded' || job.state === 'completed') {
+            clearInterval(interval);
+            AppState.isGenerating = false;
+            $('generateBtn').disabled = false;
+            $('generateBtn').innerHTML = '<span>🚀</span> 开始生成';
+            log('✅ 生成完成！', 'success');
+            showToast('生成完成！', 'success');
+            if (job.storyboard || job.videoUrl) showResult(job);
+          } else if (job.state === 'failed') {
+            clearInterval(interval);
+            AppState.isGenerating = false;
+            $('generateBtn').disabled = false;
+            $('generateBtn').innerHTML = '<span>🚀</span> 开始生成';
+            log(`❌ 生成失败: ${job.error || '未知错误'}`, 'error');
+            showToast('生成失败: ' + (job.error || '未知错误'), 'error');
+          }
+        } catch (e) {
+          // 轮询失败不中断，继续尝试
+          log(`轮询异常: ${e.message}`, 'warn');
+        }
+      }, 2000);
+
+      AppState.pollInterval = interval;
+    }
+
+    /**
+     * 根据任务状态更新UI
+     */
+    function updateJobUI(job) {
+      const progress = job.progress || 0;
+      $('progressFill').style.width = progress + '%';
+      $('progressPercent').textContent = progress + '%';
+      $('progressText').textContent = job.statusText || job.state || '运行中...';
+
+      // 更新步骤高亮
+      const stepMap = { insight: 1, angle: 2, storyboard: 3, generate: 4, qa: 5, evolve: 6 };
+      const currentStep = stepMap[job.currentPhase] || Math.floor(progress / 17);
+      for (let i = 1; i <= 6; i++) {
+        $(`step${i}`).className = i < currentStep ? 'done' : i === currentStep ? 'active' : '';
+      }
+
+      // 更新统计
+      $('statTotal').textContent = job.totalTasks || $('statTotal').textContent;
+      $('statDone').textContent = job.completedTasks || 0;
+      $('statQa').textContent = job.qaPassed || 0;
+      $('statEvolve').textContent = job.evolveRounds || 0;
+
+      // 追加日志
+      if (job.log) log(job.log, job.logType || 'info');
+      if (job.evolutionLog) {
+        AppState.evolutionData.push(job.evolutionLog);
+        const evoPanel = $('evolutionLog');
+        evoPanel.style.display = 'block';
+        $('emptyEvolution').style.display = 'none';
+        const line = document.createElement('div');
+        line.className = 'log-line success';
+        line.textContent = `[${new Date().toLocaleTimeString()}] ${job.evolutionLog}`;
+        evoPanel.appendChild(line);
+      }
+    }
+
+    // ==================== 显示结果 ====================
+    /**
+     * 显示生成结果 (分镜+视频)
+     */
+    function showResult(job) {
+      $('emptyResult').style.display = 'none';
+      switchTab('results');
+
+      // 分镜预览
+      if (job.storyboard && job.storyboard.length > 0) {
+        $('storyboardPreview').style.display = 'block';
+        $('storyboardGrid').innerHTML = job.storyboard.map((shot, i) => `
+          <div class="shot-card">
+            <div class="shot-num">
+              <span>镜${i+1} | ${shot.time || ''}s</span>
+              ${shot.strategy ? `<span style="color:var(--accent3);">${shot.strategy}</span>` : ''}
+            </div>
+            <div class="shot-desc">${shot.scene || shot.description || shot}</div>
+            ${shot.imageUrl ? `<img src="${shot.imageUrl}" alt="分镜${i+1}" loading="lazy"/>` : ''}
+          </div>
+        `).join('');
+      }
+
+      // 视频结果
+      if (job.videoUrl) {
+        $('videoResult').style.display = 'block';
+        $('resultVideo').src = job.videoUrl;
+        $('downloadBtn').href = job.videoUrl;
+        $('downloadBtn').download = `video-factory-${AppState.currentJobId}.mp4`;
+      }
+
+      // 矩阵批量结果
+      if (job.videos && job.videos.length > 1) {
+        $('matrixResults').style.display = 'block';
+        $('matrixVideoGrid').innerHTML = job.videos.map((v, i) => `
+          <div class="video-item">
+            <video src="${v.url}" controls preload="metadata"></video>
+            <div class="video-info">
+              变体 #${i+1} | 策略: ${v.strategy || '默认'} | 质检: ${v.qaScore || 'N/A'}
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    // ==================== 矩阵模式 ====================
+    function startMatrix() {
+      log('启动矩阵变体生成模式...', 'info');
+      // 自动切换到10条模式并触发
+      $('countSelect').value = '10';
+      updateCostEstimate();
+      startGenerate();
+    }
+
+    // ==================== 键盘快捷键 ====================
+    document.addEventListener('keydown', (e) => {
+      // Ctrl/Cmd + Enter 快速生成
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        startGenerate();
+      }
     });
-    document.querySelectorAll(".grid .card").forEach(function(el,i){
-      gsap.from(el,{scrollTrigger:{trigger:el,start:"top 88%"},y:50,opacity:0,filter:"blur(14px)",duration:.9,delay:(i%2)*.08,ease:"power3.out"});
-    });
-  }
 
-  // marquee 无限滚动
-  var track=document.getElementById("track"); if(track){ gsap.to(track,{xPercent:-50,repeat:-1,duration:24,ease:"none"}); }
-
-  // 磁性按钮
-  document.querySelectorAll(".magnetic").forEach(function(el){
-    el.addEventListener("mousemove",function(e){ var r=el.getBoundingClientRect(); gsap.to(el,{x:(e.clientX-r.left-r.width/2)*.35,y:(e.clientY-r.top-r.height/2)*.45,duration:.4}); });
-    el.addEventListener("mouseleave",function(){ gsap.to(el,{x:0,y:0,duration:.6,ease:"elastic.out(1,.4)"}); });
-  });
-  // 卡片 3D 倾斜 + 光斑
-  document.querySelectorAll(".tilt").forEach(function(card){
-    card.addEventListener("mousemove",function(e){ var r=card.getBoundingClientRect(); var px=(e.clientX-r.left)/r.width-.5, py=(e.clientY-r.top)/r.height-.5;
-      card.style.setProperty("--mx",(e.clientX-r.left)+"px"); card.style.setProperty("--my",(e.clientY-r.top)+"px");
-      gsap.to(card,{rotateY:px*7,rotateX:-py*7,transformPerspective:900,duration:.4,ease:"power2.out"}); });
-    card.addEventListener("mouseleave",function(){ gsap.to(card,{rotateY:0,rotateX:0,duration:.6,ease:"power2.out"}); });
-  });
-})();
-</script>
-<script>
-/* 中英互译（上部切换） */
-(function(){
-  var $=function(id){return document.getElementById(id);};
-  var lang=localStorage.getItem("vf_lang")||"zh";
-  var L={
-    lead:{zh:"短视频矩阵 · 长视频拼接 · 真人素材 + AI 混剪。选好时长、条数、平台、国家，一键生成——越用越聪明。",en:"Short-video matrix · long-video stitching · real footage + AI. Pick duration, count, platform, country — one click, smarter every time."},
-    toCreate:{zh:"立即生成",en:"Start"},gh:{zh:"GitHub 开源",en:"GitHub"},go:{zh:"生成 →",en:"Generate →"},navWorks:{zh:"我的作品",en:"My Works"},
-    dl:{zh:"下载全部",en:"Download all"},regen:{zh:"重新生成",en:"Regenerate"},adj:{zh:"调参",en:"Tweak"},
-    dlZip:{zh:"📦 下载技能包",en:"📦 Download pack"},docZong:{zh:"📖 总纲",en:"📖 Guide"},docUse:{zh:"📖 使用说明",en:"📖 How-to"}
-  };
-  var heroL={zh:'<span class="row">一句话，</span><span class="row">生成<i>成片</i>。</span>',en:'<span class="row">One line,</span><span class="row">a <i>finished</i> ad.</span>'};
-  var modes={zh:["全 AI 生成","+ 我的素材"],en:["All-AI","+ My footage"]};
-  var pills={len:{zh:"时长 ",en:"Duration "},count:{zh:"条数 ",en:"Count "},platform:{zh:"平台 ",en:"Platform "},country:{zh:"国家 ",en:"Country "},voice:{zh:"配音 ",en:"Voice "}};
-  function st(id,o){var e=$(id);if(e&&o)e.textContent=o[lang];}
-  function setHero(){var h=document.querySelector("h1.hero");if(h)h.innerHTML=heroL[lang];}
-  function apply(){
-    var ld=document.querySelector(".lead");if(ld)ld.textContent=L.lead[lang];
-    st("toCreate",L.toCreate);st("gh",L.gh);st("go",L.go);st("navWorks",L.navWorks);st("dl",L.dl);st("regen",L.regen);st("adj",L.adj);st("dlZip",L.dlZip);st("docZong",L.docZong);st("docUse",L.docUse);
-    var mb=document.querySelectorAll("#modepill button");if(mb[0])mb[0].textContent=modes[lang][0];if(mb[1])mb[1].textContent=modes[lang][1];
-    document.querySelectorAll(".ctl").forEach(function(c){var k=c.dataset.k,p=c.querySelector(".pill");if(p&&pills[k]){var tn=p.firstChild;if(tn&&tn.nodeType===3)tn.nodeValue=pills[k][lang];}});
-    var ub=$("upBtn");if(ub){for(var i=0;i<ub.childNodes.length;i++){var n=ub.childNodes[i];if(n.nodeType===3&&n.nodeValue.trim())n.nodeValue=lang==="zh"?"上传素材":"Upload";}}
-    var pr=$("prompt");if(pr)pr.setAttribute("placeholder",lang==="zh"?"描述你想要的视频…或上传产品图，留空也能自动写带货脚本":"Describe your video… or upload a product image; leave blank to auto-write the sales script");
-    var z=$("langZh"),e=$("langEn");if(z&&e){z.style.background=lang==="zh"?"var(--ac)":"transparent";z.style.color=lang==="zh"?"#0A0A0B":"var(--mut)";e.style.background=lang==="en"?"var(--ac)":"transparent";e.style.color=lang==="en"?"#0A0A0B":"var(--mut)";}
-    document.documentElement.lang=lang==="zh"?"zh-CN":"en";
-  }
-  var z=$("langZh"),e=$("langEn");
-  if(z)z.onclick=function(){lang="zh";localStorage.setItem("vf_lang",lang);setHero();apply();};
-  if(e)e.onclick=function(){lang="en";localStorage.setItem("vf_lang",lang);setHero();apply();};
-  apply(); if(lang==="en"){ setHero(); setTimeout(setHero,1600); }
-})();
-</script>
+    // ==================== 初始化 ====================
+    updateCostEstimate();
+    log('VIDEO-FACTORY v3.0 已就绪');
+    log('提示: Ctrl+Enter 可快速开始生成');
+  </script>
 </body>
 </html>

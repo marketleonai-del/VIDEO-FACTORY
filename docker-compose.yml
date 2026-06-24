@@ -1,20 +1,178 @@
+# =============================================================================
+# VIDEO-FACTORY Docker Compose
+# 300-Agent Swarm Deployment Stack
+# =============================================================================
+
+version: '3.8'
+
 services:
-  uvg:
-    build: .
-    image: universal-video-generator:2.0.0
+  # ---------------------------------------------------------------------------
+  # Main VIDEO-FACTORY Service
+  # ---------------------------------------------------------------------------
+  video-factory:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vf-main
     ports:
-      - "8787:8787"
-    env_file:
-      - .env
-    environment:
-      - PORT=8787
+      - "8088:8088"
     volumes:
-      - uvg-data:/app/.uvg-data
+      # Environment configuration
+      - ./.env:/app/.env:ro
+      # Output directory (generated videos)
+      - ./.uvg-out:/app/.uvg-out
+      # Temporary working files
+      - ./temp:/app/temp
+      # Log persistence
+      - ./logs:/app/logs
+    environment:
+      - NODE_ENV=production
+      - UVG_TELEMETRY=on
+      - UVG_TELEMETRY_URL=http://hq:8089/telemetry
+      - UVG_PARAMS_URL=http://hq:8089/params/latest
+      - UVG_HQ_URL=http://hq:8089
+    depends_on:
+      hq:
+        condition: service_healthy
     restart: unless-stopped
+    networks:
+      - vf-network
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:8787/health"]
+      test: ["CMD", "curl", "-fsS", "http://localhost:8088/api/health"]
       interval: 30s
-      timeout: 3s
+      timeout: 10s
       retries: 3
+      start_period: 10s
+
+  # ---------------------------------------------------------------------------
+  # HQ (Headquarters) — Central Command for 300-Agent Swarm
+  # ---------------------------------------------------------------------------
+  hq:
+    build:
+      context: .
+      dockerfile: Dockerfile.hq
+    container_name: vf-hq
+    ports:
+      - "8089:8089"
+    volumes:
+      # HQ persistent data (params, telemetry, leaderboards)
+      - ./hq-data:/app/hq-data
+      # Shared logs
+      - ./logs:/app/logs
+    environment:
+      - NODE_ENV=production
+      - UVG_HQ_PORT=8089
+      - UVG_HQ_ADMIN_KEY=${UVG_HQ_ADMIN_KEY:-changeme}
+      - UVG_HQ_DATA_DIR=/app/hq-data
+    restart: unless-stopped
+    networks:
+      - vf-network
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8089/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  # ---------------------------------------------------------------------------
+  # Swarm Launcher — Manages 300-Agent lifecycle
+  # ---------------------------------------------------------------------------
+  swarm-launcher:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vf-swarm
+    command: ["node", "start-swarm.js", "--agents=300", "--hq=http://hq:8089"]
+    depends_on:
+      - hq
+      - video-factory
+    environment:
+      - UVG_HQ_URL=http://hq:8089
+      - UVG_SWARM_SIZE=300
+    volumes:
+      - ./.uvg-out:/app/.uvg-out
+      - ./temp:/app/temp
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - vf-network
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 8G
+
+  # ---------------------------------------------------------------------------
+  # TTS Server — Voice synthesis (optional)
+  # ---------------------------------------------------------------------------
+  tts-server:
+    build:
+      context: ./tts-server
+      dockerfile: Dockerfile
+    container_name: vf-tts
+    ports:
+      - "5000:5000"
+    environment:
+      - TTS_MODEL=edge
+      - TTS_DEFAULT_VOICE=zh-CN-XiaoxiaoNeural
+    restart: unless-stopped
+    networks:
+      - vf-network
+    profiles:
+      - tts
+
+  # ---------------------------------------------------------------------------
+  # Monitoring — Prometheus metrics (optional)
+  # ---------------------------------------------------------------------------
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: vf-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    restart: unless-stopped
+    networks:
+      - vf-network
+    profiles:
+      - monitoring
+
+  # ---------------------------------------------------------------------------
+  # Monitoring — Grafana dashboards (optional)
+  # ---------------------------------------------------------------------------
+  grafana:
+    image: grafana/grafana:latest
+    container_name: vf-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana-dashboards:/etc/grafana/provisioning/dashboards:ro
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRANA_ADMIN_PASSWORD:-admin}
+    restart: unless-stopped
+    networks:
+      - vf-network
+    profiles:
+      - monitoring
+
+# ---------------------------------------------------------------------------
+# Networks
+# ---------------------------------------------------------------------------
+networks:
+  vf-network:
+    driver: bridge
+    name: vf-network
+
+# ---------------------------------------------------------------------------
+# Volumes
+# ---------------------------------------------------------------------------
 volumes:
-  uvg-data:
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
