@@ -24,6 +24,17 @@ const LLM_MODEL = process.env.LLM_MODEL || "gpt-5.5";
 const AGNES_KEY = process.env.AGNES_API_KEY || "";
 const AGNES_BASE = process.env.AGNES_BASE_URL || "https://apihub.agnes-ai.com/v1";
 const AGNES_VIDEO_MODEL = process.env.AGNES_VIDEO_MODEL || "agnes-video-v2.0";
+// 文本模型：DeepSeek 主 + Kimi 备（网关 gpt-5.5 最终兜底）
+const DEEPSEEK_KEY = process.env.DEEPSEEK_API_KEY || "";
+const DEEPSEEK_BASE = process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com";
+const DEEPSEEK_MODEL = process.env.DEEPSEEK_MODEL || "deepseek-v4-pro";
+const KIMI_KEY = process.env.KIMI_API_KEY || "";
+const KIMI_BASE = process.env.KIMI_BASE_URL || "https://api.kimi.com/coding/v1";
+const KIMI_MODEL = process.env.KIMI_MODEL || "kimi-for-coding";
+const KIMI_UA = process.env.KIMI_UA || "claude-cli/1.0.0 (Claude Code)";
+// 视频后端：kuaizi(丽帧·首帧锁一致，优先) | agnes(文生兜底)；图片多模型容错
+const VIDEO_BACKEND = (process.env.VIDEO_BACKEND || "kuaizi").toLowerCase();
+const IMAGE_MODELS = (process.env.IMAGE_MODELS || "gpt-image-2pro,gpt-image-2,gpt-image-1,dall-e-3,seedream-3.0").split(",").map((s) => s.trim()).filter(Boolean);
 const PORT = Number(process.env.WEB_PORT || 8088);
 const PUBLIC = path.join(__dirname, "web", "public");
 const OUT = path.join(__dirname, ".uvg-out");
@@ -36,22 +47,109 @@ function reqJSON(base, pathname, headers, body) {
     const u = new URL(base + pathname);
     const r = https.request(u, { method: "POST", headers: Object.assign({ "Content-Type": "application/json", "Content-Length": data.length }, headers) },
       (rr) => { let b = ""; rr.on("data", (c) => (b += c)); rr.on("end", () => { try { resolve({ status: rr.statusCode, json: JSON.parse(b) }); } catch { resolve({ status: rr.statusCode, json: null, raw: b }); } }); });
-    r.on("error", reject); r.write(data); r.end();
+    r.setTimeout(Number(process.env.HTTP_TIMEOUT_MS || 40000), () => { r.destroy(); resolve({ status: 0, json: null, raw: "timeout" }); });
+    r.on("error", () => resolve({ status: 0, json: null, raw: "neterr" })); r.write(data); r.end();
   });
 }
 const kz = (p, body, key) => reqJSON(KZ_BASE, p, { "ApiKey": key || KEY }, body);
 const gw = (p, body, key) => reqJSON(GW_BASE, p, { "Authorization": "Bearer " + (key || GW_KEY) }, body);
 
+// 通用 OpenAI 兼容 chat（任意 base/key/model + 可选 UA）
+function oaiChat(base, key, model, messages, opts, ua) {
+  return new Promise((resolve) => {
+    const data = Buffer.from(JSON.stringify(Object.assign({ model, messages }, opts || {})));
+    const u = new URL(base.replace(/\/$/, "") + "/chat/completions");
+    const h = { "Content-Type": "application/json", "Authorization": "Bearer " + key, "Content-Length": data.length };
+    if (ua) h["User-Agent"] = ua;
+    const r = https.request(u, { method: "POST", headers: h }, (x) => { let s = ""; x.on("data", (c) => (s += c)); x.on("end", () => { try { resolve({ status: x.statusCode, json: JSON.parse(s) }); } catch { resolve({ status: x.statusCode, raw: s }); } }); });
+    r.setTimeout(60000, () => { r.destroy(); resolve({ status: 0, err: "timeout" }); });
+    r.on("error", (e) => resolve({ status: 0, err: e.message })); r.write(data); r.end();
+  });
+}
+function chatText(j) { try { const m = j.choices[0].message; return String(m.content || m.reasoning_content || "").trim(); } catch { return ""; } }
+// 纯文本生成：DeepSeek 主 → Kimi 备 → 网关 gpt-5.5 兜底
+async function llmText(system, user, gKey, opts) {
+  const messages = [{ role: "system", content: system }, { role: "user", content: user }];
+  if (DEEPSEEK_KEY) { const r = await oaiChat(DEEPSEEK_BASE, DEEPSEEK_KEY, DEEPSEEK_MODEL, messages, opts); const t = (r.status && r.status < 300) ? chatText(r.json || {}) : ""; if (t) return t; }
+  if (KIMI_KEY) { const r = await oaiChat(KIMI_BASE, KIMI_KEY, KIMI_MODEL, messages, opts, KIMI_UA); const t = (r.status && r.status < 300) ? chatText(r.json || {}) : ""; if (t) return t; }
+  const g = await gw("/v1/chat/completions", Object.assign({ model: LLM_MODEL, messages }, opts || {}), gKey); return chatText(g.json || {});
+}
+// 看图：网关 gpt-5.5（唯一确认可读图），返回描述文本；502/503 重试
+async function llmVision(prompt, imageUrl, gKey) {
+  for (let i = 0; i < 3; i++) { const g = await gw("/v1/chat/completions", { model: LLM_MODEL, messages: [{ role: "user", content: [{ type: "text", text: prompt }, { type: "image_url", image_url: { url: imageUrl } }] }], max_tokens: 400 }, gKey); const t = chatText(g.json || {}); if (t) return t; await new Promise((z) => setTimeout(z, 2500)); }
+  return "";
+}
+// 产品洞察：看图(可选) → 结构化 {name, features[5], sellingPoints[5], audiences[5], scenarios[5]}
+async function productInsight(topic, imageB64, gKey) {
+  let visual = "";
+  if (imageB64) visual = await llmVision("客观描述这张产品图：品类、外观(颜色/形状/材质/logo)、可见卖点线索。150字内。", imageB64, gKey);
+  const sys = "你是资深电商带货策划。基于产品信息做洞察，只输出一个 JSON 对象，键：name(产品名,字符串)、features(5条产品特性)、sellingPoints(5条核心卖点)、audiences(5类目标人群)、scenarios(5个使用场景)。每条简洁有力(不超过16字)。不要解释、不要多余文字、不要markdown。";
+  const user = "产品/主题：" + topic + (visual ? ("\n看图所得：" + visual) : "") + "\n请输出 name 以及每项各5条。";
+  const txt = await llmText(sys, user, gKey, { max_tokens: 900, temperature: 0.7 });
+  let obj = null; try { const m = String(txt).replace(/```json|```/g, "").match(/\{[\s\S]*\}/); obj = m ? JSON.parse(m[0]) : null; } catch { }
+  const a5 = (a, fb) => { a = Array.isArray(a) ? a.map((x) => String(x).trim()).filter(Boolean) : []; while (a.length < 5) a.push(fb + (a.length + 1)); return a.slice(0, 5); };
+  return { name: (obj && obj.name) || topic, features: a5(obj && obj.features, "特性"), sellingPoints: a5(obj && obj.sellingPoints, "卖点"), audiences: a5(obj && obj.audiences, "人群"), scenarios: a5(obj && obj.scenarios, "场景"), visual };
+}
+
+// ===== 丽帧（快子 Seedance）图生视频：首帧=分镜图 → 像素级锁人物/产品 =====
+async function kzCreate(scene, dur, firstFrame, refs, key) {
+  try {
+    const images = [];
+    if (firstFrame) images.push({ url: firstFrame, role: "first_frame" });
+    (refs || []).forEach((u) => { if (u && u !== firstFrame && images.length < 6) images.push({ url: u, role: "reference_image" }); });
+    const body = { prompt: scene, mode: "fast", resolution: "720p", ratio: "9:16", duration: Math.max(3, Math.min(10, Math.round(dur || 5))), generate_audio: true };
+    if (images.length) body.images = images;
+    const r = await kz("/ai-open-platform-api/v1/lz/video/task/create", body, key);
+    const j = r.json || {};
+    if (j.code === 0 && j.data && j.data.task_id) return { taskId: j.data.task_id };
+    const msg = j.message || (r.raw || "").slice(0, 140) || ("HTTP " + r.status);
+    return { error: msg };
+  } catch (e) { return { error: String((e && e.message) || e) }; }
+}
+async function kzPoll(taskId, key) {
+  try {
+    const r = await kz("/ai-open-platform-api/v1/lz/video/task/status", { task_id: taskId }, key);
+    const d = (r.json && r.json.data) || {};
+    if (d.status === "succeeded") return { done: true, url: d.video_url || "" };
+    if (d.status === "failed") return { done: true, failed: true, error: d.error || "failed" };
+    return { done: false };
+  } catch (e) { return { done: false }; }
+}
+// 逐镜出片：丽帧(首帧锁一致)优先 → 失败回退 Agnes(文生+一致性锁)
+async function genSeg(seg, lock, refUrls, kkey, akey) {
+  const firstFrame = seg.sheet || "";
+  if (VIDEO_BACKEND === "kuaizi" && (kkey || KEY)) {
+    const c = await kzCreate(lock + " 本镜：" + seg.scene, seg.dur, firstFrame, refUrls, kkey);
+    if (c.taskId) {
+      for (let p = 0; p < 100; p++) { await new Promise((r) => setTimeout(r, 5000)); const st = await kzPoll(c.taskId, kkey); if (st.done) return st.failed ? { ok: false, error: "丽帧:" + st.error } : { ok: true, url: st.url }; }
+      return { ok: false, error: "丽帧轮询超时" };
+    }
+    seg.note = "丽帧失败转Agnes：" + c.error;
+  }
+  if (akey || AGNES_KEY) {
+    for (let a = 0; a < 10; a++) { const c = await agnesCreate(lock + " 本镜画面：" + seg.scene, seg.dur, akey); if (c.taskId) { for (let p = 0; p < 90; p++) { await new Promise((r) => setTimeout(r, 8000)); const st = await agnesPoll(c.taskId, akey); if (st.done) return st.failed ? { ok: false, error: "Agnes:" + st.error } : { ok: true, url: st.url }; } return { ok: false, error: "Agnes轮询超时" }; } if (c.busy) { await new Promise((r) => setTimeout(r, 12000)); } else return { ok: false, error: "Agnes:" + c.error }; }
+    return { ok: false, error: "Agnes繁忙占满" };
+  }
+  return { ok: false, error: seg.note || "无可用视频后端" };
+}
+
 // 网关文生图 → 返回公网 URL（供丽帧作参考图，锁人物/产品一致）
 async function genImage(prompt, gKey, refs) {
   if (!(gKey || GW_KEY)) return "";
-  try {
-    const body = { model: process.env.IMAGE_MODEL_IMG || "gpt-image-2pro", prompt, size: "720x1280", n: 1, response_format: "b64_json" };
-    if (refs && refs.length) body.reference_images = refs.slice(0, 6); // 图生图：引用产品/人物参考图锁一致
-    const r = await gw("/v1/images/generations", body, gKey);
-    const it = (r.json && r.json.data && r.json.data[0]) || {};
-    return it.url || "";
-  } catch (e) { return ""; }
+  // 先试图生图(引用三视图锁一致)；该通道不可用时降级为文生图，至少产出可用首帧
+  const passes = (refs && refs.length) ? [refs.slice(0, 6), null] : [null];
+  for (const ref of passes) {
+    for (const model of IMAGE_MODELS) {
+      try {
+        const body = { model, prompt, size: "720x1280", n: 1 };
+        if (ref) body.reference_images = ref;
+        const r = await gw("/v1/images/generations", body, gKey);
+        const it = (r.json && r.json.data && r.json.data[0]) || {};
+        if (it.url) return it.url;
+      } catch (e) { /* 换下一个模型 */ }
+    }
+  }
+  return "";
 }
 
 // 作品持久化（关掉页面后也找得到）
@@ -124,19 +222,18 @@ function splitDurations(total) {
 }
 
 // 网关 LLM：为产品生成 n 个带货分镜（中文画面脚本）。失败则回退。
-async function llmScenes(topic, n, totalSec, imageB64, gKey) {
-  const sys = "你是短视频带货导演。只输出一个 JSON 数组（" + n + " 个中文字符串），每个元素是一个分镜的画面脚本（可直接喂给文生视频模型），递进体现：钩子→产品核心卖点→使用/效果→促单。不要解释，不要多余文字。";
-  const userText = "产品/主题：" + topic + "。总时长约 " + totalSec + " 秒，分 " + n + " 段。每段一句，画面感强、适合竖屏带货。";
-  const content = imageB64 ? [{ type: "text", text: userText }, { type: "image_url", image_url: { url: imageB64 } }] : userText;
-  try {
-    const r = await gw("/v1/chat/completions", { model: LLM_MODEL, messages: [{ role: "system", content: sys }, { role: "user", content }], max_tokens: 600, temperature: 0.8 }, gKey);
-    let txt = r.json && r.json.choices && r.json.choices[0] && r.json.choices[0].message && r.json.choices[0].message.content || "";
-    txt = String(txt).replace(/```json|```/g, "").trim();
-    const m = txt.match(/\[[\s\S]*\]/);
-    const arr = m ? JSON.parse(m[0]) : null;
-    if (Array.isArray(arr) && arr.length) { const out = arr.map((x) => String(x)).filter(Boolean); while (out.length < n) out.push(out[out.length - 1]); return out.slice(0, n); }
-  } catch (e) { /* fallback below */ }
-  const fb = []; for (let i = 0; i < n; i++) fb.push(topic + "，竖屏带货短视频，第" + (i + 1) + "/" + n + "镜，电影感运镜，明亮高级，突出卖点");
+async function llmScenes(insight, n, totalSec, gKey) {
+  const topic = insight.name || "产品";
+  const sys = "你是短视频带货导演。基于产品洞察，只输出一个 JSON 数组（" + n + " 个中文字符串），每个元素是一个分镜的画面脚本（可直接喂给文生视频模型），按 钩子→核心卖点→使用场景/效果→促单 递进，全程同一产品、同一主播。不要解释、不要markdown、不要多余文字。";
+  const user = "产品：" + topic
+    + "\n特性：" + insight.features.join("、")
+    + "\n卖点：" + insight.sellingPoints.join("、")
+    + "\n人群：" + insight.audiences.join("、")
+    + "\n场景：" + insight.scenarios.join("、")
+    + "\n总时长约 " + totalSec + " 秒，分 " + n + " 段，每段一句，画面感强、适合竖屏带货。";
+  const txt = await llmText(sys, user, gKey, { max_tokens: 700, temperature: 0.8 });
+  try { const m = String(txt).replace(/```json|```/g, "").match(/\[[\s\S]*\]/); const arr = m ? JSON.parse(m[0]) : null; if (Array.isArray(arr) && arr.length) { const out = arr.map((x) => String(x)).filter(Boolean); while (out.length < n) out.push(out[out.length - 1]); return out.slice(0, n); } } catch (e) { /* fallback */ }
+  const fb = []; for (let i = 0; i < n; i++) fb.push(topic + "，竖屏带货，第" + (i + 1) + "/" + n + "镜，突出「" + insight.sellingPoints[i % 5] + "」，电影感运镜，明亮高级");
   return fb;
 }
 
@@ -149,77 +246,69 @@ function createJob(input) {
   const N = durations.length;
   const ratio = "9:16";
   const topic = (input.prompt && input.prompt.trim()) || (input.product && input.product.trim()) || "产品";
-  const job = { id, state: "running", videos: [], error: undefined, topic: topic, built: false, phase: "准备中…", storyboard: [], kKey: (input.kuaiziKey || "").trim(), gKey: (input.imageKey || "").trim() };
+  const job = { id, state: "running", videos: [], error: undefined, topic: topic, built: false, phase: "准备中…", storyboard: [], insight: null, kKey: (input.kuaiziKey || "").trim(), gKey: (input.imageKey || "").trim(), aKey: (input.agnesKey || "").trim() };
   jobs[id] = job;
   void buildJob(job, input, count, durations, N, ratio, topic); // 后台跑：秒回 jobId
   return job;
 }
 
 async function buildJob(job, input, count, durations, N, ratio, topic) {
-  // ① 写分镜故事板脚本（按产品+时长自动匹配镜数）
-  job.phase = "① 写分镜故事板脚本";
+  // ① 产品洞察：看图 + 名称/5特性/5卖点/5人群/5场景（注入后续脚本）
+  job.phase = "① 产品洞察（看图 + 5×4 分析）";
+  const insight = await productInsight(topic, input.imageB64, job.gKey);
+  job.insight = insight;
+  const name = insight.name || topic;
+
+  // ② 写分镜故事板脚本（基于洞察，DeepSeek 主）
+  job.phase = "② 写分镜故事板脚本";
   let scenes;
   if (N === 1 && input.prompt && input.prompt.trim()) scenes = [input.prompt.trim()];
-  else scenes = await llmScenes(topic, N, Number(input.durationSec) || 5, input.imageB64, job.gKey);
+  else scenes = await llmScenes(insight, N, Number(input.durationSec) || 5, job.gKey);
   job.storyboard = scenes;
-  // 一致性锁：每个分镜视频提示词统一前置，死锁同一产品 + 同一主播，贯穿全片
-  const lock = "【一致性锁·全程严格保持不变】同一个" + topic + "：同颜色、同形状、同logo、同包装；同一位主播：同一张脸、同发型、同服装、同妆容；统一画面风格与光线。";
+  const lock = "【一致性锁·全程严格不变】同一个" + name + "：同颜色/形状/logo/包装；同一位主播：同脸/发型/服装/妆容；统一画面风格与光线。";
 
-  // ② 生成产品/人物参考图（锁一致），两张并发
-  job.phase = "② 生成参考图（锁产品/人物）";
+  // ③ 生成产品三视图 + 人物三视图（锁一致），两张并发
+  job.phase = "③ 生成产品三视图 + 人物三视图（锁一致）";
   let pRef = "", cRef = "";
   try {
     const rr = await Promise.all([
-      genImage("电商产品参考图：同一件【" + topic + "】，正面清晰展示，纯白背景，统一光照，高清产品摄影，无文字无水印", job.gKey),
-      genImage("带货主播人物参考图：同一张脸、同一发型、同一套服装，自然微笑，竖屏写真，纯色背景，高清，无文字", job.gKey),
+      genImage("产品三视图设计稿：同一件【" + name + "】的正视图、侧视图、背视图三视并排，纯白背景，统一光照，高清产品摄影，工业三视图风格，无文字水印", job.gKey),
+      genImage("人物三视图设计稿：同一位带货主播的正面、侧面、背面三视并排，全身，统一同脸/同发型/同服装/同妆容，纯色背景，高清写真，无文字水印", job.gKey),
     ]);
     pRef = rr[0] || ""; cRef = rr[1] || "";
-  } catch (e) { /* 无参考图则退回纯文生视频 */ }
+  } catch (e) { /* 无三视图则退回纯文生 */ }
   job.refs = { product: pRef, character: cRef };
-  const refOnly = [];
-  if (pRef) refOnly.push({ url: pRef, role: "reference_image" });
-  if (cRef) refOnly.push({ url: cRef, role: "reference_image" });
   const refUrls = [pRef, cRef].filter(Boolean);
 
-  // ③ 用 gpt-image-2 把每个分镜画成"分镜图"（引用产品+人物参考图保持一致），并发
-  job.phase = "③ 用 gpt-image-2 画分镜图";
+  // ④ 把每个分镜画成"分镜图"（引用三视图锁一致），并发
+  job.phase = "④ 画分镜关键帧（引用三视图锁一致）";
   job.sheets = new Array(N).fill("");
   const sheetUrls = await Promise.all(scenes.map(function (sc, i) {
-    return genImage("竖屏9:16分镜关键帧（第" + (i + 1) + "/" + N + "镜，电影感带货）：" + sc + "。务必保持与参考图完全相同的产品外观与人物（同脸/同发型/同服装），写实风格，无文字水印", job.gKey, refUrls)
+    return genImage("竖屏9:16分镜关键帧（第" + (i + 1) + "/" + N + "镜，电影感带货）：" + sc + "。务必与三视图完全相同的产品外观与主播（同脸/同发型/同服装），写实，无文字水印", job.gKey, refUrls)
       .then(function (u) { job.sheets[i] = u || ""; return u || ""; })
       .catch(function () { job.sheets[i] = ""; return ""; });
   }));
 
-  // ④ 逐镜出片：Agnes 视频（并发上限=1 → 串行：每镜 create → 轮询完成 → 下一镜）；分镜图作故事板展示
-  job.phase = "④ 逐镜生成视频（Agnes）";
+  // ⑤ 逐镜出片：丽帧(首帧=分镜图 → 像素级锁一致) → 失败回退 Agnes；串行
+  job.phase = "⑤ 逐镜出片（丽帧·首帧锁一致）";
   for (let v = 0; v < count; v++) {
-    job.videos.push({ segs: scenes.map((sc, k) => ({ state: "pending", dur: durations[k], scene: sc || topic, sheet: sheetUrls[k] || "" })), out: undefined, state: "running" });
+    job.videos.push({ segs: scenes.map((sc, k) => ({ state: "pending", dur: durations[k], scene: sc || name, sheet: sheetUrls[k] || "" })), out: undefined, state: "running" });
   }
   for (let vi = 0; vi < job.videos.length; vi++) {
     const vd = job.videos[vi];
     for (const seg of vd.segs) {
-      let created = false;
-      for (let a = 0; a < 12 && !created; a++) {
-        const c = await agnesCreate(lock + " 本镜画面：" + seg.scene, seg.dur, job.kKey);
-        if (c.taskId) { seg.taskId = c.taskId; seg.state = "running"; created = true; }
-        else if (c.busy) { await new Promise((r) => setTimeout(r, 12000)); }
-        else { seg.state = "failed"; seg.error = c.error; created = true; }
-      }
-      if (seg.state !== "running") { if (seg.state === "pending") { seg.state = "failed"; seg.error = "视频服务繁忙(并发占满)"; } continue; }
-      for (let p = 0; p < 90; p++) {
-        await new Promise((r) => setTimeout(r, 8000));
-        const st = await agnesPoll(seg.taskId, job.kKey);
-        if (st.done) { if (st.failed) { seg.state = "failed"; seg.error = st.error; } else { seg.state = "succeeded"; seg.url = st.url; } break; }
-      }
-      if (seg.state === "running") { seg.state = "failed"; seg.error = "轮询超时"; }
+      seg.state = "running";
+      const r = await genSeg(seg, lock, refUrls, job.kKey, job.aKey);
+      if (r.ok && r.url) { seg.state = "succeeded"; seg.url = r.url; }
+      else { seg.state = "failed"; seg.error = r.error; }
     }
     const okUrls = vd.segs.filter((s) => s.state === "succeeded" && s.url).map((s) => s.url);
     if (!okUrls.length) { vd.state = "failed"; vd.error = "全部分镜失败"; }
-    else { job.phase = "⑤ 拼接 + 竖屏成片"; vd.out = (await finalizeVideo(job.id, vi, okUrls)) || okUrls[0]; vd.state = "succeeded"; }
+    else { job.phase = "⑥ 拼接 + 竖屏成片"; vd.out = (await finalizeVideo(job.id, vi, okUrls)) || okUrls[0]; vd.state = "succeeded"; }
   }
   job.state = job.videos.some((vd) => vd.state === "succeeded") ? "succeeded" : "failed";
   job.phase = job.state === "succeeded" ? "✅ 完成" : "❌ 失败";
-  if (job.state === "succeeded" && !job.saved) { job.saved = true; saveWork({ id: job.id, ts: Date.now(), topic: job.topic, refs: job.refs, urls: job.videos.filter((vd) => vd.out).map((vd) => vd.out) }); }
+  if (job.state === "succeeded" && !job.saved) { job.saved = true; saveWork({ id: job.id, ts: Date.now(), topic: job.topic, insight: job.insight, refs: job.refs, urls: job.videos.filter((vd) => vd.out).map((vd) => vd.out) }); }
   job.built = true;
 }
 
@@ -274,13 +363,13 @@ const server = http.createServer(async (req, res) => {
   try {
     const u = new URL(req.url || "/", "http://localhost");
     const p = u.pathname;
-    if (req.method === "GET" && p === "/api/config") return send(200, { backend: true, live: true, hasKey: !!KEY, autoScript: !!GW_KEY, serverHasKey: !!KEY, needUserKey: !KEY, github: process.env.UVG_GITHUB || "https://github.com/marketleonai-del/VIDEO-FACTORY" });
+    if (req.method === "GET" && p === "/api/config") return send(200, { backend: true, live: true, hasKey: !!(KEY || AGNES_KEY), autoScript: !!(DEEPSEEK_KEY || GW_KEY), serverHasKey: !!(KEY || AGNES_KEY), needUserKey: !(KEY || AGNES_KEY), videoBackend: VIDEO_BACKEND, textModel: DEEPSEEK_KEY ? DEEPSEEK_MODEL : LLM_MODEL, github: process.env.UVG_GITHUB || "https://github.com/marketleonai-del/VIDEO-FACTORY" });
     if (req.method === "POST" && p === "/api/generate") {
       let body = ""; req.on("data", (c) => (body += c)); await new Promise((r) => req.on("end", r));
       const input = JSON.parse(body || "{}");
       const hasTopic = (input.prompt && input.prompt.trim()) || (input.product && input.product.trim()) || input.imageB64;
       if (!hasTopic) return send(400, { error: { message: "请输入描述，或上传一张产品图（可免描述自动写脚本）" } });
-      if (!((input.kuaiziKey && input.kuaiziKey.trim()) || KEY)) return send(400, { error: { message: "请先在页面右上角填写你自己的丽帧 API Key（kz-…）" } });
+      if (!((input.kuaiziKey && input.kuaiziKey.trim()) || KEY || AGNES_KEY)) return send(400, { error: { message: "请先在页面右上角填写你自己的丽帧 API Key（kz-…），或在服务端配置 AGNES_API_KEY" } });
       const job = createJob(input);
       return send(202, { jobId: job.id });
     }
@@ -297,7 +386,7 @@ const server = http.createServer(async (req, res) => {
       const segments = []; let gi = 0;
       job.videos.forEach((vd, vidx) => vd.segs.forEach((s) => segments.push({ index: gi++, video: vidx, state: s.state === "succeeded" ? "succeeded" : (s.state === "failed" ? "failed" : "running"), scene: s.scene || "", sheet: s.sheet || "" })));
       const urls = job.videos.filter((vd) => vd.state === "succeeded" && vd.out).map((vd) => /^https?:/.test(vd.out) ? vd.out : ("http://" + (req.headers.host || ("localhost:" + PORT)) + vd.out));
-      return send(200, { state: job.state, phase: job.phase, storyboard: job.storyboard || [], segments, stitch: job.state === "succeeded" ? "succeeded" : "running", videoUrl: urls[0], videoUrls: urls, refs: job.refs, error: job.error });
+      return send(200, { state: job.state, phase: job.phase, storyboard: job.storyboard || [], segments, stitch: job.state === "succeeded" ? "succeeded" : "running", videoUrl: urls[0], videoUrls: urls, refs: job.refs, insight: job.insight || null, error: job.error });
     }
     // 技能包下载
     if (p === "/skill.zip") {
