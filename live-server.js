@@ -34,7 +34,7 @@ const KIMI_MODEL = process.env.KIMI_MODEL || "kimi-for-coding";
 const KIMI_UA = process.env.KIMI_UA || "claude-cli/1.0.0 (Claude Code)";
 // 视频后端：kuaizi(丽帧·首帧锁一致，优先) | agnes(文生兜底)；图片多模型容错
 const VIDEO_BACKEND = (process.env.VIDEO_BACKEND || "kuaizi").toLowerCase();
-const IMAGE_MODELS = (process.env.IMAGE_MODELS || "sd-2,sd-2-fast,gpt-image-2,sd-2-vip-720").split(",").map((s) => s.trim()).filter(Boolean);
+const IMAGE_MODELS = (process.env.IMAGE_MODELS || "gpt-image-2,sd-2-vip,sd-2-vip-720").split(",").map((s) => s.trim()).filter(Boolean);
 const PORT = Number(process.env.WEB_PORT || 8088);
 const PUBLIC = path.join(__dirname, "web", "public");
 const OUT = path.join(__dirname, ".uvg-out");
@@ -47,7 +47,7 @@ function reqJSON(base, pathname, headers, body) {
     const u = new URL(base + pathname);
     const r = https.request(u, { method: "POST", headers: Object.assign({ "Content-Type": "application/json", "Content-Length": data.length }, headers) },
       (rr) => { let b = ""; rr.on("data", (c) => (b += c)); rr.on("end", () => { try { resolve({ status: rr.statusCode, json: JSON.parse(b) }); } catch { resolve({ status: rr.statusCode, json: null, raw: b }); } }); });
-    r.setTimeout(Number(process.env.HTTP_TIMEOUT_MS || 40000), () => { r.destroy(); resolve({ status: 0, json: null, raw: "timeout" }); });
+    r.setTimeout(Number(process.env.HTTP_TIMEOUT_MS || 120000), () => { r.destroy(); resolve({ status: 0, json: null, raw: "timeout" }); });
     r.on("error", () => resolve({ status: 0, json: null, raw: "neterr" })); r.write(data); r.end();
   });
 }
@@ -117,10 +117,11 @@ async function kzPoll(taskId, key) {
 }
 // 逐镜出片：丽帧(首帧锁一致)优先 → 失败回退 Agnes(文生+一致性锁)
 async function genSeg(seg, lock, refUrls, kkey, akey, productImg) {
-  // 首帧优先级：AI 分镜图 → 用户上传的真实产品图（绕开掉线的图片网关，锁真实产品）
-  const firstFrame = seg.sheet || productImg || "";
+  // 首帧优先级：用户上传的真实产品图（最稳锁真实产品）→ 退而求其次用 AI 分镜图
+  const firstFrame = productImg || seg.sheet || "";
   if (VIDEO_BACKEND === "kuaizi" && (kkey || KEY)) {
-    const c = await kzCreate(lock + " 本镜：" + seg.scene, seg.dur, firstFrame, refUrls, kkey);
+    // 丽帧：首帧=真实产品图即锁；多张参考图易触发失败，保持精简（只给首帧）
+    const c = await kzCreate(lock + " 本镜：" + seg.scene, seg.dur, firstFrame, [], kkey);
     if (c.taskId) {
       for (let p = 0; p < 100; p++) { await new Promise((r) => setTimeout(r, 5000)); const st = await kzPoll(c.taskId, kkey); if (st.done) return st.failed ? { ok: false, error: "丽帧:" + st.error } : { ok: true, url: st.url }; }
       return { ok: false, error: "丽帧轮询超时" };
@@ -259,6 +260,7 @@ async function buildJob(job, input, count, durations, N, ratio, topic) {
   const insight = await productInsight(topic, input.imageB64, job.gKey);
   job.insight = insight;
   const name = insight.name || topic;
+  job.productImg = (input.imageB64 || "").trim(); // 用户上传的真实产品图：贯穿当参考图/首帧，锁真实产品
 
   // ② 写分镜故事板脚本（基于洞察，DeepSeek 主）
   job.phase = "② 写分镜故事板脚本";
@@ -273,14 +275,13 @@ async function buildJob(job, input, count, durations, N, ratio, topic) {
   let pRef = "", cRef = "";
   try {
     const rr = await Promise.all([
-      genImage("产品三视图设计稿：同一件【" + name + "】的正视图、侧视图、背视图三视并排，纯白背景，统一光照，高清产品摄影，工业三视图风格，无文字水印", job.gKey),
+      genImage("产品三视图设计稿：同一件【" + name + "】的正视图、侧视图、背视图三视并排，纯白背景，统一光照，高清产品摄影，无文字水印", job.gKey),
       genImage("人物三视图设计稿：同一位带货主播的正面、侧面、背面三视并排，全身，统一同脸/同发型/同服装/同妆容，纯色背景，高清写真，无文字水印", job.gKey),
     ]);
     pRef = rr[0] || ""; cRef = rr[1] || "";
   } catch (e) { /* 无三视图则退回纯文生 */ }
   job.refs = { product: pRef, character: cRef };
-  job.productImg = (input.imageB64 || "").trim(); // 用户上传的真实产品图：当首帧/参考，锁真实产品
-  const refUrls = [pRef, cRef, job.productImg].filter(Boolean);
+  const refUrls = [pRef, cRef].filter(Boolean); // 仅 http 三视图给网关图生图（网关不收 dataURI；上传图只走丽帧）
 
   // ④ 把每个分镜画成"分镜图"（引用三视图锁一致），并发
   job.phase = "④ 画分镜关键帧（引用三视图锁一致）";
@@ -309,6 +310,7 @@ async function buildJob(job, input, count, durations, N, ratio, topic) {
     else { job.phase = "⑥ 拼接 + 竖屏成片"; vd.out = (await finalizeVideo(job.id, vi, okUrls)) || okUrls[0]; vd.state = "succeeded"; }
   }
   job.state = job.videos.some((vd) => vd.state === "succeeded") ? "succeeded" : "failed";
+  if (job.state === "failed") job.error = job.videos.map((vd) => vd.error).filter(Boolean)[0] || ((job.videos[0] && (job.videos[0].segs.find((s) => s.error) || {}).error)) || "生成失败";
   job.phase = job.state === "succeeded" ? "✅ 完成" : "❌ 失败";
   if (job.state === "succeeded" && !job.saved) { job.saved = true; saveWork({ id: job.id, ts: Date.now(), topic: job.topic, insight: job.insight, refs: job.refs, urls: job.videos.filter((vd) => vd.out).map((vd) => vd.out) }); }
   job.built = true;
