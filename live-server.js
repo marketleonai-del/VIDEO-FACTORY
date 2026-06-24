@@ -34,7 +34,7 @@ const KIMI_MODEL = process.env.KIMI_MODEL || "kimi-for-coding";
 const KIMI_UA = process.env.KIMI_UA || "claude-cli/1.0.0 (Claude Code)";
 // 视频后端：kuaizi(丽帧·首帧锁一致，优先) | agnes(文生兜底)；图片多模型容错
 const VIDEO_BACKEND = (process.env.VIDEO_BACKEND || "kuaizi").toLowerCase();
-const IMAGE_MODELS = (process.env.IMAGE_MODELS || "gpt-image-2pro,gpt-image-2,gpt-image-1,dall-e-3,seedream-3.0").split(",").map((s) => s.trim()).filter(Boolean);
+const IMAGE_MODELS = (process.env.IMAGE_MODELS || "sd-2,sd-2-fast,gpt-image-2,sd-2-vip-720").split(",").map((s) => s.trim()).filter(Boolean);
 const PORT = Number(process.env.WEB_PORT || 8088);
 const PUBLIC = path.join(__dirname, "web", "public");
 const OUT = path.join(__dirname, ".uvg-out");
@@ -116,8 +116,9 @@ async function kzPoll(taskId, key) {
   } catch (e) { return { done: false }; }
 }
 // 逐镜出片：丽帧(首帧锁一致)优先 → 失败回退 Agnes(文生+一致性锁)
-async function genSeg(seg, lock, refUrls, kkey, akey) {
-  const firstFrame = seg.sheet || "";
+async function genSeg(seg, lock, refUrls, kkey, akey, productImg) {
+  // 首帧优先级：AI 分镜图 → 用户上传的真实产品图（绕开掉线的图片网关，锁真实产品）
+  const firstFrame = seg.sheet || productImg || "";
   if (VIDEO_BACKEND === "kuaizi" && (kkey || KEY)) {
     const c = await kzCreate(lock + " 本镜：" + seg.scene, seg.dur, firstFrame, refUrls, kkey);
     if (c.taskId) {
@@ -278,7 +279,8 @@ async function buildJob(job, input, count, durations, N, ratio, topic) {
     pRef = rr[0] || ""; cRef = rr[1] || "";
   } catch (e) { /* 无三视图则退回纯文生 */ }
   job.refs = { product: pRef, character: cRef };
-  const refUrls = [pRef, cRef].filter(Boolean);
+  job.productImg = (input.imageB64 || "").trim(); // 用户上传的真实产品图：当首帧/参考，锁真实产品
+  const refUrls = [pRef, cRef, job.productImg].filter(Boolean);
 
   // ④ 把每个分镜画成"分镜图"（引用三视图锁一致），并发
   job.phase = "④ 画分镜关键帧（引用三视图锁一致）";
@@ -298,7 +300,7 @@ async function buildJob(job, input, count, durations, N, ratio, topic) {
     const vd = job.videos[vi];
     for (const seg of vd.segs) {
       seg.state = "running";
-      const r = await genSeg(seg, lock, refUrls, job.kKey, job.aKey);
+      const r = await genSeg(seg, lock, refUrls, job.kKey, job.aKey, job.productImg);
       if (r.ok && r.url) { seg.state = "succeeded"; seg.url = r.url; }
       else { seg.state = "failed"; seg.error = r.error; }
     }
