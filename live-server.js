@@ -21,6 +21,9 @@ const KZ_BASE = process.env.KUAIZI_BASE_URL || "https://aiopenapi.kuaizi.cn";
 const GW_KEY = process.env.IMAGE_API_KEY || "";
 const GW_BASE = process.env.IMAGE_BASE_URL || "https://www.hfsyapi.cn";
 const LLM_MODEL = process.env.LLM_MODEL || "gpt-5.5";
+const AGNES_KEY = process.env.AGNES_API_KEY || "";
+const AGNES_BASE = process.env.AGNES_BASE_URL || "https://apihub.agnes-ai.com/v1";
+const AGNES_VIDEO_MODEL = process.env.AGNES_VIDEO_MODEL || "agnes-video-v2.0";
 const PORT = Number(process.env.WEB_PORT || 8088);
 const PUBLIC = path.join(__dirname, "web", "public");
 const OUT = path.join(__dirname, ".uvg-out");
@@ -55,6 +58,55 @@ async function genImage(prompt, gKey, refs) {
 const WORKS = path.join(OUT, "works.json");
 function loadWorks() { try { if (fs.existsSync(WORKS)) return JSON.parse(fs.readFileSync(WORKS, "utf8")); } catch (e) { /* */ } return []; }
 function saveWork(w) { try { const all = loadWorks(); all.unshift(w); fs.writeFileSync(WORKS, JSON.stringify(all.slice(0, 500))); } catch (e) { /* */ } }
+
+// ===== Agnes AI 视频（OpenAI 兼容，apihub.agnes-ai.com/v1，并发上限=1）=====
+function av(method, pathname, body, key) {
+  return new Promise((resolve, reject) => {
+    const data = body ? Buffer.from(JSON.stringify(body)) : null;
+    const u = new URL(AGNES_BASE + pathname);
+    const h = { "Authorization": "Bearer " + (key || AGNES_KEY) }; if (data) { h["Content-Type"] = "application/json"; h["Content-Length"] = data.length; }
+    const r = https.request(u, { method, headers: h }, (x) => { let s = ""; x.on("data", (c) => (s += c)); x.on("end", () => { try { resolve({ status: x.statusCode, json: JSON.parse(s) }); } catch { resolve({ status: x.statusCode, json: null, raw: s }); } }); });
+    r.on("error", reject); if (data) r.write(data); r.end();
+  });
+}
+async function agnesCreate(scene, dur, key) {
+  try {
+    const r = await av("POST", "/videos", { model: AGNES_VIDEO_MODEL, prompt: scene, seconds: String(Math.max(4, Math.min(15, dur || 5))), size: "720x1280" }, key);
+    if (r.status && r.status < 300 && r.json && (r.json.id || r.json.task_id)) return { taskId: r.json.id || r.json.task_id };
+    const msg = (r.json && (r.json.message || (r.json.error && r.json.error.message))) || (r.raw || "").slice(0, 120) || ("HTTP " + r.status);
+    return { busy: /busy|503|rate|too many/i.test(msg + " " + r.status), error: msg };
+  } catch (e) { return { error: String((e && e.message) || e) }; }
+}
+async function agnesPoll(taskId, key) {
+  try {
+    const r = await av("GET", "/videos/" + taskId, null, key);
+    const j = r.json || {};
+    if (j.status === "completed") return { done: true, url: j.remixed_from_video_id || j.url || j.video_url || "" };
+    if (j.status === "failed") return { done: true, failed: true, error: (j.error && (j.error.message || j.error)) || "failed" };
+    return { done: false };
+  } catch (e) { return { done: false }; }
+}
+// 多段 → 下载 + ffmpeg 拼接为一条；返回 /out 相对路径或 ""
+// 下载各段 → (拼接) → 裁成 9:16 竖屏(720x1280) → /out 相对路径
+async function finalizeVideo(jobId, vi, urls) {
+  try {
+    const dir = path.join(OUT, jobId + "_" + vi); fs.mkdirSync(dir, { recursive: true });
+    const files = [];
+    for (let i = 0; i < urls.length; i++) { const fp = path.join(dir, "seg" + i + ".mp4"); await download(urls[i], fp); files.push(fp); }
+    const outFile = path.join(OUT, jobId + "_" + vi + ".mp4");
+    const vf = "scale=720:1280:force_original_aspect_ratio=increase,crop=720:1280,setsar=1"; // 填满后居中裁成竖屏，无黑边
+    let rr;
+    if (files.length === 1) {
+      rr = spawnSync(FFMPEG, ["-y", "-i", files[0], "-vf", vf, "-r", "24", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", outFile], { encoding: "utf8" });
+    } else {
+      const listFile = path.join(dir, "list.txt");
+      fs.writeFileSync(listFile, files.map((f) => "file '" + f.replace(/\\/g, "/") + "'").join("\n"));
+      rr = spawnSync(FFMPEG, ["-y", "-f", "concat", "-safe", "0", "-i", listFile, "-vf", vf, "-r", "24", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", outFile], { encoding: "utf8" });
+    }
+    if (fs.existsSync(outFile)) return "/out/" + jobId + "_" + vi + ".mp4";
+  } catch (e) { /* */ }
+  return "";
+}
 
 function download(url, file) {
   return new Promise((resolve, reject) => { const f = fs.createWriteStream(file);
@@ -110,6 +162,8 @@ async function buildJob(job, input, count, durations, N, ratio, topic) {
   if (N === 1 && input.prompt && input.prompt.trim()) scenes = [input.prompt.trim()];
   else scenes = await llmScenes(topic, N, Number(input.durationSec) || 5, input.imageB64, job.gKey);
   job.storyboard = scenes;
+  // 一致性锁：每个分镜视频提示词统一前置，死锁同一产品 + 同一主播，贯穿全片
+  const lock = "【一致性锁·全程严格保持不变】同一个" + topic + "：同颜色、同形状、同logo、同包装；同一位主播：同一张脸、同发型、同服装、同妆容；统一画面风格与光线。";
 
   // ② 生成产品/人物参考图（锁一致），两张并发
   job.phase = "② 生成参考图（锁产品/人物）";
@@ -136,28 +190,41 @@ async function buildJob(job, input, count, durations, N, ratio, topic) {
       .catch(function () { job.sheets[i] = ""; return ""; });
   }));
 
-  // ④ 逐镜出片：分镜图 → 图生视频（首帧=分镜图 + 产品/人物参考兜底）
-  job.phase = "④ 逐镜生成视频（图生视频）";
+  // ④ 逐镜出片：Agnes 视频（并发上限=1 → 串行：每镜 create → 轮询完成 → 下一镜）；分镜图作故事板展示
+  job.phase = "④ 逐镜生成视频（Agnes）";
   for (let v = 0; v < count; v++) {
-    const segs = [];
-    for (let k = 0; k < N; k++) {
-      const sheet = sheetUrls[k] || "";
-      const imgs = sheet ? [{ url: sheet, role: "first_frame" }] : (refOnly.length ? refOnly : undefined);
-      try {
-        const r = await kz("/ai-open-platform-api/v1/lz/video/task/create",
-          { prompt: scenes[k] || topic, mode: "fast", resolution: "720p", ratio, duration: durations[k], generate_audio: input.voiceOn !== false, images: imgs }, job.kKey);
-        if (r && r.json && r.json.code === 0 && r.json.data && r.json.data.task_id) segs.push({ taskId: r.json.data.task_id, state: "running", dur: durations[k], scene: scenes[k] || topic, sheet: sheet });
-        else segs.push({ state: "failed", error: (r && r.json && r.json.message) || "create failed", dur: durations[k], scene: scenes[k] || topic, sheet: sheet });
-      } catch (e) { segs.push({ state: "failed", error: String((e && e.message) || e), dur: durations[k], scene: scenes[k] || topic, sheet: sheet }); }
-    }
-    job.videos.push({ segs, out: undefined, state: "running" });
+    job.videos.push({ segs: scenes.map((sc, k) => ({ state: "pending", dur: durations[k], scene: sc || topic, sheet: sheetUrls[k] || "" })), out: undefined, state: "running" });
   }
-  if (job.videos.length && job.videos.every((vd) => vd.segs.every((s) => s.state === "failed"))) { job.state = "failed"; job.error = (job.videos[0].segs[0] || {}).error || "创建失败"; }
+  for (let vi = 0; vi < job.videos.length; vi++) {
+    const vd = job.videos[vi];
+    for (const seg of vd.segs) {
+      let created = false;
+      for (let a = 0; a < 12 && !created; a++) {
+        const c = await agnesCreate(lock + " 本镜画面：" + seg.scene, seg.dur, job.kKey);
+        if (c.taskId) { seg.taskId = c.taskId; seg.state = "running"; created = true; }
+        else if (c.busy) { await new Promise((r) => setTimeout(r, 12000)); }
+        else { seg.state = "failed"; seg.error = c.error; created = true; }
+      }
+      if (seg.state !== "running") { if (seg.state === "pending") { seg.state = "failed"; seg.error = "视频服务繁忙(并发占满)"; } continue; }
+      for (let p = 0; p < 90; p++) {
+        await new Promise((r) => setTimeout(r, 8000));
+        const st = await agnesPoll(seg.taskId, job.kKey);
+        if (st.done) { if (st.failed) { seg.state = "failed"; seg.error = st.error; } else { seg.state = "succeeded"; seg.url = st.url; } break; }
+      }
+      if (seg.state === "running") { seg.state = "failed"; seg.error = "轮询超时"; }
+    }
+    const okUrls = vd.segs.filter((s) => s.state === "succeeded" && s.url).map((s) => s.url);
+    if (!okUrls.length) { vd.state = "failed"; vd.error = "全部分镜失败"; }
+    else { job.phase = "⑤ 拼接 + 竖屏成片"; vd.out = (await finalizeVideo(job.id, vi, okUrls)) || okUrls[0]; vd.state = "succeeded"; }
+  }
+  job.state = job.videos.some((vd) => vd.state === "succeeded") ? "succeeded" : "failed";
+  job.phase = job.state === "succeeded" ? "✅ 完成" : "❌ 失败";
+  if (job.state === "succeeded" && !job.saved) { job.saved = true; saveWork({ id: job.id, ts: Date.now(), topic: job.topic, refs: job.refs, urls: job.videos.filter((vd) => vd.out).map((vd) => vd.out) }); }
   job.built = true;
 }
 
 async function refreshJob(job) {
-  if (job.state !== "running" || !job.built) return;
+  return; // Agnes 并发=1：生成已由 buildJob 串行驱动，/api/jobs 直接读 job 即可，无需轮询
   for (let vi = 0; vi < job.videos.length; vi++) {
     const video = job.videos[vi];
     if (video.state === "succeeded" || video.state === "failed") continue;
