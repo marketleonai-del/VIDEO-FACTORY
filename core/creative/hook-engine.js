@@ -268,7 +268,34 @@ class HookEngine {
     angles = angles.map(a => ({ ...a, platform, winScore: this.scoreWinScore(a), scoreBreakdown: { novelty: Math.round(this.noveltyScore(a) * this.weights.novelty * 100), pain: Math.round(this.painScore(a) * this.weights.painIntensity * 100), hook: Math.round(this.hookStrength(a) * this.weights.hookStrength * 100), platformFit: Math.round(this.platformFit(a) * this.weights.platformFit * 100), trust: Math.round(this.trustDensity(a) * this.weights.trustDensity * 100), visual: Math.round(this.visualScore(a) * this.weights.visualScore * 100) } }));
     angles.sort((a, b) => b.winScore - a.winScore);
     angles = angles.slice(0, count);
-    return { meta: { engine: 'HookEngine v1.0.0', product: ins.productName, platform, generatedAt: new Date().toISOString(), totalAngles: angles.length }, insight: ins, angles: angles.map((a, i) => ({ rank: i + 1, angleId: `${a.familyId}-${a.variant}`, family: a.familyName, tag: a.angleTag, title: a.title, formula: a.formula, winScore: a.winScore, scoreBreakdown: a.scoreBreakdown, traits: a.traits, aiFriendly: a.aiFriendly, intensity: a.intensity, hooks: a.matchedHooks || [], complianceCheck: this._compliance(a) })), diversity: { method: 'structure*0.4 + framework*0.35 + style*0.25', threshold: DIVERSITY_THRESHOLD, maxPairSim: this._maxPairSim(angles), pass: this._maxPairSim(angles) <= DIVERSITY_THRESHOLD } };
+    const angleItems = angles.map((a, i) => ({
+      rank: i + 1,
+      angleId: `${a.familyId}-${a.variant}`,
+      family: a.familyName,
+      tag: a.angleTag,
+      title: a.title,
+      formula: a.formula,
+      winScore: a.winScore,
+      WinScore: a.winScore,
+      scoreBreakdown: a.scoreBreakdown,
+      traits: a.traits,
+      aiFriendly: a.aiFriendly,
+      intensity: a.intensity,
+      hooks: a.matchedHooks || [],
+      complianceCheck: this._compliance(a),
+    }));
+    const report = {
+      meta: { engine: 'HookEngine v1.0.0', product: ins.productName, platform, generatedAt: new Date().toISOString(), totalAngles: angles.length },
+      insight: ins,
+      angles: angleItems,
+      diversity: { method: 'structure*0.4 + framework*0.35 + style*0.25', threshold: DIVERSITY_THRESHOLD, maxPairSim: this._maxPairSim(angles), pass: this._maxPairSim(angles) <= DIVERSITY_THRESHOLD },
+    };
+    angleItems.meta = report.meta;
+    angleItems.insight = report.insight;
+    angleItems.angles = angleItems;
+    angleItems.diversity = report.diversity;
+    angleItems.report = report;
+    return angleItems;
   }
 
   _maxPairSim(angles) { let m = 0; for (let i = 0; i < angles.length; i++) for (let j = i + 1; j < angles.length; j++) { const s = this._sim(angles[i], angles[j]); if (s > m) m = s; } return Math.round(m * 100) / 100; }
@@ -295,7 +322,11 @@ class HookEngine {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { HookEngine, WIN_SCORE_WEIGHTS, DIVERSITY_THRESHOLD, SIMILARITY_WEIGHTS };
+  module.exports = HookEngine;
+  module.exports.HookEngine = HookEngine;
+  module.exports.WIN_SCORE_WEIGHTS = WIN_SCORE_WEIGHTS;
+  module.exports.DIVERSITY_THRESHOLD = DIVERSITY_THRESHOLD;
+  module.exports.SIMILARITY_WEIGHTS = SIMILARITY_WEIGHTS;
 }
 if (typeof window !== 'undefined') {
   window.HookEngine = HookEngine; window.WIN_SCORE_WEIGHTS = WIN_SCORE_WEIGHTS;

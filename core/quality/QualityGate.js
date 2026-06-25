@@ -366,3 +366,4 @@ class QualityGate {
 }
 
 module.exports = QualityGate;
+module.exports.QualityGate = QualityGate;

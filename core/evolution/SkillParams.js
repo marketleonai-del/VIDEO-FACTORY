@@ -122,4 +122,5 @@ class SkillParams {
   }
 }
 
-module.exports = { SkillParams };
+module.exports = SkillParams;
+module.exports.SkillParams = SkillParams;

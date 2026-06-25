@@ -137,14 +137,16 @@ class VoiceLockManager {
 
   /** 自检报告 */
   selfCheck() {
+    const adapterName = this.tts && this.tts.constructor ? this.tts.constructor.name : '未配置';
     return {
       voiceLocked: this.isLocked, voiceId: this.voiceProfile?.voiceId || null,
       voiceName: this.voiceProfile?.name || null, mutedCount: this.mutedVideos.size,
+      ready: this.isLocked && !!this.tts,
       checks: [
         `全片单一音色: ${this.isLocked ? '✓ @voice1已锁定' : '✗ 未锁定'}`,
         `AI视频已静音: ${this.mutedVideos.size > 0 ? `✓ ${this.mutedVideos.size}个` : '○ 待处理'}`,
         `口播用@voice1合成: ${this.isLocked ? '✓' : '✗ 未锁定'}`,
-        `TTS适配器: ${this.tts.constructor.name}`
+        `TTS适配器: ${adapterName}`
       ],
       passed: this.isLocked
     };

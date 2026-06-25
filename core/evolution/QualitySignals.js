@@ -107,4 +107,5 @@ class QualitySignals {
   }
 }
 
-module.exports = { QualitySignals };
+module.exports = QualitySignals;
+module.exports.QualitySignals = QualitySignals;

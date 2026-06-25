@@ -150,4 +150,5 @@ class EvolutionEngine {
   _clamp(v) { return Math.max(this.weightFloor, Math.min(this.weightCeiling, v)); }
 }
 
-module.exports = { EvolutionEngine };
+module.exports = EvolutionEngine;
+module.exports.EvolutionEngine = EvolutionEngine;

@@ -14,7 +14,7 @@
  *   7. ffmpeg拼接   — 多段concat + scale/crop 720x1280竖屏
  *   8. 作品存档     — .uvg-out/works.json 历史记录
  *
- * 端口: 8088
+ * 端口: WEB_PORT / PORT / 8088
  * 作者: VIDEO-FACTORY Team
  */
 
@@ -29,8 +29,27 @@ const { URL } = require('url');
 // 全局配置
 // ═══════════════════════════════════════════════════════════
 
+function loadDotEnv(filePath = path.join(process.cwd(), '.env')) {
+  if (!fs.existsSync(filePath)) return;
+  const lines = fs.readFileSync(filePath, 'utf8').split(/\r?\n/);
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const eq = trimmed.indexOf('=');
+    if (eq <= 0) continue;
+    const key = trimmed.slice(0, eq).trim();
+    let value = trimmed.slice(eq + 1).trim();
+    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+      value = value.slice(1, -1);
+    }
+    if (!process.env[key]) process.env[key] = value;
+  }
+}
+
+loadDotEnv();
+
 /** @type {number} 服务监听端口 */
-const PORT = 8088;
+const PORT = Number(process.env.WEB_PORT || process.env.PORT || 8088);
 /** @type {string} 输出文件根目录 */
 const OUT_DIR = path.join(process.cwd(), '.uvg-out');
 /** @type {string} 作品存档文件路径 */
@@ -60,15 +79,15 @@ const CONFIG = {
 // API端点配置
 const ENDPOINTS = {
   // hfsy网关 — GPT-5.5看图 + gpt-image-2生图
-  HFSY_CHAT:  'https://www.hfsyapi.cn/v1/chat/completions',
-  HFSY_IMAGE: 'https://www.hfsyapi.cn/v1/images/generations',
+  HFSY_CHAT:  process.env.HFSY_CHAT_ENDPOINT || 'https://www.hfsyapi.cn/v1/chat/completions',
+  HFSY_IMAGE: process.env.HFSY_IMAGE_ENDPOINT || 'https://www.hfsyapi.cn/v1/images/generations',
   // DeepSeek — 结构化分析 + 分镜脚本
-  DEEPSEEK:   'https://api.deepseek.com/v1/chat/completions',
+  DEEPSEEK:   process.env.DEEPSEEK_ENDPOINT || 'https://api.deepseek.com/v1/chat/completions',
   // 丽帧 — 主视频生成
-  KUAIZI_CREATE: 'https://aiopenapi.kuaizi.cn/ai-open-platform-api/v1/lz/video/task/create',
-  KUAIZI_STATUS: 'https://aiopenapi.kuaizi.cn/ai-open-platform-api/v1/lz/video/task/status',
+  KUAIZI_CREATE: process.env.KUAIZI_CREATE_ENDPOINT || 'https://aiopenapi.kuaizi.cn/ai-open-platform-api/v1/lz/video/task/create',
+  KUAIZI_STATUS: process.env.KUAIZI_STATUS_ENDPOINT || 'https://aiopenapi.kuaizi.cn/ai-open-platform-api/v1/lz/video/task/status',
   // Agnes — 视频生成回退
-  AGNES:      'https://apihub.agnes-ai.com/v1/videos',
+  AGNES:      process.env.AGNES_VIDEO_ENDPOINT || 'https://apihub.agnes-ai.com/v1/videos',
 };
 
 // ═══════════════════════════════════════════════════════════
@@ -179,7 +198,7 @@ function reqJSON(url, options = {}, body = null, timeoutMs = REQ_TIMEOUT_MS) {
       hostname: parsed.hostname,
       port: parsed.port || (parsed.protocol === 'https:' ? 443 : 80),
       path: parsed.pathname + parsed.search,
-      method: options.method || 'GET',
+      method: options.method || (postData ? 'POST' : 'GET'),
       timeout: timeoutMs,
       headers: {
         'Content-Type': 'application/json',
@@ -289,6 +308,8 @@ function sendFile(res, filePath) {
     '.mp4': 'video/mp4', '.webm': 'video/webm', '.mov': 'video/quicktime',
     '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png',
     '.gif': 'image/gif', '.json': 'application/json',
+    '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8',
+    '.js': 'application/javascript; charset=utf-8', '.svg': 'image/svg+xml',
   };
   const stat = fs.statSync(filePath);
   res.writeHead(200, {
@@ -537,6 +558,14 @@ async function generateStoryboard(product, numSegments = DEFAULT_SEGMENTS) {
     storyboard = getFallbackStoryboard(product, numSegments);
   }
 
+  if (!Array.isArray(storyboard)) {
+    storyboard = getFallbackStoryboard(product, numSegments);
+  }
+  if (storyboard.length < numSegments) {
+    storyboard = storyboard.concat(getFallbackStoryboard(product, numSegments).slice(storyboard.length));
+  }
+  storyboard = storyboard.slice(0, numSegments);
+
   // 确保每段都有9个字段，缺失的补默认值
   return storyboard.map((seg, idx) => ({
     '镜号': seg['镜号'] || idx + 1,
@@ -759,12 +788,13 @@ async function genSegKuaizi(prompt, imagePath, outputPath, duration) {
     },
   }, createBody, REQ_TIMEOUT_MS);
 
-  if (!createRes.data || !createRes.data.task_id) {
+  const createData = createRes.data || createRes;
+  if (!createData || !createData.task_id) {
     log('丽帧创建任务失败:', JSON.stringify(createRes));
     return false;
   }
 
-  const taskId = createRes.data.task_id;
+  const taskId = createData.task_id;
   log('丽帧任务创建成功，taskId:', taskId);
 
   // 2. 轮询任务状态
@@ -795,14 +825,15 @@ async function pollKuaiziTask(taskId) {
       headers: { 'ApiKey': CONFIG.KUAIZI_API_KEY },
     }, null, 10000);
 
-    const status = res.data && res.data.status ? res.data.status : '';
+    const data = res.data || res;
+    const status = data && data.status ? data.status : '';
     log(`丽帧任务[${taskId}] 状态: ${status} (${i + 1}/${MAX_POLL_COUNT})`);
 
-    if (status === 'SUCCESS' && res.data.video_url) {
-      return res.data.video_url;
+    if (status === 'SUCCESS' && data.video_url) {
+      return data.video_url;
     }
     if (status === 'FAILED') {
-      log('丽帧任务执行失败:', res.data && res.data.error_msg);
+      log('丽帧任务执行失败:', data && data.error_msg);
       return null;
     }
     // 继续轮询 (PROCESSING / PENDING)
@@ -821,17 +852,21 @@ async function pollKuaiziTask(taskId) {
  * @returns {Promise<boolean>} 是否成功
  */
 async function genSegAgnes(prompt, imagePath, outputPath, duration) {
+  const frameRate = 24;
+  const numFrames = duration <= 4 ? 81 : duration <= 6 ? 121 : 161;
   const body = {
-    model: 'agnes-video-v1',
+    model: 'agnes-video-v2.0',
     prompt: prompt,
-    duration: duration,
-    resolution: '720p',
-    ratio: '9:16',
+    height: 1280,
+    width: 720,
+    num_frames: numFrames,
+    frame_rate: frameRate,
+    negative_prompt: 'low quality, blurry, distorted product, unreadable text',
   };
 
-  // 如果有参考图，转为base64
+  // Agnes v2 接收公网图片URL；本地生成帧不可直接作为 image 字段上传。
   if (imagePath && fs.existsSync(imagePath)) {
-    body.image = fs.readFileSync(imagePath).toString('base64');
+    log('Agnes回退使用文生视频模式，本地首帧不直接上传:', path.basename(imagePath));
   }
 
   log('Agnes创建任务:', prompt.slice(0, 60));
@@ -839,15 +874,17 @@ async function genSegAgnes(prompt, imagePath, outputPath, duration) {
     headers: { 'Authorization': `Bearer ${CONFIG.AGNES_API_KEY}` },
   }, body, REQ_TIMEOUT_MS);
 
-  if (res.data && res.data.video_url) {
-    const ok = await downloadFile(res.data.video_url, outputPath, 60000);
+  const data = res.data || res;
+  const immediateVideoUrl = extractVideoUrl(data);
+  if (immediateVideoUrl) {
+    const ok = await downloadFile(immediateVideoUrl, outputPath, 60000);
     if (ok) log('Agnes视频下载成功:', outputPath);
     return ok;
   }
 
   // Agnes也支持轮询模式
-  if (res.data && res.data.task_id) {
-    const videoUrl = await pollAgnesTask(res.data.task_id);
+  if (data && data.task_id) {
+    const videoUrl = await pollAgnesTask(data.task_id);
     if (videoUrl) {
       return await downloadFile(videoUrl, outputPath, 60000);
     }
@@ -870,11 +907,13 @@ async function pollAgnesTask(taskId) {
       headers: { 'Authorization': `Bearer ${CONFIG.AGNES_API_KEY}` },
     }, null, 10000);
 
-    const status = res.data && res.data.status ? res.data.status : '';
+    const data = res.data || res;
+    const status = data && data.status ? data.status : '';
     log(`Agnes任务[${taskId}] 状态: ${status} (${i + 1}/${MAX_POLL_COUNT})`);
 
-    if (status === 'completed' && res.data.video_url) {
-      return res.data.video_url;
+    if (status === 'completed') {
+      const videoUrl = extractVideoUrl(data);
+      if (videoUrl) return videoUrl;
     }
     if (status === 'failed') {
       log('Agnes任务执行失败');
@@ -883,6 +922,19 @@ async function pollAgnesTask(taskId) {
   }
   log('Agnes任务轮询超时');
   return null;
+}
+
+function extractVideoUrl(data) {
+  if (!data || typeof data !== 'object') return null;
+  return data.video_url
+    || data.url
+    || data.output_url
+    || data.remixed_from_video_id
+    || data.output?.video_url
+    || data.output?.url
+    || data.data?.video_url
+    || data.data?.url
+    || null;
 }
 
 /**
@@ -923,7 +975,7 @@ async function generateSegmentVideos(storyboard, images, jobDir) {
  * @returns {string} 英文视频提示词
  */
 function buildVideoPrompt(seg) {
-  const scene = seg['画面'] || 'product showcase';
+  const scene = String(seg['画面'] || 'product showcase').slice(0, 180);
   const camera = seg['运镜'] || 'static';
   const shot = seg['景别'] || 'medium shot';
 
@@ -941,7 +993,7 @@ function buildVideoPrompt(seg) {
   const cameraEn = cameraMap[camera] || camera;
   const shotEn = shotMap[shot] || shot;
 
-  return `${scene}, ${shotEn}, ${cameraEn} camera movement, professional commercial video, smooth motion, high quality, cinematic lighting, 9:16 vertical format`;
+  return `${scene}, ${shotEn}, ${cameraEn} camera movement, commercial product video, smooth motion, cinematic lighting, 9:16 vertical`;
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1231,6 +1283,22 @@ async function handleRequest(req, res) {
       return handleConfig(req, res);
     }
 
+    // GET  /            — Web UI入口
+    if ((url === '/' || url === '/video-factory.html') && method === 'GET') {
+      return sendFile(res, path.join(process.cwd(), 'video-factory.html'));
+    }
+
+    // GET  /web/public/* — Web UI静态资源
+    const publicMatch = url.match(/^\/web\/public\/(.*)$/);
+    if (publicMatch && method === 'GET') {
+      return handleStaticServe(req, res, publicMatch[1]);
+    }
+
+    // GET  /api/health   — 健康检查
+    if (url === '/api/health' && method === 'GET') {
+      return handleHealth(req, res);
+    }
+
     // POST /api/generate — 创建生成任务
     if (url === '/api/generate' && method === 'POST') {
       return handleGenerate(req, res);
@@ -1286,6 +1354,29 @@ function handleConfig(req, res) {
       outDir: OUT_DIR,
       videoBackend: CONFIG.VIDEO_BACKEND,
       deepseekModel: CONFIG.DEEPSEEK_MODEL,
+    },
+  });
+}
+
+/**
+ * GET /api/health — 部署健康检查
+ * 返回: { status, version, uptime, backends }
+ */
+function handleHealth(req, res) {
+  const ffmpeg = checkFfmpeg();
+  sendJSON(res, 200, {
+    status: 'healthy',
+    version: '3.0.0-stable',
+    uptime: process.uptime(),
+    timestamp: Date.now(),
+    port: PORT,
+    ffmpeg,
+    backends: {
+      deepseek: !!CONFIG.DEEPSEEK_API_KEY,
+      hfsy: !!CONFIG.IMAGE_API_KEY,
+      kuaizi: !!CONFIG.KUAIZI_API_KEY,
+      agnes: !!CONFIG.AGNES_API_KEY,
+      kimi: !!CONFIG.KIMI_API_KEY,
     },
   });
 }
@@ -1367,6 +1458,18 @@ function handleFileServe(req, res, filePath) {
   }
 
   sendFile(res, fullPath);
+}
+
+function handleStaticServe(req, res, filePath) {
+  const safePath = path.normalize(filePath).replace(/^(\.\.[/\\])+/, '');
+  const root = path.join(process.cwd(), 'web', 'public');
+  const fullPath = path.join(root, safePath || 'index.html');
+  const resolvedRoot = path.resolve(root);
+  const resolvedFile = path.resolve(fullPath);
+  if (!resolvedFile.startsWith(resolvedRoot + path.sep) && resolvedFile !== resolvedRoot) {
+    return sendJSON(res, 403, { error: '非法路径' });
+  }
+  sendFile(res, resolvedFile);
 }
 
 // ═══════════════════════════════════════════════════════════

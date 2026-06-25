@@ -773,4 +773,6 @@ class AgentProtocol {
 // 模块导出
 // =========================================================================
 
-module.exports = { AgentProtocol, withBackoff };
+module.exports = AgentProtocol;
+module.exports.AgentProtocol = AgentProtocol;
+module.exports.withBackoff = withBackoff;

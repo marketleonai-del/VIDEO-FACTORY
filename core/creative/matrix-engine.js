@@ -42,6 +42,88 @@ class MatrixEngine {
     return gate;
   }
 
+  _normalizeHeroInput(heroScript = {}, platform = 'douyin') {
+    if (heroScript.hook && typeof heroScript.hook === 'object' && heroScript.hook.opening3s) {
+      return heroScript;
+    }
+
+    const hookText = typeof heroScript.hook === 'string'
+      ? heroScript.hook
+      : heroScript.hook?.opening3s || '测试钩子';
+    const structureText = typeof heroScript.structure === 'string' ? heroScript.structure : '8要素';
+    const sellingPointText = typeof heroScript.sellingPoint === 'string'
+      ? heroScript.sellingPoint
+      : heroScript.sellingPoint?.core || '核心卖点';
+
+    return {
+      ...heroScript,
+      platform,
+      hook: {
+        opening3s: hookText,
+        emotionTrigger: true,
+        productRelevance: 0.9,
+        infoGap: true,
+        psychologyMatch: true,
+        visualHook: true,
+        audioHook: true,
+        textHook: true,
+        conflictLevel: 0.7,
+        uniqueness: 0.8,
+        variantReady: true,
+        duration: 3000,
+      },
+      structure: {
+        raw: structureText,
+        elements: ['痛点', '冲突', '旧法失败', '产品出现', '卖点证明', '场景演示', '信任背书', '促单'],
+        funnel: true,
+        pacingCurve: true,
+        infoDensity: 0.7,
+        duration: 30,
+      },
+      sellingPoint: {
+        core: String(sellingPointText).slice(0, 20),
+        proof: true,
+        differentiation: true,
+      },
+      persona: heroScript.persona || {
+        role: '测评型带货主播',
+        credibility: 0.8,
+        languageStyle: '真实口语',
+        visualSignature: '手持产品近景',
+        productFit: 0.8,
+      },
+      cta: heroScript.cta || {
+        action: '立即了解',
+        urgency: true,
+        count: 2,
+        benefit: true,
+        steps: 2,
+      },
+      bgm: heroScript.bgm || {
+        emotionMatch: true,
+        paceMatch: true,
+        volumeBalanced: true,
+        beatAccuracy: 0.05,
+        licenseClear: true,
+      },
+      visual: heroScript.visual || {
+        openingShot: true,
+        productAngles: 3,
+        captionReadability: true,
+        colorConsistent: true,
+        transitions: true,
+      },
+      compliance: heroScript.compliance || {
+        noAbsoluteTerms: true,
+        noFalseClaims: true,
+        claimsBacked: true,
+        aiLabelPlanned: true,
+        copyrightClear: true,
+      },
+      brandMessage: heroScript.brandMessage || '真实展示产品价值',
+    };
+  }
+
   _buildCheckList() {
     const has = v => v !== undefined && v !== null;
     return [
@@ -366,7 +448,7 @@ class MatrixEngine {
   // ═══════════════════════════════════════════════════════════════════════════
   generateMatrixTable(winner, count = 200, platform = 'douyin') {
     const t0 = Date.now();
-    const raw = winner._raw || winner;
+    const raw = this._normalizeHeroInput(winner._raw || winner, platform);
     const validation = this.validateHero(raw);
     if (!validation.isQualified) return { success: false, phase: 'S0-FAILED', score: validation.score, errors: validation.checks.filter(c => !c.pass) };
     const decomposed = this.decomposeWinner(raw);
@@ -379,6 +461,8 @@ class MatrixEngine {
     return {
       success: true, generatedAt: new Date().toISOString(), duration: `${Date.now() - t0}ms`,
       meta: { platform, targetCount: count, actualCount: adapted.length, uniqueAccounts: profiles.length, combinationsAvailable: decomposed._decompositionMeta.totalCombinations },
+      variants: adapted,
+      variantTable: variants,
       pipeline: {
         S0_validation: validation,
         S1_decomposition: decomposed._decompositionMeta,
@@ -415,4 +499,5 @@ class MatrixEngine {
   adaptCTA(platform) { const p = CTA_LIBRARY[platform] || CTA_LIBRARY.douyin; return p[Math.floor(Math.random() * p.length)]; }
 }
 
-module.exports = { MatrixEngine };
+module.exports = MatrixEngine;
+module.exports.MatrixEngine = MatrixEngine;

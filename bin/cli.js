@@ -273,7 +273,7 @@ async function cmdGenerate(options) {
     console.log('\n\u{1F4E1} 发送生成请求...');
     const response = await post(apiUrl, '/api/generate', payload);
 
-    if (response.status !== 200) {
+    if (![200, 202].includes(response.status)) {
       throw new Error(`HTTP ${response.status}: ${JSON.stringify(response.data)}`);
     }
 
@@ -342,7 +342,7 @@ async function cmdMatrix(options) {
     console.log(`\n\u{1F4E1} 发送矩阵请求 (${count} 条)...`);
     const response = await post(apiUrl, '/api/generate', payload);
 
-    if (response.status !== 200) {
+    if (![200, 202].includes(response.status)) {
       throw new Error(`HTTP ${response.status}: ${JSON.stringify(response.data)}`);
     }
 

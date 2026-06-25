@@ -269,5 +269,6 @@ class PromptTemplateEngine {
 // 导出（兼容 CommonJS 与 ES Module）
 // ─────────────────────────────────────────────────
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { PromptTemplateEngine };
+  module.exports = PromptTemplateEngine;
+  module.exports.PromptTemplateEngine = PromptTemplateEngine;
 }
