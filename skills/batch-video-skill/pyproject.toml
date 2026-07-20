@@ -1,0 +1,311 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# batch-video-skill — Python 项目配置
+# ═══════════════════════════════════════════════════════════════════════════════
+# 构建后端: Hatchling (PEP 517/660 兼容)
+# Python 版本要求: >=3.11
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 项目元数据
+# ─────────────────────────────────────────────────────────────────────────────
+
+[project]
+name = "batch-video-skill"
+version = "5.0.0"
+description = "带货视频批量生产 Skill - 840 Gem 路由、Image2 故事板与多模型视频生成"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+authors = [
+    {name = "300 Agent 融合项目"},
+]
+keywords = [
+    "ai",
+    "video-generation",
+    "gemini",
+    "batch-processing",
+    "ecommerce",
+    "skill",
+    "mcp",
+    "smart-routing",
+    "kling",
+    "vidu",
+    "veo",
+    "jimeng",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Multimedia :: Video",
+]
+
+dependencies = [
+    "pydantic>=2.0.0",
+    "aiohttp>=3.9.0",
+    "aiofiles>=23.0.0",
+    "python-dotenv>=1.0",
+    "pillow>=10.0.0",
+    "google-auth>=2.22.0",
+    "google-auth-oauthlib>=1.0.0",
+    "google-api-python-client>=2.100.0",
+    "gspread>=5.12.0",
+    "aiosqlite>=0.19.0",
+    "cryptography>=41.0.0",
+    "tenacity>=8.2.0",
+    "structlog>=23.0.0",
+    "prometheus-client>=0.19.0",
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    "click>=8.1.0",
+    "loguru>=0.7.0",
+    "jinja2>=3.1.0",
+    "pyyaml>=6.0.1",
+    "orjson>=3.9.0",
+    "httpx>=0.25.0",
+    "mcp>=1.0.0",
+]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 可选依赖分组
+# ─────────────────────────────────────────────────────────────────────────────
+
+[project.optional-dependencies]
+# 开发依赖
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "pytest-cov>=5.0",
+    "pytest-xdist>=3.3.0",
+    "httpx>=0.25.0",
+    "respx>=0.20.0",
+    "aioresponses>=0.22.0",
+    "ruff>=0.1.0",
+    "mypy>=1.7.0",
+    "pre-commit>=3.5.0",
+    "freezegun>=1.2.0",
+]
+
+# Gemini Web API 依赖 (Cookie 认证方式)
+gemini = [
+    "gemini-webapi>=2.0",
+    "httpx>=0.27",
+    "curl-cffi>=0.7",
+]
+
+# Google Workspace CLI 依赖 (Sheets/Drive/Gmail 读写)
+workspace = [
+    "googleworkspace-cli>=0.3",
+    "gspread>=6.0",
+    "google-api-python-client>=2.0",
+    "google-auth>=2.0",
+]
+
+# 视频生成 SDK 依赖
+video = [
+    "google-genai>=1.0",
+]
+
+# 所有可选依赖
+all = [
+    "batch-video-skill[dev,gemini,workspace,video]",
+]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 命令行脚本入口
+# ─────────────────────────────────────────────────────────────────────────────
+
+[project.scripts]
+batch-video-skill = "batch_video_skill.cli:main"
+bvs = "batch_video_skill.cli:main"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MCP Server 入口点 (PEP 621 entry-points)
+# ─────────────────────────────────────────────────────────────────────────────
+
+[project.entry-points."mcp.servers"]
+batch-video = "batch_video_skill.mcp_server:main"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 项目 URL
+# ─────────────────────────────────────────────────────────────────────────────
+
+[project.urls]
+Homepage = "https://github.com/300-agent-fusion/batch-video-skill"
+Documentation = "https://github.com/300-agent-fusion/batch-video-skill/blob/main/docs/architecture.md"
+Repository = "https://github.com/300-agent-fusion/batch-video-skill.git"
+Issues = "https://github.com/300-agent-fusion/batch-video-skill/issues"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Hatchling 构建配置
+# ─────────────────────────────────────────────────────────────────────────────
+
+[tool.hatch.build.targets.wheel]
+packages = ["batch_video_skill"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/batch_video_skill",
+    "/tests",
+    "/docs",
+    "/README.md",
+    "/SKILL.md",
+    "/config.example.json",
+    "/mcp-config.example.json",
+    "/gem-metadata-template.csv",
+    "/pyproject.toml",
+]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Ruff 代码检查配置
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["src"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # Pyflakes
+    "I",   # isort
+    "N",   # pep8-naming
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "SIM", # flake8-simplify
+    "ASYNC",# flake8-async
+    "S",   # flake8-bandit
+]
+ignore = [
+    "S101",  # assert used (common in Python)
+    "S311",  # random used (acceptable for non-crypto)
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Pytest 测试配置
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "-v",
+    "--tb=short",
+]
+markers = [
+    "unit: Unit tests (fast, no external deps)",
+    "integration: Integration tests (require external services)",
+    "e2e: End-to-end tests (full pipeline)",
+    "slow: Slow tests (>5s)",
+    "network: Tests requiring network access",
+    "gemini: Tests requiring Gemini service",
+    "video: Tests requiring video generation service",
+    "workspace: Tests requiring Google Workspace",
+]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# MyPy 类型检查配置
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = false
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+show_error_codes = true
+show_column_numbers = true
+
+[[tool.mypy.overrides]]
+module = [
+    "googleapiclient.*",
+    "gspread.*",
+    "aiosqlite.*",
+    "prometheus_client.*",
+]
+ignore_missing_imports = true
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 覆盖率配置
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[tool.coverage.run]
+source = ["src/batch_video_skill"]
+branch = true
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__main__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "pass",
+]
+show_missing = true
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Black 代码格式化配置
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[tool.black]
+line-length = 100
+target-version = ["py311", "py312", "py313"]
+include = '\.pyi?$'
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Hatch 环境配置
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[tool.hatch.envs.default]
+features = ["dev"]
+
+[tool.hatch.envs.default.scripts]
+test = "pytest {args}"
+test-cov = "pytest --cov=src/batch_video_skill --cov-report=term-missing {args}"
+lint = "ruff check src tests"
+lint-fix = "ruff check --fix src tests"
+format = "black src tests"
+typecheck = "mypy src/batch_video_skill"
+all-checks = ["format", "lint", "typecheck", "test-cov"]
+
+[tool.hatch.envs.gemini]
+features = ["gemini"]
+
+[tool.hatch.envs.workspace]
+features = ["workspace"]
+
+[tool.hatch.envs.video]
+features = ["video"]

@@ -40,3 +40,9 @@ docker compose up      # 容器（运行期零依赖 + ffmpeg + healthcheck）
 
 ## 诚实边界
 真实生成需各家 API Key + ffmpeg；多副本扩展把 `FileJobStore` 换 Redis/DB + 外部队列 + S3 存储；隐式质量可接 Supermetrics 真实 CTR/GMV 校准；P1/P2 适配器待补真实调用（搜 `ADAPTER_NOT_IMPLEMENTED`/`// VERIFY`）；Sora 已 2026-04 关停仅留占位。
+
+## Gem 提示词库与配套 Skill（2026-07 融合）
+
+- **`gems/`** — 带货 Gem 指令总库：G001–G200 + U401–U840（现 640 条，持续补齐至 900+），万能引擎手册 v2.4、品类适配表、提示词库 V2。详见 [gems/README.md](gems/README.md)。
+- **`skills/batch-video-skill/`** — Batch Video Skill V5：产品图 → 840 Gem 路由 → 原样保留 Gem 脚本 → Image2 故事板 → Gemini 视觉 QC → Grok/Omni 批量出片（可断点续跑）。
+- **`skills/ecom-long-video-stitch/`** — 带货长视频无缝拼接：分段规划、电影级转场、续帧一致性、FFmpeg 实操。

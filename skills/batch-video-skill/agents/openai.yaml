@@ -1,0 +1,7 @@
+interface:
+  display_name: "带货视频批量生产"
+  short_description: "840 Gem 路由、Image2 故事板、物理 QC 与 Grok/Omni 视频"
+  brand_color: "#1F8A70"
+  default_prompt: "Use $batch-video-skill V5 to route the product to the best verified Gemini Gem, preserve the raw Gem script, build traceable Image2 storyboard panels, fail closed on product or mechanism drift, and only compile video requests unless I explicitly request --live generation."
+policy:
+  allow_implicit_invocation: true

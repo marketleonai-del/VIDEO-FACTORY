@@ -1,0 +1,52 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# MANIFEST.in — 源码分发包(sdist)文件包含规则
+# ═══════════════════════════════════════════════════════════════════════════════
+# 本文件控制哪些非 Python 文件会被包含在源码分发包(sdist)中。
+# Wheel 包只包含 Python 模块和命名空间数据文件，不包含这些额外文件。
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# ── 包含项目元数据文件 ────────────────────────────────────────────────────────
+include README.md
+
+# ── 包含配置模板 ──────────────────────────────────────────────────────────────
+include config.example.json
+include mcp-config.example.json
+include gem-metadata-template.csv
+
+# ── 包含源码目录下的所有 Python 文件 ──────────────────────────────────────────
+recursive-include batch_video_skill *.py
+recursive-include batch_video_skill py.typed
+recursive-include references *.md
+
+# ── 包含测试目录 (源码分发中包含，便于用户运行测试) ─────────────────────────
+recursive-include tests *.py
+
+# ── 包含类型标记文件 ──────────────────────────────────────────────────────────
+include batch_video_skill/py.typed
+
+# ── 排除不需要的文件和目录 ────────────────────────────────────────────────────
+# 版本控制
+exclude .gitignore
+global-exclude .git*
+
+# 缓存和编译产物
+global-exclude __pycache__
+global-exclude *.py[co]
+global-exclude *.so
+global-exclude *.dylib
+global-exclude *.dll
+
+# IDE 和编辑器
+global-exclude .idea
+global-exclude .vscode
+global-exclude *.swp
+
+# 测试相关缓存
+recursive-exclude tests/__pycache__ *
+recursive-exclude .pytest_cache *
+
+# CI/CD 配置
+recursive-exclude .github *
+
+# 文档构建产物
+recursive-exclude docs/_build *

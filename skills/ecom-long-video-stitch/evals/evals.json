@@ -1,0 +1,19 @@
+{
+  "skill_name": "ecom-long-video-stitch",
+  "evals": [
+    {
+      "id": 0,
+      "eval_name": "juicer-60s-seamless-plan",
+      "prompt": "我要给墨西哥市场的一款便携榨汁杯做一条60秒的TikTok带货视频，用即梦Seedance 2.0生成，单段最多只能生成10秒，有固定女主播人设出镜。给我完整方案：怎么分段、每段的提示词、段和段之间怎么衔接，要求最后拼出来的成片看不出任何拼接痕迹。",
+      "expected_output": "分段规划表（约6-7段、留余量）、每个拼接点指定电影转场手法（≥3种轮换）、每段含段末状态卡与承接设计、提示词含跨段逐字一致的一致性锁、景别阶梯、后期音频/微溶解指引",
+      "files": []
+    },
+    {
+      "id": 1,
+      "eval_name": "ffmpeg-stitch-5-clips",
+      "prompt": "我已经用即梦生成好了5段带货视频，在 clips/ 目录（seg01-seg05.mp4，都是竖版但帧率尺寸不完全一样），还有一条 bgm.mp3。帮我把它们拼成一条完整视频 final.mp4：接缝处要自然不跳，BGM整条铺底，最后告诉我怎么检查接缝质量。",
+      "expected_output": "先探测并统一参数再拼接（不是直接concat）、产出final.mp4（时长≈各段之和、含音轨/BGM）、接缝QC方法（抽帧对比）、如用溶解则≤0.25s",
+      "files": ["eval-inputs/clips/seg01-05.mp4", "eval-inputs/bgm.mp3"]
+    }
+  ]
+}
