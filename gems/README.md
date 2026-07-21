@@ -38,3 +38,11 @@
 - `scripts/route.py` — 离线确定性路由：规则 + BM25 + 质量门控 MMR，输出精确 Top-N
 
 `gems/` 目录是这 840 个 Gem 的**提示词源文本**（备份与再部署用）。路由按 gem_id 命中 Gemini 上的在线 Gem，不依赖本地文本，因此 U201–U400 原文暂缺不影响匹配。
+
+## 直接用大模型跑 Gem（不依赖 Gemini 网页）
+
+`gems/tools/build_gem_index.py` 把本目录所有 gem 指令解析成 `gems/index/gem_texts.jsonl`，
+`skills/batch-video-skill` 的本地后端读它，把「gem 指令原文 + 对应手册」作为 system prompt 发给
+DeepSeek/Kimi/OpenAI 等任意 OpenAI 兼容模型，产出与在线 Gem 同规格的分镜与提示词。
+
+详见 [skills/batch-video-skill/references/local-gem-backend.md](../skills/batch-video-skill/references/local-gem-backend.md)。

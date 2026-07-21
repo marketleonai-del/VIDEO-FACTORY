@@ -56,6 +56,7 @@ class BatchFolderOptions:
     auto_gem_route: bool = False
     gem_registry_path: Path | None = None
     gem_model: str = "flash"
+    gem_backend: str = "gemcli"  # "gemcli" (Gemini web) or "local" (text-model API)
     gemcli_path: str = "gemcli"
     gem_timeout_sec: int = 180
     gem_retries: int = 2
@@ -771,7 +772,7 @@ def parse_gem_prompt_output(
 def _process_job(
     job: BatchJob,
     options: BatchFolderOptions,
-    gem_client: GemCliClient | None,
+    gem_client: Any | None,
     hfsy_client: HFSYImageClient | None,
     kuaizi_client: KuaiziVideoClient | None,
     doubao_client: DoubaoSwitcherVideoClient | None,
@@ -944,7 +945,23 @@ def _make_hfsy_client(config: dict[str, Any]) -> HFSYImageClient:
     )
 
 
-def _make_gem_client(config: dict[str, Any], options: BatchFolderOptions) -> GemCliClient:
+def _make_gem_client(config: dict[str, Any], options: BatchFolderOptions) -> Any:
+    """Return the client that turns a gem + product facts into prompts.
+
+    backend="local" runs the gem's instruction text against a chat model API and
+    needs no Gemini cookies; backend="gemcli" keeps the original web path.
+    """
+    if str(options.gem_backend).lower() == "local":
+        from .local_gem_client import make_local_gem_client
+
+        return make_local_gem_client(
+            config,
+            gem_id=options.gem_id or "",
+            timeout_sec=options.gem_timeout_sec,
+            retries=options.gem_retries,
+            retry_delay_sec=options.gem_retry_delay_sec,
+        )
+
     gem_conf = config.get("gemini") or {}
     gem_id = options.gem_id or gem_conf.get("gem_id")
     if not gem_id and not options.auto_gem_route:

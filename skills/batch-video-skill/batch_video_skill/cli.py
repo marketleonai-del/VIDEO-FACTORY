@@ -1316,6 +1316,12 @@ def cmd_storyboard_video(
     help="自动路由使用的 Gem 注册表 JSON",
 )
 @click.option(
+    "--gem-backend",
+    type=click.Choice(["gemcli", "local"]),
+    default="gemcli",
+    help="gemcli=走 Gemini 网页 Gem（需 cookie）；local=用本地 gem 指令文本 + 大模型 API（无需 cookie）",
+)
+@click.option(
     "--gem-model",
     default="flash",
     help="gemcli 调用模型",
@@ -1457,6 +1463,7 @@ def cmd_batch_folder(
     gem_id: str | None,
     auto_gem_route: bool,
     gem_registry: str,
+    gem_backend: str,
     gem_model: str,
     gemcli_path: str,
     gem_timeout: int,
@@ -1511,6 +1518,7 @@ def cmd_batch_folder(
                     gem_id=gem_id,
                     auto_gem_route=auto_gem_route,
                     gem_registry_path=Path(gem_registry) if gem_registry else None,
+                    gem_backend=gem_backend,
                     gem_model=gem_model,
                     gemcli_path=gemcli_path,
                     gem_timeout_sec=gem_timeout,
