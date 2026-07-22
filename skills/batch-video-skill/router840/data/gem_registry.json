@@ -1,0 +1,4228 @@
+{
+  "schema_version": "2.0",
+  "template_count": 840,
+  "sources": [
+    {
+      "file": "verify_results.json",
+      "accepted": 100
+    },
+    {
+      "file": "verify_results.json",
+      "accepted": 100
+    },
+    {
+      "file": "verify_results.json",
+      "accepted": 200
+    },
+    {
+      "file": "verify_results.json",
+      "accepted": 200
+    },
+    {
+      "file": "verify_results.json",
+      "accepted": 240
+    }
+  ],
+  "templates": {
+    "G001": {
+      "gem_id": "ef3237078011",
+      "gem_name": "G001 踩坑七日记",
+      "verified": true
+    },
+    "G002": {
+      "gem_id": "ee26ed2a0c27",
+      "gem_name": "G002 学徒日记",
+      "verified": true
+    },
+    "G003": {
+      "gem_id": "0e5965c43c7b",
+      "gem_name": "G003 烦了整整一周",
+      "verified": true
+    },
+    "G004": {
+      "gem_id": "21b6037305fd",
+      "gem_name": "G004 排查日记",
+      "verified": true
+    },
+    "G005": {
+      "gem_id": "6d0bb9cd919f",
+      "gem_name": "G005 懒人自救七天",
+      "verified": true
+    },
+    "G006": {
+      "gem_id": "e8a44c3a7e81",
+      "gem_name": "G006 记账七日",
+      "verified": true
+    },
+    "G007": {
+      "gem_id": "3157decb98ff",
+      "gem_name": "G007 选礼倒计时",
+      "verified": true
+    },
+    "G008": {
+      "gem_id": "b53df5aaeb60",
+      "gem_name": "G008 跟我过一天",
+      "verified": true
+    },
+    "G009": {
+      "gem_id": "be0eeb3983a7",
+      "gem_name": "G009 照标准过一周",
+      "verified": true
+    },
+    "G010": {
+      "gem_id": "863ac1b87c70",
+      "gem_name": "G010 第七天反转",
+      "verified": true
+    },
+    "G011": {
+      "gem_id": "622b82d9187a",
+      "gem_name": "G011 拦住要下单的闺蜜",
+      "verified": true
+    },
+    "G012": {
+      "gem_id": "db18ad3e3d87",
+      "gem_name": "G012 教笨手室友",
+      "verified": true
+    },
+    "G013": {
+      "gem_id": "8f0731737960",
+      "gem_name": "G013 夫妻互怼同一件家务",
+      "verified": true
+    },
+    "G014": {
+      "gem_id": "4ddf824afde3",
+      "gem_name": "G014 妈妈不信，直到…",
+      "verified": true
+    },
+    "G015": {
+      "gem_id": "689216716b83",
+      "gem_name": "G015 勤快人vs懒人同居",
+      "verified": true
+    },
+    "G016": {
+      "gem_id": "d9b68aa1f6f4",
+      "gem_name": "G016 管账的和乱花的",
+      "verified": true
+    },
+    "G017": {
+      "gem_id": "71fae21cd494",
+      "gem_name": "G017 替男友挑礼物",
+      "verified": true
+    },
+    "G018": {
+      "gem_id": "24ae608b5812",
+      "gem_name": "G018 一件东西两人抢着用",
+      "verified": true
+    },
+    "G019": {
+      "gem_id": "0f1a5c97aee6",
+      "gem_name": "G019 懂行朋友的真实习惯",
+      "verified": true
+    },
+    "G020": {
+      "gem_id": "3ffdefba97c8",
+      "gem_name": "G020 嘲笑过我的人",
+      "verified": true
+    },
+    "G021": {
+      "gem_id": "a082753893ff",
+      "gem_name": "G021 三个价位盲测",
+      "verified": true
+    },
+    "G022": {
+      "gem_id": "8b770ae3be26",
+      "gem_name": "G022 三个标准辨好坏",
+      "verified": true
+    },
+    "G023": {
+      "gem_id": "f3c36e28b0df",
+      "gem_name": "G023 全家盲测都猜错",
+      "verified": true
+    },
+    "G024": {
+      "gem_id": "c012e78fc8b9",
+      "gem_name": "G024 撕掉标签你还认得吗",
+      "verified": true
+    },
+    "G025": {
+      "gem_id": "e81d8cf985cf",
+      "gem_name": "G025 闭眼选也不出错？",
+      "verified": true
+    },
+    "G026": {
+      "gem_id": "ea1499e3f4bd",
+      "gem_name": "G026 贵的和便宜的盲测",
+      "verified": true
+    },
+    "G027": {
+      "gem_id": "53f34a832427",
+      "gem_name": "G027 收礼人盲选",
+      "verified": true
+    },
+    "G028": {
+      "gem_id": "c2f77329025e",
+      "gem_name": "G028 随机场景轮盘",
+      "verified": true
+    },
+    "G029": {
+      "gem_id": "11bd2e2dacf1",
+      "gem_name": "G029 按检测思路复测",
+      "verified": true
+    },
+    "G030": {
+      "gem_id": "5e052ecc05d6",
+      "gem_name": "G030 我赌它输",
+      "verified": true
+    },
+    "G031": {
+      "gem_id": "2572ad8ef0e6",
+      "gem_name": "G031 好坏的声音",
+      "verified": true
+    },
+    "G032": {
+      "gem_id": "1cfb2b95fbae",
+      "gem_name": "G032 听声辨质感",
+      "verified": true
+    },
+    "G033": {
+      "gem_id": "07acc052606c",
+      "gem_name": "G033 清理解压现场",
+      "verified": true
+    },
+    "G034": {
+      "gem_id": "685f59dd8505",
+      "gem_name": "G034 微距下的真相",
+      "verified": true
+    },
+    "G035": {
+      "gem_id": "a6870c89124b",
+      "gem_name": "G035 一个动作的ASMR",
+      "verified": true
+    },
+    "G036": {
+      "gem_id": "b34cbf4d0556",
+      "gem_name": "G036 一分钱一分货的特写",
+      "verified": true
+    },
+    "G037": {
+      "gem_id": "2be245b1a3bc",
+      "gem_name": "G037 拆礼物的声音",
+      "verified": true
+    },
+    "G038": {
+      "gem_id": "3200aeb88c64",
+      "gem_name": "G038 一天里的五种声音",
+      "verified": true
+    },
+    "G039": {
+      "gem_id": "1eafbf3705a7",
+      "gem_name": "G039 实验室级微距验证",
+      "verified": true
+    },
+    "G040": {
+      "gem_id": "c735021d10ee",
+      "gem_name": "G040 看着废了，听着没有",
+      "verified": true
+    },
+    "G041": {
+      "gem_id": "a0b9aaf38e6c",
+      "gem_name": "G041 我为踩坑花了多少钱",
+      "verified": true
+    },
+    "G042": {
+      "gem_id": "57b5d14344b0",
+      "gem_name": "G042 它凭什么这个价",
+      "verified": true
+    },
+    "G043": {
+      "gem_id": "f32088ce7061",
+      "gem_name": "G043 每天浪费的20分钟",
+      "verified": true
+    },
+    "G044": {
+      "gem_id": "1984785991aa",
+      "gem_name": "G044 耗材刺客",
+      "verified": true
+    },
+    "G045": {
+      "gem_id": "2ba3edeae326",
+      "gem_name": "G045 省下的步骤数出来",
+      "verified": true
+    },
+    "G046": {
+      "gem_id": "23599fe57340",
+      "gem_name": "G046 一年账单对比",
+      "verified": true
+    },
+    "G047": {
+      "gem_id": "ae3a45171cf9",
+      "gem_name": "G047 预算内的最优解",
+      "verified": true
+    },
+    "G048": {
+      "gem_id": "5b1cbede5165",
+      "gem_name": "G048 一个价格÷五个用途",
+      "verified": true
+    },
+    "G049": {
+      "gem_id": "1b7f3d6f1c77",
+      "gem_name": "G049 按官方数据复算",
+      "verified": true
+    },
+    "G050": {
+      "gem_id": "ca24890c813c",
+      "gem_name": "G050 以为亏了，算完账…",
+      "verified": true
+    },
+    "G051": {
+      "gem_id": "01cd135bd40b",
+      "gem_name": "G051 我把它用坏了才知道",
+      "verified": true
+    },
+    "G052": {
+      "gem_id": "5a9a5018c5aa",
+      "gem_name": "G052 翻车原因三连查",
+      "verified": true
+    },
+    "G053": {
+      "gem_id": "3d17cf1757c3",
+      "gem_name": "G053 谁还没搞砸过",
+      "verified": true
+    },
+    "G054": {
+      "gem_id": "31719f39eb4a",
+      "gem_name": "G054 不是你的错，是方法错",
+      "verified": true
+    },
+    "G055": {
+      "gem_id": "9a9ad100c63b",
+      "gem_name": "G055 懒出来的事故现场",
+      "verified": true
+    },
+    "G056": {
+      "gem_id": "6fb4ee80a9c4",
+      "gem_name": "G056 修还是换？我先修给你看",
+      "verified": true
+    },
+    "G057": {
+      "gem_id": "879b8971c636",
+      "gem_name": "G057 送错礼物的补救",
+      "verified": true
+    },
+    "G058": {
+      "gem_id": "1072a1e3b878",
+      "gem_name": "G058 在哪都能翻车，在哪都能救",
+      "verified": true
+    },
+    "G059": {
+      "gem_id": "6017f88b850f",
+      "gem_name": "G059 说明书没用，老师傅有用",
+      "verified": true
+    },
+    "G060": {
+      "gem_id": "8c4ee8f54ac6",
+      "gem_name": "G060 废了？看我救回来",
+      "verified": true
+    },
+    "G061": {
+      "gem_id": "3dd883035726",
+      "gem_name": "G061 你的手正在踩坑",
+      "verified": true
+    },
+    "G062": {
+      "gem_id": "35033c673374",
+      "gem_name": "G062 跟着我的手做一遍",
+      "verified": true
+    },
+    "G063": {
+      "gem_id": "a981498adaf4",
+      "gem_name": "G063 这只手，是不是很像你",
+      "verified": true
+    },
+    "G064": {
+      "gem_id": "0ee9353eb650",
+      "gem_name": "G064 我的手掀开了它",
+      "verified": true
+    },
+    "G065": {
+      "gem_id": "dd627ee9d974",
+      "gem_name": "G065 一只手，全搞定",
+      "verified": true
+    },
+    "G066": {
+      "gem_id": "26f32517657a",
+      "gem_name": "G066 从钱包的角度看这笔账",
+      "verified": true
+    },
+    "G067": {
+      "gem_id": "8caafb68c67c",
+      "gem_name": "G067 拆开它的那双手",
+      "verified": true
+    },
+    "G068": {
+      "gem_id": "7d0e8f84239b",
+      "gem_name": "G068 我的一天，都用它",
+      "verified": true
+    },
+    "G069": {
+      "gem_id": "da2f1abff27e",
+      "gem_name": "G069 照师傅的手法，我做了一遍",
+      "verified": true
+    },
+    "G070": {
+      "gem_id": "efb542ee4fe2",
+      "gem_name": "G070 我的手以为这次要砸了",
+      "verified": true
+    },
+    "G071": {
+      "gem_id": "aa3025052137",
+      "gem_name": "G071 切开之后我不敢再乱买",
+      "verified": true
+    },
+    "G072": {
+      "gem_id": "0035ac0c4276",
+      "gem_name": "G072 拆开看懂它，你就不会买错",
+      "verified": true
+    },
+    "G073": {
+      "gem_id": "0a97fbbdab0c",
+      "gem_name": "G073 拆开你用了三年的那个",
+      "verified": true
+    },
+    "G074": {
+      "gem_id": "f2b344b87005",
+      "gem_name": "G074 放到显微镜下，才看见真相",
+      "verified": true
+    },
+    "G075": {
+      "gem_id": "639bedc5c03e",
+      "gem_name": "G075 拆开一次，以后都省心",
+      "verified": true
+    },
+    "G076": {
+      "gem_id": "0ff2da7f0d75",
+      "gem_name": "G076 拆开贵的和便宜的，差在哪",
+      "verified": true
+    },
+    "G077": {
+      "gem_id": "fbb1e4c1473f",
+      "gem_name": "G077 送人前，我先拆开验了验",
+      "verified": true
+    },
+    "G078": {
+      "gem_id": "8b32c58177ce",
+      "gem_name": "G078 拆开才发现，它能干这么多",
+      "verified": true
+    },
+    "G079": {
+      "gem_id": "a63281fc451d",
+      "gem_name": "G079 照检测流程，我把它解剖了",
+      "verified": true
+    },
+    "G080": {
+      "gem_id": "3631f1689d40",
+      "gem_name": "G080 拆开之前，我完全想错了",
+      "verified": true
+    },
+    "G081": {
+      "gem_id": "fdf35c50dba5",
+      "gem_name": "G081 路人一句话点醒我",
+      "verified": true
+    },
+    "G082": {
+      "gem_id": "122b73c260c5",
+      "gem_name": "G082 街头三个问题，测出你会不会选",
+      "verified": true
+    },
+    "G083": {
+      "gem_id": "dee2d04b78c3",
+      "gem_name": "G083 问了十个人，都说同一句",
+      "verified": true
+    },
+    "G084": {
+      "gem_id": "6f00c2cffe26",
+      "gem_name": "G084 街头实测，戳破一个误会",
+      "verified": true
+    },
+    "G085": {
+      "gem_id": "cd6bf819fdeb",
+      "gem_name": "G085 让最怕麻烦的人试试",
+      "verified": true
+    },
+    "G086": {
+      "gem_id": "c4cc5c6a2d6e",
+      "gem_name": "G086 街头问价，全猜贵了",
+      "verified": true
+    },
+    "G087": {
+      "gem_id": "b4cec19914c1",
+      "gem_name": "G087 让收礼的人当场选",
+      "verified": true
+    },
+    "G088": {
+      "gem_id": "a72598b791ad",
+      "gem_name": "G088 同一个东西，不同人不同用法",
+      "verified": true
+    },
+    "G089": {
+      "gem_id": "70d4ee461cf5",
+      "gem_name": "G089 让做这行的人来评",
+      "verified": true
+    },
+    "G090": {
+      "gem_id": "def7905b33d0",
+      "gem_name": "G090 最不看好的人，最后改口了",
+      "verified": true
+    },
+    "G091": {
+      "gem_id": "a84c636d8cef",
+      "gem_name": "G091 我踩过的坑，倒数到最冤的第一名",
+      "verified": true
+    },
+    "G092": {
+      "gem_id": "dc794ce0c62d",
+      "gem_name": "G092 会挑的人都看这几点，第一点最多人漏",
+      "verified": true
+    },
+    "G093": {
+      "gem_id": "0f350d3ff521",
+      "gem_name": "G093 最让人崩溃的瞬间，第一名太真实",
+      "verified": true
+    },
+    "G094": {
+      "gem_id": "abc5bd298aee",
+      "gem_name": "G094 没人主动告诉你的几件事，第一条最狠",
+      "verified": true
+    },
+    "G095": {
+      "gem_id": "5ffc8ad39560",
+      "gem_name": "G095 最省事的做法排行，第一名躺着就完成",
+      "verified": true
+    },
+    "G096": {
+      "gem_id": "d6396521fc7e",
+      "gem_name": "G096 最省钱的替代法，第一名省一半",
+      "verified": true
+    },
+    "G097": {
+      "gem_id": "ff9d9f30ced6",
+      "gem_name": "G097 收礼人最想要的，第一名出乎意料",
+      "verified": true
+    },
+    "G098": {
+      "gem_id": "f8cce092e574",
+      "gem_name": "G098 它能上场的场景，第一个你想不到",
+      "verified": true
+    },
+    "G099": {
+      "gem_id": "d81789d2a244",
+      "gem_name": "G099 按检测维度排名，第一项最容易翻车",
+      "verified": true
+    },
+    "G100": {
+      "gem_id": "b98dc7b9446e",
+      "gem_name": "G100 排到最后，第一名竟是我最看不上的",
+      "verified": true
+    },
+    "G101": {
+      "gem_id": "709dd28535a0",
+      "gem_name": "G101 哄睡七日记",
+      "verified": true
+    },
+    "G102": {
+      "gem_id": "e24478fd6966",
+      "gem_name": "G102 婆婆不信，直到她看见",
+      "verified": true
+    },
+    "G103": {
+      "gem_id": "3f4287919364",
+      "gem_name": "G103 三个餐具，只有一个敢给娃用",
+      "verified": true
+    },
+    "G104": {
+      "gem_id": "0b4d1e7a6da9",
+      "gem_name": "G104 洗澡水的声音会说话",
+      "verified": true
+    },
+    "G105": {
+      "gem_id": "19d21e8265e7",
+      "gem_name": "G105 一年尿布账，算完我沉默了",
+      "verified": true
+    },
+    "G106": {
+      "gem_id": "d836900d8a57",
+      "gem_name": "G106 辅食机·我替你踩过的三个坑",
+      "verified": true
+    },
+    "G107": {
+      "gem_id": "40afd2d998d4",
+      "gem_name": "G107 一只手，给娃剪好头发",
+      "verified": true
+    },
+    "G108": {
+      "gem_id": "84be2dbf0733",
+      "gem_name": "G108 拆开玩具看用料，就不会买错",
+      "verified": true
+    },
+    "G109": {
+      "gem_id": "4825c27cc608",
+      "gem_name": "G109 路人看到这一幕的反应",
+      "verified": true
+    },
+    "G110": {
+      "gem_id": "b6dee83d7e06",
+      "gem_name": "G110 带娃出门必备，倒数第一名",
+      "verified": true
+    },
+    "G111": {
+      "gem_id": "60d01c0c8db5",
+      "gem_name": "G111 学生党护肤七天，第七天反转",
+      "verified": true
+    },
+    "G112": {
+      "gem_id": "4be23495a317",
+      "gem_name": "G112 帮闺蜜挑生日礼物",
+      "verified": true
+    },
+    "G113": {
+      "gem_id": "a18037db0e60",
+      "gem_name": "G113 贵的和平价盲测，我赌你选错",
+      "verified": true
+    },
+    "G114": {
+      "gem_id": "3fbc3029e7f1",
+      "gem_name": "G114 上妆的声音有点上头",
+      "verified": true
+    },
+    "G115": {
+      "gem_id": "dbc1ee278b56",
+      "gem_name": "G115 宿舍这一顿，省下多少钱",
+      "verified": true
+    },
+    "G116": {
+      "gem_id": "bf32108fbc4d",
+      "gem_name": "G116 卷发翻车？谁没手残过",
+      "verified": true
+    },
+    "G117": {
+      "gem_id": "9e8b43c10246",
+      "gem_name": "G117 跟着我的手，别踩这个坑",
+      "verified": true
+    },
+    "G118": {
+      "gem_id": "cbea5951193b",
+      "gem_name": "G118 放大看，才知道差在哪",
+      "verified": true
+    },
+    "G119": {
+      "gem_id": "aa69fe3db351",
+      "gem_name": "G119 一整天，陌生人都在问我这个",
+      "verified": true
+    },
+    "G120": {
+      "gem_id": "fd477543a164",
+      "gem_name": "G120 宿舍必备，倒数第一名",
+      "verified": true
+    },
+    "G121": {
+      "gem_id": "0a6202770128",
+      "gem_name": "G121 用它办公一周的真实体验",
+      "verified": true
+    },
+    "G122": {
+      "gem_id": "37ca43269981",
+      "gem_name": "G122 她不信，直到数据摆出来",
+      "verified": true
+    },
+    "G123": {
+      "gem_id": "d7c5f4164470",
+      "gem_name": "G123 蒙眼听三副耳机，结果没想到",
+      "verified": true
+    },
+    "G124": {
+      "gem_id": "cf658e515e84",
+      "gem_name": "G124 这个声音，懂的都懂",
+      "verified": true
+    },
+    "G125": {
+      "gem_id": "3a6003456a50",
+      "gem_name": "G125 踩坑的冤枉钱，我数给你看",
+      "verified": true
+    },
+    "G126": {
+      "gem_id": "17ba4a3d78e9",
+      "gem_name": "G126 旧车翻新，我先修给你看",
+      "verified": true
+    },
+    "G127": {
+      "gem_id": "26ce3c8fda51",
+      "gem_name": "G127 我的一天，全靠这几样",
+      "verified": true
+    },
+    "G128": {
+      "gem_id": "e2ca38062732",
+      "gem_name": "G128 拆开看结构，你就不会买错",
+      "verified": true
+    },
+    "G129": {
+      "gem_id": "5812e1b73c52",
+      "gem_name": "G129 路人第一反应，不用演",
+      "verified": true
+    },
+    "G130": {
+      "gem_id": "0c7dd1653371",
+      "gem_name": "G130 桌搭必备，倒数到第一",
+      "verified": true
+    },
+    "G131": {
+      "gem_id": "1016a783b7ac",
+      "gem_name": "G131 陪爸妈过一周，都用它",
+      "verified": true
+    },
+    "G132": {
+      "gem_id": "bd3cfda9382a",
+      "gem_name": "G132 买给爸妈，他们嘴上说浪费",
+      "verified": true
+    },
+    "G133": {
+      "gem_id": "6cdfc74abf60",
+      "gem_name": "G133 三个血压计，按医生思路测",
+      "verified": true
+    },
+    "G134": {
+      "gem_id": "e5f3ede38400",
+      "gem_name": "G134 泡脚的声音，一天的累都化了",
+      "verified": true
+    },
+    "G135": {
+      "gem_id": "c06b7828118a",
+      "gem_name": "G135 护具这笔账，别买错",
+      "verified": true
+    },
+    "G136": {
+      "gem_id": "f72183837ee6",
+      "gem_name": "G136 用坏过才知道怎么选",
+      "verified": true
+    },
+    "G137": {
+      "gem_id": "3869192d1ac3",
+      "gem_name": "G137 一只手，看清所有小字",
+      "verified": true
+    },
+    "G138": {
+      "gem_id": "635f95f78f31",
+      "gem_name": "G138 拆开看用料，给爸妈才放心",
+      "verified": true
+    },
+    "G139": {
+      "gem_id": "18338c6210b8",
+      "gem_name": "G139 这一幕，提醒所有做子女的",
+      "verified": true
+    },
+    "G140": {
+      "gem_id": "da008234aac5",
+      "gem_name": "G140 送爸妈，倒数到最贴心的一个",
+      "verified": true
+    },
+    "G141": {
+      "gem_id": "39f40543c257",
+      "gem_name": "G141 跟练七天，第七天照镜子",
+      "verified": true
+    },
+    "G142": {
+      "gem_id": "e88c478f4914",
+      "gem_name": "G142 教健身房新手的第一件事",
+      "verified": true
+    },
+    "G143": {
+      "gem_id": "43cd20b6ece0",
+      "gem_name": "G143 三桶盲测，别被包装骗了",
+      "verified": true
+    },
+    "G144": {
+      "gem_id": "9385ffb6cf2d",
+      "gem_name": "G144 打完这一下，舒服到头皮发麻",
+      "verified": true
+    },
+    "G145": {
+      "gem_id": "319c126cbf89",
+      "gem_name": "G145 办卡vs在家，账算完就懂",
+      "verified": true
+    },
+    "G146": {
+      "gem_id": "da4160ea940e",
+      "gem_name": "G146 第一次用翻车？谁不是",
+      "verified": true
+    },
+    "G147": {
+      "gem_id": "dbd829bc1632",
+      "gem_name": "G147 跟着我的动作，一遍就会",
+      "verified": true
+    },
+    "G148": {
+      "gem_id": "00b2e9b59f90",
+      "gem_name": "G148 拆开看传感器，数据准不准",
+      "verified": true
+    },
+    "G149": {
+      "gem_id": "0baac6a464cd",
+      "gem_name": "G149 健身房老手的真实习惯",
+      "verified": true
+    },
+    "G150": {
+      "gem_id": "312546f6c7a6",
+      "gem_name": "G150 居家健身必备，倒数第一",
+      "verified": true
+    },
+    "G151": {
+      "gem_id": "5ea7fd45902d",
+      "gem_name": "G151 给猫洗澡七日，越来越省事",
+      "verified": true
+    },
+    "G152": {
+      "gem_id": "ae951c254135",
+      "gem_name": "G152 两只主子抢着睡",
+      "verified": true
+    },
+    "G153": {
+      "gem_id": "1e275e0ed68b",
+      "gem_name": "G153 三种零食盲测，主子用脚投票",
+      "verified": true
+    },
+    "G154": {
+      "gem_id": "b0b654a0ba3b",
+      "gem_name": "G154 流水的声音，猫听了就过来",
+      "verified": true
+    },
+    "G155": {
+      "gem_id": "6b63606a3668",
+      "gem_name": "G155 出差三天，省下多少心",
+      "verified": true
+    },
+    "G156": {
+      "gem_id": "b6beaf6b844e",
+      "gem_name": "G156 沙发全是毛？我先救给你看",
+      "verified": true
+    },
+    "G157": {
+      "gem_id": "a2b2c704f498",
+      "gem_name": "G157 这只手梳过的猫，都眯眼了",
+      "verified": true
+    },
+    "G158": {
+      "gem_id": "f53421f508a3",
+      "gem_name": "G158 显微镜下，才看见结团真相",
+      "verified": true
+    },
+    "G159": {
+      "gem_id": "20de4f174cf8",
+      "gem_name": "G159 猫看到这个的第一反应",
+      "verified": true
+    },
+    "G160": {
+      "gem_id": "0c3970e90f04",
+      "gem_name": "G160 遛狗必备，倒数别买错",
+      "verified": true
+    },
+    "G161": {
+      "gem_id": "0568ca340f0d",
+      "gem_name": "G161 整理一周，家像换了个",
+      "verified": true
+    },
+    "G162": {
+      "gem_id": "1ab981e6e0d0",
+      "gem_name": "G162 夫妻俩为这件小事吵过",
+      "verified": true
+    },
+    "G163": {
+      "gem_id": "f7d2f2b4baaf",
+      "gem_name": "G163 三款盲测，别再交智商税",
+      "verified": true
+    },
+    "G164": {
+      "gem_id": "782f7e46b722",
+      "gem_name": "G164 解压现场，越脏越治愈",
+      "verified": true
+    },
+    "G165": {
+      "gem_id": "25221ddd82a1",
+      "gem_name": "G165 省下的食材，数出来吓一跳",
+      "verified": true
+    },
+    "G166": {
+      "gem_id": "b12c776a3bbd",
+      "gem_name": "G166 切到手过才知道怎么选",
+      "verified": true
+    },
+    "G167": {
+      "gem_id": "78a34cf8b8a4",
+      "gem_name": "G167 跟着我的手，墙面多出一半",
+      "verified": true
+    },
+    "G168": {
+      "gem_id": "d5f1a162b4f0",
+      "gem_name": "G168 抽开看内部，到底压不压得住",
+      "verified": true
+    },
+    "G169": {
+      "gem_id": "807b3ce5ab29",
+      "gem_name": "G169 堵成这样，一下通了的反应",
+      "verified": true
+    },
+    "G170": {
+      "gem_id": "600367cc646f",
+      "gem_name": "G170 厨房必备，倒数到最省空间",
+      "verified": true
+    },
+    "G171": {
+      "gem_id": "59a21adb7b0c",
+      "gem_name": "G171 露营七天，装备越用越精",
+      "verified": true
+    },
+    "G172": {
+      "gem_id": "39344ed5ec9c",
+      "gem_name": "G172 他笑我买贵了，直到下雨",
+      "verified": true
+    },
+    "G173": {
+      "gem_id": "a17c2b24e7c7",
+      "gem_name": "G173 三个保温杯，谁撑到最后",
+      "verified": true
+    },
+    "G174": {
+      "gem_id": "d52f9b5d6cca",
+      "gem_name": "G174 点亮的那一刻，整个夜晚",
+      "verified": true
+    },
+    "G175": {
+      "gem_id": "3654eb77d930",
+      "gem_name": "G175 一套桌椅，算算用几次回本",
+      "verified": true
+    },
+    "G176": {
+      "gem_id": "64f1493d83ae",
+      "gem_name": "G176 搭塌过才懂怎么选不翻车",
+      "verified": true
+    },
+    "G177": {
+      "gem_id": "8cb28cabff9e",
+      "gem_name": "G177 一个人，五分钟开火做饭",
+      "verified": true
+    },
+    "G178": {
+      "gem_id": "dcec9f93a0ad",
+      "gem_name": "G178 拆开看做工，老钓友才懂",
+      "verified": true
+    },
+    "G179": {
+      "gem_id": "200669813bea",
+      "gem_name": "G179 断电现场，大家的反应",
+      "verified": true
+    },
+    "G180": {
+      "gem_id": "9b0924c21355",
+      "gem_name": "G180 徒步必带，倒数到保命第一",
+      "verified": true
+    },
+    "G181": {
+      "gem_id": "0368c358480e",
+      "gem_name": "G181 久坐一周，脖子终于不酸",
+      "verified": true
+    },
+    "G182": {
+      "gem_id": "5599070cb37d",
+      "gem_name": "G182 带饭党和外卖党，一个月差多少",
+      "verified": true
+    },
+    "G183": {
+      "gem_id": "4d77cae35498",
+      "gem_name": "G183 开放办公室，三款盲测谁最静",
+      "verified": true
+    },
+    "G184": {
+      "gem_id": "c7387ecf854a",
+      "gem_name": "G184 工位手冲的声音，续命",
+      "verified": true
+    },
+    "G185": {
+      "gem_id": "8df5e0d590ee",
+      "gem_name": "G185 健康这笔账，别买错桌子",
+      "verified": true
+    },
+    "G186": {
+      "gem_id": "f1f7c48104c2",
+      "gem_name": "G186 用错险出事，教你怎么选",
+      "verified": true
+    },
+    "G187": {
+      "gem_id": "746d58df6052",
+      "gem_name": "G187 一整天打字，手腕不再疼",
+      "verified": true
+    },
+    "G188": {
+      "gem_id": "45fb1d8ac084",
+      "gem_name": "G188 拆开看灯珠，伤不伤眼",
+      "verified": true
+    },
+    "G189": {
+      "gem_id": "1f501aaf3d65",
+      "gem_name": "G189 同事看到都想抢的桌搭",
+      "verified": true
+    },
+    "G190": {
+      "gem_id": "601e76c87829",
+      "gem_name": "G190 打工人通勤必备，倒数第一",
+      "verified": true
+    },
+    "G191": {
+      "gem_id": "da600f8247f6",
+      "gem_name": "G191 坚持七天，背影都变了",
+      "verified": true
+    },
+    "G192": {
+      "gem_id": "bd030bb400bb",
+      "gem_name": "G192 婆媳因为这壶茶聊到一起",
+      "verified": true
+    },
+    "G193": {
+      "gem_id": "3b5b4f38ea65",
+      "gem_name": "G193 按护肤师的思路，三台对照",
+      "verified": true
+    },
+    "G194": {
+      "gem_id": "9ccbf79180b4",
+      "gem_name": "G194 涂开的那一刻，肤感骗不了人",
+      "verified": true
+    },
+    "G195": {
+      "gem_id": "2b8ddb2c485c",
+      "gem_name": "G195 在家做SPA，省下的钱算给你看",
+      "verified": true
+    },
+    "G196": {
+      "gem_id": "f991bf00abcc",
+      "gem_name": "G196 护发翻过车，才懂怎么选",
+      "verified": true
+    },
+    "G197": {
+      "gem_id": "1a83e38e59ea",
+      "gem_name": "G197 这双手的保养，像不像你",
+      "verified": true
+    },
+    "G198": {
+      "gem_id": "57547d5473aa",
+      "gem_name": "G198 拆开看探头，值不值这个价",
+      "verified": true
+    },
+    "G199": {
+      "gem_id": "14da8f00b72d",
+      "gem_name": "G199 路人回头，才是真显瘦",
+      "verified": true
+    },
+    "G200": {
+      "gem_id": "b7902f9fda5a",
+      "gem_name": "G200 送长辈，倒数到最有面子",
+      "verified": true
+    },
+    "U201": {
+      "gem_id": "b1ead1ed9e4c",
+      "gem_name": "U201 七日记录体 ｜ 日记连载×共情",
+      "verified": true
+    },
+    "U202": {
+      "gem_id": "c3eb8533576a",
+      "gem_name": "U202 关系反转型 ｜ 双人关系×打脸",
+      "verified": true
+    },
+    "U203": {
+      "gem_id": "25af6138e1a1",
+      "gem_name": "U203 盲测对比体 ｜ 盲测挑战×权威",
+      "verified": true
+    },
+    "U204": {
+      "gem_id": "b00840767463",
+      "gem_name": "U204 沉浸解压体 ｜ 感官沉浸×治愈",
+      "verified": true
+    },
+    "U205": {
+      "gem_id": "906fc9b6c112",
+      "gem_name": "U205 算账单体 ｜ 算账对比×省钱",
+      "verified": true
+    },
+    "U206": {
+      "gem_id": "5f8406c9660c",
+      "gem_name": "U206 POV第一视角 ｜ 第一视角×懒人",
+      "verified": true
+    },
+    "U207": {
+      "gem_id": "cbfe2835a35b",
+      "gem_name": "U207 拆解揭秘体 ｜ 拆解内部×避坑",
+      "verified": true
+    },
+    "U208": {
+      "gem_id": "52ba5181339f",
+      "gem_name": "U208 路人反应体 ｜ 路人真实反应×社会认同",
+      "verified": true
+    },
+    "U209": {
+      "gem_id": "f05aa4e2a7d3",
+      "gem_name": "U209 倒数清单体 ｜ 倒数排名×干货",
+      "verified": true
+    },
+    "U210": {
+      "gem_id": "6a8ff31e7201",
+      "gem_name": "U210 反常识反水体 ｜ 反常识×反转",
+      "verified": true
+    },
+    "U211": {
+      "gem_id": "9c5b60f95355",
+      "gem_name": "U211 倒计时挑战体 ｜ 限时挑战×悬念",
+      "verified": true
+    },
+    "U212": {
+      "gem_id": "daa6c0c15d7e",
+      "gem_name": "U212 打赌体 ｜ 对赌挑战×好胜",
+      "verified": true
+    },
+    "U213": {
+      "gem_id": "a377d7a61bac",
+      "gem_name": "U213 劝退反买体 ｜ 反向种草×逆反",
+      "verified": true
+    },
+    "U214": {
+      "gem_id": "34cec0282b78",
+      "gem_name": "U214 内行揭秘体 ｜ 行家视角×信息差",
+      "verified": true
+    },
+    "U215": {
+      "gem_id": "51699099ca87",
+      "gem_name": "U215 前员工爆料体 ｜ 圈内爆料×禁忌",
+      "verified": true
+    },
+    "U216": {
+      "gem_id": "95b29bb78d82",
+      "gem_name": "U216 过来人忠告体 ｜ 血泪经验×损失厌恶",
+      "verified": true
+    },
+    "U217": {
+      "gem_id": "e68351a19007",
+      "gem_name": "U217 新手翻车体 ｜ 小白翻车×反转",
+      "verified": true
+    },
+    "U218": {
+      "gem_id": "24b70061c87e",
+      "gem_name": "U218 极限压力测试体 ｜ 暴力实测×视觉冲击",
+      "verified": true
+    },
+    "U219": {
+      "gem_id": "022699bb5e16",
+      "gem_name": "U219 破坏还原体 ｜ 先破坏再拯救×反转",
+      "verified": true
+    },
+    "U220": {
+      "gem_id": "3cd88e674a04",
+      "gem_name": "U220 一物多用体 ｜ 超预期用途×惊喜",
+      "verified": true
+    },
+    "U221": {
+      "gem_id": "5d125daf73e7",
+      "gem_name": "U221 隐藏功能体 ｜ 相见恨晚×好奇缺口",
+      "verified": true
+    },
+    "U222": {
+      "gem_id": "5147b61416aa",
+      "gem_name": "U222 结局前置体 ｜ 高潮前置×倒叙",
+      "verified": true
+    },
+    "U223": {
+      "gem_id": "ada277525149",
+      "gem_name": "U223 假翻车真香体 ｜ 欲扬先抑×紧张反转",
+      "verified": true
+    },
+    "U224": {
+      "gem_id": "6456c0aacc90",
+      "gem_name": "U224 悬案侦破体 ｜ 生活悬案×逻辑爽",
+      "verified": true
+    },
+    "U225": {
+      "gem_id": "ffc25c465d72",
+      "gem_name": "U225 法庭审判体 ｜ 拟人审判×新奇",
+      "verified": true
+    },
+    "U226": {
+      "gem_id": "d0b4ea482a85",
+      "gem_name": "U226 淘汰赛体 ｜ 擂台淘汰×竞技悬念",
+      "verified": true
+    },
+    "U227": {
+      "gem_id": "e799ac4b6010",
+      "gem_name": "U227 段位排行体 ｜ 分级科普×认同",
+      "verified": true
+    },
+    "U228": {
+      "gem_id": "4893e980f44b",
+      "gem_name": "U228 N个错误体 ｜ 纠错清单×损失厌恶",
+      "verified": true
+    },
+    "U229": {
+      "gem_id": "70165f3d42bb",
+      "gem_name": "U229 N个理由体 ｜ 理由清单×说服",
+      "verified": true
+    },
+    "U230": {
+      "gem_id": "cdaa8874d90f",
+      "gem_name": "U230 破防共情体 ｜ 情绪暴击×强共情",
+      "verified": true
+    },
+    "U231": {
+      "gem_id": "287c527f9cc3",
+      "gem_name": "U231 嘴硬身体诚实体 ｜ 行为矛盾×幽默",
+      "verified": true
+    },
+    "U232": {
+      "gem_id": "f2c8dffd9559",
+      "gem_name": "U232 委屈吐槽体 ｜ 日常委屈×共鸣",
+      "verified": true
+    },
+    "U233": {
+      "gem_id": "07ad9829c5c5",
+      "gem_name": "U233 沉默演示体 ｜ 零口播×反套路",
+      "verified": true
+    },
+    "U234": {
+      "gem_id": "3fcf2532f5ca",
+      "gem_name": "U234 高能快剪体 ｜ 密集爽点×高唤醒",
+      "verified": true
+    },
+    "U235": {
+      "gem_id": "31dd337ef1f0",
+      "gem_name": "U235 一天Vlog体 ｜ 生活流×自然融入",
+      "verified": true
+    },
+    "U236": {
+      "gem_id": "98a6e74dc218",
+      "gem_name": "U236 场景救急体 ｜ 关键掉链子×英雄时刻",
+      "verified": true
+    },
+    "U237": {
+      "gem_id": "15ab4f931098",
+      "gem_name": "U237 翻包体 ｜ 逐一揭晓×好奇",
+      "verified": true
+    },
+    "U238": {
+      "gem_id": "a344c1f10445",
+      "gem_name": "U238 改造前后体 ｜ 空间/物件改造×反差",
+      "verified": true
+    },
+    "U239": {
+      "gem_id": "db2274762241",
+      "gem_name": "U239 全网寻找体 ｜ 苦寻终得×共鸣",
+      "verified": true
+    },
+    "U240": {
+      "gem_id": "a61567580c7d",
+      "gem_name": "U240 求同款体 ｜ 被追问×社会认同",
+      "verified": true
+    },
+    "U241": {
+      "gem_id": "52b81c46e4c9",
+      "gem_name": "U241 送礼反应体 ｜ 拆礼反应×情绪",
+      "verified": true
+    },
+    "U242": {
+      "gem_id": "63a62ecf286f",
+      "gem_name": "U242 家人监督体 ｜ 围观催促×趣味",
+      "verified": true
+    },
+    "U243": {
+      "gem_id": "a8b1583ebddd",
+      "gem_name": "U243 保姆级教程体 ｜ 手把手教学×实用",
+      "verified": true
+    },
+    "U244": {
+      "gem_id": "52c21cadf115",
+      "gem_name": "U244 选购避坑体 ｜ 挑选攻略×损失厌恶",
+      "verified": true
+    },
+    "U245": {
+      "gem_id": "62d0ae5961ae",
+      "gem_name": "U245 智商税盘点体 ｜ 盘点踩雷×信任",
+      "verified": true
+    },
+    "U246": {
+      "gem_id": "f913f05f23ff",
+      "gem_name": "U246 极端对比体 ｜ 两极对撞×预测误差",
+      "verified": true
+    },
+    "U247": {
+      "gem_id": "3af25c2a80dc",
+      "gem_name": "U247 时间对比体 ｜ 前后周期×过程结果",
+      "verified": true
+    },
+    "U248": {
+      "gem_id": "9a5fa935ced9",
+      "gem_name": "U248 科学实验体 ｜ 小实验×眼见为实",
+      "verified": true
+    },
+    "U249": {
+      "gem_id": "95a0556b7108",
+      "gem_name": "U249 数据可视化体 ｜ 抽象变实物×震撼",
+      "verified": true
+    },
+    "U250": {
+      "gem_id": "11255faee61d",
+      "gem_name": "U250 分界线暴击体 ｜ 一半对一半×强对比",
+      "verified": true
+    },
+    "U251": {
+      "gem_id": "515b712c9add",
+      "gem_name": "U251 反焦虑解法体 ｜ 戳焦虑给解法×情绪释放",
+      "verified": true
+    },
+    "U252": {
+      "gem_id": "c430ff64db30",
+      "gem_name": "U252 相见恨晚体 ｜ 懊悔式安利×损失厌恶",
+      "verified": true
+    },
+    "U253": {
+      "gem_id": "ceca6af7caa0",
+      "gem_name": "U253 疲惫慰藉体 ｜ 小确幸×轻治愈",
+      "verified": true
+    },
+    "U254": {
+      "gem_id": "c448545ed273",
+      "gem_name": "U254 极致偷懒体 ｜ 懒到极致×超预期",
+      "verified": true
+    },
+    "U255": {
+      "gem_id": "57fb0627a4ef",
+      "gem_name": "U255 手残逆袭体 ｜ 零基础成功×安心",
+      "verified": true
+    },
+    "U256": {
+      "gem_id": "f2c7f7eadf26",
+      "gem_name": "U256 秩序满足体 ｜ 整齐爽感×强迫症",
+      "verified": true
+    },
+    "U257": {
+      "gem_id": "9bcbae089d71",
+      "gem_name": "U257 反差登场体 ｜ 意外反差×新奇",
+      "verified": true
+    },
+    "U258": {
+      "gem_id": "e17007cc53fe",
+      "gem_name": "U258 一镜到底体 ｜ 长镜头×真实感",
+      "verified": true
+    },
+    "U259": {
+      "gem_id": "d9d3be3ccaf2",
+      "gem_name": "U259 街头实验体 ｜ 公共实测×社会认同",
+      "verified": true
+    },
+    "U260": {
+      "gem_id": "536f369fb1d6",
+      "gem_name": "U260 平价挑战专业体 ｜ 平价做专业×逆袭",
+      "verified": true
+    },
+    "U261": {
+      "gem_id": "044a00016890",
+      "gem_name": "U261 大牌平替体 ｜ 平替对照×省钱",
+      "verified": true
+    },
+    "U262": {
+      "gem_id": "e3ea8a89c412",
+      "gem_name": "U262 旧物告别体 ｜ 新旧交替×升级欲",
+      "verified": true
+    },
+    "U263": {
+      "gem_id": "eefe55ad3a65",
+      "gem_name": "U263 反向种草体 ｜ 列缺点变优点×反套路",
+      "verified": true
+    },
+    "U264": {
+      "gem_id": "2a7d81a3e192",
+      "gem_name": "U264 极端场景体 ｜ 最狠场景×信任",
+      "verified": true
+    },
+    "U265": {
+      "gem_id": "5b87191ef68a",
+      "gem_name": "U265 一句戳心体 ｜ 金句开场×强共鸣",
+      "verified": true
+    },
+    "U266": {
+      "gem_id": "7cdacc5d9e62",
+      "gem_name": "U266 连环追问体 ｜ 连续追问×自我参照",
+      "verified": true
+    },
+    "U267": {
+      "gem_id": "8a55dcda5086",
+      "gem_name": "U267 结尾反转体 ｜ 全程铺垫×结尾逆转",
+      "verified": true
+    },
+    "U268": {
+      "gem_id": "1e4ecb032827",
+      "gem_name": "U268 情景短剧体 ｜ 微型剧情×沉浸",
+      "verified": true
+    },
+    "U269": {
+      "gem_id": "d69a5d96b79e",
+      "gem_name": "U269 对话金句体 ｜ 双人对话×金句",
+      "verified": true
+    },
+    "U270": {
+      "gem_id": "9a32ccdb17c8",
+      "gem_name": "U270 挑剔者体验体 ｜ 最挑剔的人×说服",
+      "verified": true
+    },
+    "U271": {
+      "gem_id": "c333e61952d3",
+      "gem_name": "U271 极简开箱体 ｜ 反套路开箱×高效",
+      "verified": true
+    },
+    "U272": {
+      "gem_id": "7bb391015124",
+      "gem_name": "U272 仪式感体 ｜ 日常仪式化×氛围",
+      "verified": true
+    },
+    "U273": {
+      "gem_id": "6be6d6b5b705",
+      "gem_name": "U273 意外用途体 ｜ 买A用出B×惊喜",
+      "verified": true
+    },
+    "U274": {
+      "gem_id": "831e294adf82",
+      "gem_name": "U274 全家抢用体 ｜ 连环抢用×社会认同",
+      "verified": true
+    },
+    "U275": {
+      "gem_id": "88f8e3a0652a",
+      "gem_name": "U275 抠门征服体 ｜ 极致抠门×反差",
+      "verified": true
+    },
+    "U276": {
+      "gem_id": "b84f8a1b9bd9",
+      "gem_name": "U276 痛点连环体 ｜ 痛点套痛点×层层递进",
+      "verified": true
+    },
+    "U277": {
+      "gem_id": "7b9bd78a31f1",
+      "gem_name": "U277 差点错过体 ｜ 险些错过×庆幸",
+      "verified": true
+    },
+    "U278": {
+      "gem_id": "101f7843c462",
+      "gem_name": "U278 上瘾体 ｜ 停不下来×行为矛盾",
+      "verified": true
+    },
+    "U279": {
+      "gem_id": "74371858ca53",
+      "gem_name": "U279 显眼包体 ｜ 夸张搞笑×记忆点",
+      "verified": true
+    },
+    "U280": {
+      "gem_id": "8a6fbf2c6d2a",
+      "gem_name": "U280 一秒击中体 ｜ 前3秒暴击×高完播",
+      "verified": true
+    },
+    "U281": {
+      "gem_id": "db1588484300",
+      "gem_name": "U281 有它没它体 ｜ 前后对照×损失厌恶",
+      "verified": true
+    },
+    "U282": {
+      "gem_id": "7e87777d037b",
+      "gem_name": "U282 随时随地体 ｜ 全场景便携×实用",
+      "verified": true
+    },
+    "U283": {
+      "gem_id": "279d813e2a1a",
+      "gem_name": "U283 一步搞定体 ｜ 化繁为简×超预期",
+      "verified": true
+    },
+    "U284": {
+      "gem_id": "7d202c244d2d",
+      "gem_name": "U284 反测评体 ｜ 非常规测评×信任",
+      "verified": true
+    },
+    "U285": {
+      "gem_id": "83218898f609",
+      "gem_name": "U285 痛点合集体 ｜ 快剪共鸣×自我参照",
+      "verified": true
+    },
+    "U286": {
+      "gem_id": "85ed7110ddc1",
+      "gem_name": "U286 起死回生体 ｜ 还原如新×视觉暴击",
+      "verified": true
+    },
+    "U287": {
+      "gem_id": "64a27c357fc9",
+      "gem_name": "U287 立字为据体 ｜ 强承诺×信任",
+      "verified": true
+    },
+    "U288": {
+      "gem_id": "92a1ca6dc6b2",
+      "gem_name": "U288 不买的代价体 ｜ 反向算账×损失厌恶",
+      "verified": true
+    },
+    "U289": {
+      "gem_id": "bcc1fa1cf02b",
+      "gem_name": "U289 平凡封神体 ｜ 小物封神×夸张叙事",
+      "verified": true
+    },
+    "U290": {
+      "gem_id": "9c4262802315",
+      "gem_name": "U290 沉浸痛点体 ｜ 第一视角沉浸×窒息共情",
+      "verified": true
+    },
+    "U291": {
+      "gem_id": "44d84e20d6cf",
+      "gem_name": "U291 不可能测试体 ｜ 看似必败×预测误差",
+      "verified": true
+    },
+    "U292": {
+      "gem_id": "4f5a9294fda0",
+      "gem_name": "U292 细节见真章体 ｜ 放大细节×专业",
+      "verified": true
+    },
+    "U293": {
+      "gem_id": "b7def9ee37ec",
+      "gem_name": "U293 场景切换体 ｜ 同动作多场景×节奏",
+      "verified": true
+    },
+    "U294": {
+      "gem_id": "ce3bcf6ec329",
+      "gem_name": "U294 越用越新体 ｜ 超长耐用×信任",
+      "verified": true
+    },
+    "U295": {
+      "gem_id": "c09a48844726",
+      "gem_name": "U295 一锤定音体 ｜ 争执定音×说服",
+      "verified": true
+    },
+    "U296": {
+      "gem_id": "50c904bcc960",
+      "gem_name": "U296 一眼真假体 ｜ 辨别好坏×权威",
+      "verified": true
+    },
+    "U297": {
+      "gem_id": "ca4f8862ed02",
+      "gem_name": "U297 色彩暴击体 ｜ 强视觉反差×高效",
+      "verified": true
+    },
+    "U298": {
+      "gem_id": "924bd843ed50",
+      "gem_name": "U298 情绪价值体 ｜ 卖情绪不卖功能×悦己",
+      "verified": true
+    },
+    "U299": {
+      "gem_id": "e4491bae6d31",
+      "gem_name": "U299 反焦虑营销体 ｜ 反PUA×认同",
+      "verified": true
+    },
+    "U300": {
+      "gem_id": "c4cdd0a0a0e1",
+      "gem_name": "U300 终极悬念体 ｜ 全程吊悬念×高完播",
+      "verified": true
+    },
+    "U301": {
+      "gem_id": "286b7f360564",
+      "gem_name": "U301 素人证言墙体 ｜ 多人证言×社会认同",
+      "verified": true
+    },
+    "U302": {
+      "gem_id": "1f888ffc4674",
+      "gem_name": "U302 街头采访体 ｜ 主动采访×真实调研",
+      "verified": true
+    },
+    "U303": {
+      "gem_id": "216ba80a258f",
+      "gem_name": "U303 客服接投诉体 ｜ 扮客服×化解疑虑",
+      "verified": true
+    },
+    "U304": {
+      "gem_id": "f7272810769e",
+      "gem_name": "U304 一人分饰两角体 ｜ 自我辩论×趣味",
+      "verified": true
+    },
+    "U305": {
+      "gem_id": "1fcc15edbe4f",
+      "gem_name": "U305 时间胶囊体 ｜ 未来视角×损失厌恶",
+      "verified": true
+    },
+    "U306": {
+      "gem_id": "6ff858accc81",
+      "gem_name": "U306 未来懊悔体 ｜ 预演后悔×损失厌恶",
+      "verified": true
+    },
+    "U307": {
+      "gem_id": "cc2ba4032212",
+      "gem_name": "U307 老友重逢体 ｜ 久别惊讶×变化见证",
+      "verified": true
+    },
+    "U308": {
+      "gem_id": "713403c82275",
+      "gem_name": "U308 邻里串门体 ｜ 串门发现×自然种草",
+      "verified": true
+    },
+    "U309": {
+      "gem_id": "10416f57921a",
+      "gem_name": "U309 群聊爆炸体 ｜ 群里追问×社会认同",
+      "verified": true
+    },
+    "U310": {
+      "gem_id": "80e70a3442e3",
+      "gem_name": "U310 直播救场体 ｜ 直播感翻车×救场",
+      "verified": true
+    },
+    "U311": {
+      "gem_id": "5fad69d998d5",
+      "gem_name": "U311 同价位横评体 ｜ 同价段横评×权威",
+      "verified": true
+    },
+    "U312": {
+      "gem_id": "c5e5cdbaa983",
+      "gem_name": "U312 加钱见档次体 ｜ 阶梯加价×升级诱导",
+      "verified": true
+    },
+    "U313": {
+      "gem_id": "f597e5e47851",
+      "gem_name": "U313 极限低价体 ｜ 这个价能买到啥×预测误差",
+      "verified": true
+    },
+    "U314": {
+      "gem_id": "02337c7ec743",
+      "gem_name": "U314 新旧代对比体 ｜ 迭代升级×升级欲",
+      "verified": true
+    },
+    "U315": {
+      "gem_id": "184832adad64",
+      "gem_name": "U315 山寨打假体 ｜ 拆穿套路×避坑",
+      "verified": true
+    },
+    "U316": {
+      "gem_id": "e14d3ef60077",
+      "gem_name": "U316 冷热极端体 ｜ 极端环境×信任",
+      "verified": true
+    },
+    "U317": {
+      "gem_id": "bf9ce2a03cf0",
+      "gem_name": "U317 延时见证体 ｜ 延时摄影×过程结果",
+      "verified": true
+    },
+    "U318": {
+      "gem_id": "a2f799f951b8",
+      "gem_name": "U318 慢镜真相体 ｜ 高速慢放×眼见为实",
+      "verified": true
+    },
+    "U319": {
+      "gem_id": "8a3c59bc33b8",
+      "gem_name": "U319 盲摸辨质体 ｜ 蒙眼触感×感官",
+      "verified": true
+    },
+    "U320": {
+      "gem_id": "b21d75e2668c",
+      "gem_name": "U320 听声辨质体 ｜ 声音鉴别×专业",
+      "verified": true
+    },
+    "U321": {
+      "gem_id": "901a073cfdfe",
+      "gem_name": "U321 报复性对自己好体 ｜ 悦己宣言×情绪",
+      "verified": true
+    },
+    "U322": {
+      "gem_id": "c8c14f22f8d7",
+      "gem_name": "U322 治好emo体 ｜ 情绪低谷×被治愈",
+      "verified": true
+    },
+    "U323": {
+      "gem_id": "46c75fac1dea",
+      "gem_name": "U323 掌控感体 ｜ 一切搞定×爽感",
+      "verified": true
+    },
+    "U324": {
+      "gem_id": "a867414cd81b",
+      "gem_name": "U324 安全感体 ｜ 有它就踏实×安心",
+      "verified": true
+    },
+    "U325": {
+      "gem_id": "1b9933ed3899",
+      "gem_name": "U325 小胜利体 ｜ 搞定小事×成就感",
+      "verified": true
+    },
+    "U326": {
+      "gem_id": "e3fccf74aca3",
+      "gem_name": "U326 独处高光体 ｜ 高质量独处×向往",
+      "verified": true
+    },
+    "U327": {
+      "gem_id": "c24e7bfeff9f",
+      "gem_name": "U327 恶劣天气体 ｜ 天气场景×救场",
+      "verified": true
+    },
+    "U328": {
+      "gem_id": "becce324b19a",
+      "gem_name": "U328 万物皆可测体 ｜ 花式实测×好奇",
+      "verified": true
+    },
+    "U329": {
+      "gem_id": "fe1896e1e4e6",
+      "gem_name": "U329 网友点单体 ｜ 完成刁难×互动",
+      "verified": true
+    },
+    "U330": {
+      "gem_id": "95b814cbebb2",
+      "gem_name": "U330 24小时挑战体 ｜ 全天沉浸×代入",
+      "verified": true
+    },
+    "U331": {
+      "gem_id": "1e5a222123fb",
+      "gem_name": "U331 成本揭秘体 ｜ 拆成本×信息差",
+      "verified": true
+    },
+    "U332": {
+      "gem_id": "ec9585b3f909",
+      "gem_name": "U332 溯源直击体 ｜ 带你看怎么造×信任",
+      "verified": true
+    },
+    "U333": {
+      "gem_id": "2a87db1c1d37",
+      "gem_name": "U333 禁忌操作体 ｜ 千万别这样×好奇",
+      "verified": true
+    },
+    "U334": {
+      "gem_id": "1bcef3aff315",
+      "gem_name": "U334 传闻验证体 ｜ 验证说法×好奇",
+      "verified": true
+    },
+    "U335": {
+      "gem_id": "ef3f77a7d5e7",
+      "gem_name": "U335 隐藏福利体 ｜ 不主动说的×好奇",
+      "verified": true
+    },
+    "U336": {
+      "gem_id": "4c049f05e4ea",
+      "gem_name": "U336 一物到底体 ｜ 单品通关×实力",
+      "verified": true
+    },
+    "U337": {
+      "gem_id": "2e6e31f1428b",
+      "gem_name": "U337 揭穿滤镜体 ｜ 撕开滤镜×真实",
+      "verified": true
+    },
+    "U338": {
+      "gem_id": "329c42a9b0c1",
+      "gem_name": "U338 冷知识体 ｜ 原来如此×好奇",
+      "verified": true
+    },
+    "U339": {
+      "gem_id": "8dfb6f6ca864",
+      "gem_name": "U339 断舍离体 ｜ 只留一个×极简",
+      "verified": true
+    },
+    "U340": {
+      "gem_id": "ab3e43be18eb",
+      "gem_name": "U340 搬家取舍体 ｜ 搬家暴露×必要性",
+      "verified": true
+    },
+    "U341": {
+      "gem_id": "82290da0a702",
+      "gem_name": "U341 租房神器体 ｜ 不能改造×小神器",
+      "verified": true
+    },
+    "U342": {
+      "gem_id": "065de23aba54",
+      "gem_name": "U342 反囤积体 ｜ 囤的没用×真需求",
+      "verified": true
+    },
+    "U343": {
+      "gem_id": "ec30673086ca",
+      "gem_name": "U343 应急清单体 ｜ 突发必备×损失厌恶",
+      "verified": true
+    },
+    "U344": {
+      "gem_id": "08e594880df4",
+      "gem_name": "U344 换季唤醒体 ｜ 换季场景×刚需唤醒",
+      "verified": true
+    },
+    "U345": {
+      "gem_id": "99dcda68fee6",
+      "gem_name": "U345 被安利真香体 ｜ 我被安利×真香反转",
+      "verified": true
+    },
+    "U346": {
+      "gem_id": "1a893f1b8766",
+      "gem_name": "U346 反向拔草体 ｜ 帮你拔草×信任",
+      "verified": true
+    },
+    "U347": {
+      "gem_id": "4ebf4fa71793",
+      "gem_name": "U347 复购证明体 ｜ 回购N次×信任",
+      "verified": true
+    },
+    "U348": {
+      "gem_id": "eca4a0e2cbd5",
+      "gem_name": "U348 口碑接力体 ｜ 一传一×口碑扩散",
+      "verified": true
+    },
+    "U349": {
+      "gem_id": "6146ccac5db9",
+      "gem_name": "U349 圈层暗号体 ｜ 懂的都懂×圈层认同",
+      "verified": true
+    },
+    "U350": {
+      "gem_id": "16087c2883db",
+      "gem_name": "U350 集体真香体 ｜ 一群人反转×社会认同",
+      "verified": true
+    },
+    "U351": {
+      "gem_id": "8c80b8ed4c6c",
+      "gem_name": "U351 满足感合集体 ｜ 解压满足快剪×感官",
+      "verified": true
+    },
+    "U352": {
+      "gem_id": "97e3da5fe9aa",
+      "gem_name": "U352 对称美学体 ｜ 规整美×秩序愉悦",
+      "verified": true
+    },
+    "U353": {
+      "gem_id": "4b902a313c66",
+      "gem_name": "U353 微距美学体 ｜ 极致微距×质感",
+      "verified": true
+    },
+    "U354": {
+      "gem_id": "9037536428b7",
+      "gem_name": "U354 剪影揭晓体 ｜ 剪影吊胃口×悬念",
+      "verified": true
+    },
+    "U355": {
+      "gem_id": "de12d4a3957b",
+      "gem_name": "U355 俯视全局体 ｜ 上帝视角×全貌",
+      "verified": true
+    },
+    "U356": {
+      "gem_id": "f22c5510d656",
+      "gem_name": "U356 三理由封神体 ｜ 三个硬理由×说服",
+      "verified": true
+    },
+    "U357": {
+      "gem_id": "be167600f679",
+      "gem_name": "U357 灵魂拷问体 ｜ 连环拷问×自省",
+      "verified": true
+    },
+    "U358": {
+      "gem_id": "b131738e8739",
+      "gem_name": "U358 类比降维体 ｜ 生活类比×秒懂",
+      "verified": true
+    },
+    "U359": {
+      "gem_id": "8d91429ad34c",
+      "gem_name": "U359 二选一逼单体 ｜ 两方案对决×衬托",
+      "verified": true
+    },
+    "U360": {
+      "gem_id": "c1550c20b66e",
+      "gem_name": "U360 值不值账体 ｜ 逐条论证×理性说服",
+      "verified": true
+    },
+    "U361": {
+      "gem_id": "a2738eaa657d",
+      "gem_name": "U361 假设推演体 ｜ 如果没有它×损失厌恶",
+      "verified": true
+    },
+    "U362": {
+      "gem_id": "beafa779c9ea",
+      "gem_name": "U362 全网求货体 ｜ 网上都在找×社会认同",
+      "verified": true
+    },
+    "U363": {
+      "gem_id": "8e755ab0b335",
+      "gem_name": "U363 第二人称体 ｜ 全程对你说×代入",
+      "verified": true
+    },
+    "U364": {
+      "gem_id": "9b1729503dfa",
+      "gem_name": "U364 留白想象体 ｜ 关键留白×好奇",
+      "verified": true
+    },
+    "U365": {
+      "gem_id": "dcdc115a511e",
+      "gem_name": "U365 魔性重复体 ｜ 重复洗脑×记忆点",
+      "verified": true
+    },
+    "U366": {
+      "gem_id": "02236854448a",
+      "gem_name": "U366 反高潮体 ｜ 平淡见真章×反套路",
+      "verified": true
+    },
+    "U367": {
+      "gem_id": "d3abaa066620",
+      "gem_name": "U367 卡点节奏体 ｜ 音乐卡点×节奏爽",
+      "verified": true
+    },
+    "U368": {
+      "gem_id": "b7c8918fd0f7",
+      "gem_name": "U368 系列预告体 ｜ 埋下集×追更",
+      "verified": true
+    },
+    "U369": {
+      "gem_id": "26e11df57dd9",
+      "gem_name": "U369 极短一句体 ｜ 一句说完×高效",
+      "verified": true
+    },
+    "U370": {
+      "gem_id": "e5821be4b01b",
+      "gem_name": "U370 反问自省体 ｜ 反问引导×自己想通",
+      "verified": true
+    },
+    "U371": {
+      "gem_id": "ba072c7bd9ef",
+      "gem_name": "U371 品类进化史体 ｜ 演变到它×升级感",
+      "verified": true
+    },
+    "U372": {
+      "gem_id": "426110ff3c78",
+      "gem_name": "U372 尝鲜测评体 ｜ 第一个吃螃蟹×信任",
+      "verified": true
+    },
+    "U373": {
+      "gem_id": "9532c08eeca4",
+      "gem_name": "U373 好差对决体 ｜ 最好vs最差×反差暴击",
+      "verified": true
+    },
+    "U374": {
+      "gem_id": "8d5f736a3dd9",
+      "gem_name": "U374 一票否决体 ｜ 一个硬伤×避坑",
+      "verified": true
+    },
+    "U375": {
+      "gem_id": "28ac10e5c99b",
+      "gem_name": "U375 痛点放大镜体 ｜ 小痛点放大×共鸣",
+      "verified": true
+    },
+    "U376": {
+      "gem_id": "84e44d2ddc89",
+      "gem_name": "U376 无感融入体 ｜ 悄悄改善×润物无声",
+      "verified": true
+    },
+    "U377": {
+      "gem_id": "6d16bdceeae3",
+      "gem_name": "U377 意外合理体 ｜ 反转但合理×记忆",
+      "verified": true
+    },
+    "U378": {
+      "gem_id": "c597dc07f85e",
+      "gem_name": "U378 先抑后扬体 ｜ 先唱衰后打脸×反转",
+      "verified": true
+    },
+    "U379": {
+      "gem_id": "d339fa66cc79",
+      "gem_name": "U379 投票决定体 ｜ 评论区做主×互动",
+      "verified": true
+    },
+    "U380": {
+      "gem_id": "fdd070dcdb22",
+      "gem_name": "U380 硬刚差评体 ｜ 直面差评×信任",
+      "verified": true
+    },
+    "U381": {
+      "gem_id": "7003fec17d7e",
+      "gem_name": "U381 极简三步体 ｜ 三步搞定×懒人",
+      "verified": true
+    },
+    "U382": {
+      "gem_id": "f89fd59d29d3",
+      "gem_name": "U382 反差性价比体 ｜ 平平却超值×预测误差",
+      "verified": true
+    },
+    "U383": {
+      "gem_id": "08569e23badb",
+      "gem_name": "U383 老带新入门体 ｜ 老手带新×信任",
+      "verified": true
+    },
+    "U384": {
+      "gem_id": "ea780c989240",
+      "gem_name": "U384 情怀连接体 ｜ 唤起记忆×情感",
+      "verified": true
+    },
+    "U385": {
+      "gem_id": "e75471a87605",
+      "gem_name": "U385 反差推荐人体 ｜ 想不到的人推荐×新奇",
+      "verified": true
+    },
+    "U386": {
+      "gem_id": "fc6b3f6c551a",
+      "gem_name": "U386 一图胜千言体 ｜ 一个画面秒懂×高效",
+      "verified": true
+    },
+    "U387": {
+      "gem_id": "7a7b767e5919",
+      "gem_name": "U387 极端生存体 ｜ 极端场景靠它×刚需",
+      "verified": true
+    },
+    "U388": {
+      "gem_id": "e41f4bb2a0a0",
+      "gem_name": "U388 反预期开箱体 ｜ 结果反预期×惊喜",
+      "verified": true
+    },
+    "U389": {
+      "gem_id": "63c355b3f8bc",
+      "gem_name": "U389 电影旁白体 ｜ 叙事旁白×沉浸",
+      "verified": true
+    },
+    "U390": {
+      "gem_id": "7c6997d0a4fd",
+      "gem_name": "U390 惊人数字体 ｜ 一个数字开场×冲击",
+      "verified": true
+    },
+    "U391": {
+      "gem_id": "7e6f99f24949",
+      "gem_name": "U391 判若两人体 ｜ 用前用后×自我反差",
+      "verified": true
+    },
+    "U392": {
+      "gem_id": "8c14ee2b0b02",
+      "gem_name": "U392 极限便利体 ｜ 便利到离谱×超预期",
+      "verified": true
+    },
+    "U393": {
+      "gem_id": "f1ccb3f81b26",
+      "gem_name": "U393 封印痛点体 ｜ 一物封印老大难×爽感",
+      "verified": true
+    },
+    "U394": {
+      "gem_id": "192fdc6cd053",
+      "gem_name": "U394 开箱ASMR体 ｜ 开箱声音沉浸×感官",
+      "verified": true
+    },
+    "U395": {
+      "gem_id": "3156b316cf57",
+      "gem_name": "U395 场景独白体 ｜ 第一人称独白×代入",
+      "verified": true
+    },
+    "U396": {
+      "gem_id": "85c1a8d3a5c1",
+      "gem_name": "U396 细节控体 ｜ 处处用心×品质信任",
+      "verified": true
+    },
+    "U397": {
+      "gem_id": "3889fa3ff177",
+      "gem_name": "U397 反转测评体 ｜ 先挑刺后真香×客观信任",
+      "verified": true
+    },
+    "U398": {
+      "gem_id": "02fc237d3354",
+      "gem_name": "U398 场景串烧体 ｜ 串起人生各场景×陪伴",
+      "verified": true
+    },
+    "U399": {
+      "gem_id": "fd510eb050f0",
+      "gem_name": "U399 高级质感体 ｜ 拍出高级感×向往",
+      "verified": true
+    },
+    "U400": {
+      "gem_id": "f6f5ab043ee6",
+      "gem_name": "U400 终极组合体 ｜ 集大成压轴×多钩融合",
+      "verified": true
+    },
+    "U401": {
+      "gem_id": "07c1d059ca5f",
+      "gem_name": "U401 无声损耗体 ｜ 决策旅程·唤醒×损失厌恶",
+      "verified": true
+    },
+    "U402": {
+      "gem_id": "b5de19fdf620",
+      "gem_name": "U402 习惯审判体 ｜ 决策旅程·唤醒×认知失调",
+      "verified": true
+    },
+    "U403": {
+      "gem_id": "707a35d7a7ef",
+      "gem_name": "U403 对比才知道体 ｜ 决策旅程·唤醒×参照效应",
+      "verified": true
+    },
+    "U404": {
+      "gem_id": "ea695441fea3",
+      "gem_name": "U404 信号解读体 ｜ 决策旅程·唤醒×恐惧唤醒(适度)",
+      "verified": true
+    },
+    "U405": {
+      "gem_id": "09fd78d21c02",
+      "gem_name": "U405 一次乘以三百六十五体 ｜ 决策旅程·唤醒×时间放大",
+      "verified": true
+    },
+    "U406": {
+      "gem_id": "908c60497cf4",
+      "gem_name": "U406 将就点名体 ｜ 决策旅程·唤醒×自我觉察",
+      "verified": true
+    },
+    "U407": {
+      "gem_id": "7c96a3b26e44",
+      "gem_name": "U407 换位一日体 ｜ 决策旅程·唤醒×共情迁移",
+      "verified": true
+    },
+    "U408": {
+      "gem_id": "3c945a9929f1",
+      "gem_name": "U408 自测惊醒体 ｜ 决策旅程·唤醒×眼见为实",
+      "verified": true
+    },
+    "U409": {
+      "gem_id": "7d97533c9043",
+      "gem_name": "U409 盲区漫游体 ｜ 决策旅程·唤醒×探索好奇",
+      "verified": true
+    },
+    "U410": {
+      "gem_id": "ee862ef8f3b4",
+      "gem_name": "U410 十年未变体 ｜ 决策旅程·唤醒×时代差",
+      "verified": true
+    },
+    "U411": {
+      "gem_id": "172368526595",
+      "gem_name": "U411 三问过滤体 ｜ 决策旅程·立标准×决策简化",
+      "verified": true
+    },
+    "U412": {
+      "gem_id": "b11a2ff7b51d",
+      "gem_name": "U412 一票门槛体 ｜ 决策旅程·立标准×极简决策",
+      "verified": true
+    },
+    "U413": {
+      "gem_id": "100cc8da7048",
+      "gem_name": "U413 场景倒推体 ｜ 决策旅程·立标准×需求锚定",
+      "verified": true
+    },
+    "U414": {
+      "gem_id": "5642b515c553",
+      "gem_name": "U414 预算分层体 ｜ 决策旅程·立标准×资源分配",
+      "verified": true
+    },
+    "U415": {
+      "gem_id": "5e5533ea4e62",
+      "gem_name": "U415 人群错配体 ｜ 决策旅程·立标准×适配思维",
+      "verified": true
+    },
+    "U416": {
+      "gem_id": "579fa46b3c1f",
+      "gem_name": "U416 参数翻译体 ｜ 决策旅程·立标准×信息降维",
+      "verified": true
+    },
+    "U417": {
+      "gem_id": "38df23756b24",
+      "gem_name": "U417 反清单体 ｜ 决策旅程·立标准×排除法",
+      "verified": true
+    },
+    "U418": {
+      "gem_id": "cb208aeac4e4",
+      "gem_name": "U418 寿命摊账体 ｜ 决策旅程·立标准×全周期成本",
+      "verified": true
+    },
+    "U419": {
+      "gem_id": "b9b1cc5d758c",
+      "gem_name": "U419 三轮排除体 ｜ 决策旅程·对比排除×淘汰快感",
+      "verified": true
+    },
+    "U420": {
+      "gem_id": "0de020131368",
+      "gem_name": "U420 伪需求过滤体 ｜ 决策旅程·对比排除×需求净化",
+      "verified": true
+    },
+    "U421": {
+      "gem_id": "149e636be65d",
+      "gem_name": "U421 同门对决体 ｜ 决策旅程·对比排除×型号抉择",
+      "verified": true
+    },
+    "U422": {
+      "gem_id": "7e58a27debf8",
+      "gem_name": "U422 高低配真相体 ｜ 决策旅程·对比排除×溢价审计",
+      "verified": true
+    },
+    "U423": {
+      "gem_id": "be5905433e9f",
+      "gem_name": "U423 买新还是买旧体 ｜ 决策旅程·对比排除×代际权衡",
+      "verified": true
+    },
+    "U424": {
+      "gem_id": "9da425339136",
+      "gem_name": "U424 套装拆解体 ｜ 决策旅程·对比排除×组合审计",
+      "verified": true
+    },
+    "U425": {
+      "gem_id": "02dc3dc68652",
+      "gem_name": "U425 一步到位还是先过渡体 ｜ 决策旅程·对比排除×路径选择",
+      "verified": true
+    },
+    "U426": {
+      "gem_id": "0321da400fc6",
+      "gem_name": "U426 渠道差价体 ｜ 决策旅程·对比排除×渠道审计",
+      "verified": true
+    },
+    "U427": {
+      "gem_id": "939b66f6e18d",
+      "gem_name": "U427 单次成本重算体 ｜ 决策旅程·异议粉碎×\"太贵了\"",
+      "verified": true
+    },
+    "U428": {
+      "gem_id": "e000dafa07ae",
+      "gem_name": "U428 频率打点体 ｜ 决策旅程·异议粉碎×\"用不上吧\"",
+      "verified": true
+    },
+    "U429": {
+      "gem_id": "4157c2ba9ae7",
+      "gem_name": "U429 空间实测体 ｜ 决策旅程·异议粉碎×\"占地方吧\"",
+      "verified": true
+    },
+    "U430": {
+      "gem_id": "271c63ec78cf",
+      "gem_name": "U430 三步上手体 ｜ 决策旅程·异议粉碎×\"不会用吧\"",
+      "verified": true
+    },
+    "U431": {
+      "gem_id": "3a0eacb78eca",
+      "gem_name": "U431 家庭议会体 ｜ 决策旅程·异议粉碎×\"家人反对\"",
+      "verified": true
+    },
+    "U432": {
+      "gem_id": "8823b131d902",
+      "gem_name": "U432 等待代价体 ｜ 决策旅程·异议粉碎×\"再等等吧\"",
+      "verified": true
+    },
+    "U433": {
+      "gem_id": "fcf89542f321",
+      "gem_name": "U433 平替边界体 ｜ 决策旅程·异议粉碎×\"有平替吧\"",
+      "verified": true
+    },
+    "U434": {
+      "gem_id": "7b8f4343d3b8",
+      "gem_name": "U434 加速老化体 ｜ 决策旅程·异议粉碎×\"质量存疑\"",
+      "verified": true
+    },
+    "U435": {
+      "gem_id": "bf874325432d",
+      "gem_name": "U435 坏了怎么办体 ｜ 决策旅程·异议粉碎×\"售后担忧\"",
+      "verified": true
+    },
+    "U436": {
+      "gem_id": "2c135c2b75d6",
+      "gem_name": "U436 最后一步代想体 ｜ 决策旅程·行动触发×决策疲劳",
+      "verified": true
+    },
+    "U437": {
+      "gem_id": "a16ae23c4a60",
+      "gem_name": "U437 真时机体 ｜ 决策旅程·行动触发×时机合规",
+      "verified": true
+    },
+    "U438": {
+      "gem_id": "887143644983",
+      "gem_name": "U438 第一天预演体 ｜ 决策旅程·行动触发×禀赋预演",
+      "verified": true
+    },
+    "U439": {
+      "gem_id": "b96d71fadd37",
+      "gem_name": "U439 最小试用体 ｜ 决策旅程·行动触发×门槛拆除",
+      "verified": true
+    },
+    "U440": {
+      "gem_id": "136297a58229",
+      "gem_name": "U440 万事俱备体 ｜ 决策旅程·行动触发×清单闭合",
+      "verified": true
+    },
+    "U441": {
+      "gem_id": "280749862bec",
+      "gem_name": "U441 三个月后回看体 ｜ 决策旅程·行动触发×未来自我",
+      "verified": true
+    },
+    "U442": {
+      "gem_id": "800ffe31d9be",
+      "gem_name": "U442 陪你选完体 ｜ 决策旅程·行动触发×临门陪伴",
+      "verified": true
+    },
+    "U443": {
+      "gem_id": "5044bdf89ed9",
+      "gem_name": "U443 开箱即内容体 ｜ 决策旅程·售后传播×UGC引导",
+      "verified": true
+    },
+    "U444": {
+      "gem_id": "a23e92a200b0",
+      "gem_name": "U444 三十天回访体 ｜ 决策旅程·售后传播×长期见证",
+      "verified": true
+    },
+    "U445": {
+      "gem_id": "ca3340abbd05",
+      "gem_name": "U445 晒单姿势体 ｜ 决策旅程·售后传播×社群文化",
+      "verified": true
+    },
+    "U446": {
+      "gem_id": "896f3ecca343",
+      "gem_name": "U446 回购那一刻体 ｜ 决策旅程·售后传播×复购证言",
+      "verified": true
+    },
+    "U447": {
+      "gem_id": "0aa8840e2917",
+      "gem_name": "U447 第二件送人体 ｜ 决策旅程·售后传播×自购转赠",
+      "verified": true
+    },
+    "U448": {
+      "gem_id": "6440b10e7614",
+      "gem_name": "U448 老带新开箱体 ｜ 决策旅程·售后传播×用户接力",
+      "verified": true
+    },
+    "U449": {
+      "gem_id": "07813fc7e89d",
+      "gem_name": "U449 寿终正寝体 ｜ 决策旅程·售后传播×生命周期闭环",
+      "verified": true
+    },
+    "U450": {
+      "gem_id": "86943c0d0737",
+      "gem_name": "U450 评论区来回体 ｜ 决策旅程·售后传播×口碑闭环（A族压轴）",
+      "verified": true
+    },
+    "U451": {
+      "gem_id": "72364fb6ae93",
+      "gem_name": "U451 怒火平复体 ｜ 情绪曲线：愤怒→平复",
+      "verified": true
+    },
+    "U452": {
+      "gem_id": "f42589eb82fa",
+      "gem_name": "U452 体面挽回体 ｜ 情绪曲线：尴尬→体面",
+      "verified": true
+    },
+    "U453": {
+      "gem_id": "191344c7dedf",
+      "gem_name": "U453 焦虑落地体 ｜ 情绪曲线：焦虑→掌控",
+      "verified": true
+    },
+    "U454": {
+      "gem_id": "dadfcd347582",
+      "gem_name": "U454 兵荒马乱终结体 ｜ 情绪曲线：慌乱→从容",
+      "verified": true
+    },
+    "U455": {
+      "gem_id": "3ccfc698e77b",
+      "gem_name": "U455 羡慕转拥有体 ｜ 情绪曲线：羡慕→拥有",
+      "verified": true
+    },
+    "U456": {
+      "gem_id": "7c113654dc26",
+      "gem_name": "U456 旧物焕新体 ｜ 情绪曲线：怀旧→焕新",
+      "verified": true
+    },
+    "U457": {
+      "gem_id": "5e58cc327e4b",
+      "gem_name": "U457 亏欠补偿体 ｜ 情绪曲线：内疚→补偿",
+      "verified": true
+    },
+    "U458": {
+      "gem_id": "2b4f0ee56aff",
+      "gem_name": "U458 无聊上头体 ｜ 情绪曲线：无聊→上头",
+      "verified": true
+    },
+    "U459": {
+      "gem_id": "bb70435969d3",
+      "gem_name": "U459 一人食尊严体 ｜ 情绪曲线：孤独→自洽陪伴",
+      "verified": true
+    },
+    "U460": {
+      "gem_id": "b0477e7df390",
+      "gem_name": "U460 被接住体 ｜ 情绪曲线：疲惫→被接住",
+      "verified": true
+    },
+    "U461": {
+      "gem_id": "e4fe3d130b30",
+      "gem_name": "U461 低开高走体 ｜ 情绪曲线：失望→惊喜",
+      "verified": true
+    },
+    "U462": {
+      "gem_id": "4c17889e8431",
+      "gem_name": "U462 半信半疑体 ｜ 情绪曲线：怀疑→踏实",
+      "verified": true
+    },
+    "U463": {
+      "gem_id": "3ba1015bf162",
+      "gem_name": "U463 被理解体 ｜ 情绪曲线：委屈→被理解",
+      "verified": true
+    },
+    "U464": {
+      "gem_id": "dc0f06afa58e",
+      "gem_name": "U464 怕黑安心体 ｜ 情绪曲线：不安→安心",
+      "verified": true
+    },
+    "U465": {
+      "gem_id": "61224bb8cb81",
+      "gem_name": "U465 失控归位体 ｜ 情绪曲线：混乱→秩序",
+      "verified": true
+    },
+    "U466": {
+      "gem_id": "63db429452b3",
+      "gem_name": "U466 万事开头难体 ｜ 情绪曲线：拖延→启动",
+      "verified": true
+    },
+    "U467": {
+      "gem_id": "27915db82b1d",
+      "gem_name": "U467 手残平反体 ｜ 情绪曲线：自我怀疑→自信",
+      "verified": true
+    },
+    "U468": {
+      "gem_id": "bd013e4bc3b9",
+      "gem_name": "U468 心疼止损体 ｜ 情绪曲线：心疼→止损释然",
+      "verified": true
+    },
+    "U469": {
+      "gem_id": "62e3f2083145",
+      "gem_name": "U469 静音结界体 ｜ 情绪曲线：烦躁→清净",
+      "verified": true
+    },
+    "U470": {
+      "gem_id": "3e78e5b609fd",
+      "gem_name": "U470 小富足体 ｜ 情绪曲线：匮乏感→富足感",
+      "verified": true
+    },
+    "U471": {
+      "gem_id": "d8d0665eab9a",
+      "gem_name": "U471 松弛感体 ｜ 情绪曲线：紧绷→松弛",
+      "verified": true
+    },
+    "U472": {
+      "gem_id": "8c0fef2330a5",
+      "gem_name": "U472 重新认真体 ｜ 情绪曲线：敷衍→认真",
+      "verified": true
+    },
+    "U473": {
+      "gem_id": "840071df083a",
+      "gem_name": "U473 将就到讲究体 ｜ 情绪曲线：将就→讲究",
+      "verified": true
+    },
+    "U474": {
+      "gem_id": "9ebca6c198ec",
+      "gem_name": "U474 忍无可忍体 ｜ 情绪曲线：忍耐→爆发→释放（三段曲线）",
+      "verified": true
+    },
+    "U475": {
+      "gem_id": "59a91d3f6bfe",
+      "gem_name": "U475 期待落空反弹体 ｜ 情绪曲线：期待→落空→反弹（双拐点）",
+      "verified": true
+    },
+    "U476": {
+      "gem_id": "e51843cc118b",
+      "gem_name": "U476 虚惊一场体 ｜ 情绪曲线：平静→惊→安心",
+      "verified": true
+    },
+    "U477": {
+      "gem_id": "4dd354f9dcde",
+      "gem_name": "U477 越想越不对体 ｜ 情绪曲线：好奇→困惑→顿悟",
+      "verified": true
+    },
+    "U478": {
+      "gem_id": "95c66fe231c5",
+      "gem_name": "U478 老师傅服软体 ｜ 情绪曲线：骄傲受挫→重建",
+      "verified": true
+    },
+    "U479": {
+      "gem_id": "cee9879bcd11",
+      "gem_name": "U479 无感破防体 ｜ 情绪曲线：冷漠→心动",
+      "verified": true
+    },
+    "U480": {
+      "gem_id": "b45cc6c9f27e",
+      "gem_name": "U480 老派服新体 ｜ 情绪曲线：抗拒→接纳",
+      "verified": true
+    },
+    "U481": {
+      "gem_id": "50812af7c608",
+      "gem_name": "U481 看见就想起你体 ｜ 情绪曲线：感动→行动",
+      "verified": true
+    },
+    "U482": {
+      "gem_id": "2123ae13158b",
+      "gem_name": "U482 轮到我自己体 ｜ 情绪曲线：亏欠自己→善待自己",
+      "verified": true
+    },
+    "U483": {
+      "gem_id": "dab1ea0f18bb",
+      "gem_name": "U483 社死自救体 ｜ 情绪曲线：社死→自嘲→和解",
+      "verified": true
+    },
+    "U484": {
+      "gem_id": "547afb230157",
+      "gem_name": "U484 别人家焦虑解除体 ｜ 情绪曲线：比较焦虑→自洽",
+      "verified": true
+    },
+    "U485": {
+      "gem_id": "0292ec6d147c",
+      "gem_name": "U485 生活抓手体 ｜ 情绪曲线：失控感→仪式感",
+      "verified": true
+    },
+    "U486": {
+      "gem_id": "1d4f5b93a7ec",
+      "gem_name": "U486 重新有感觉体 ｜ 情绪曲线：麻木→感知",
+      "verified": true
+    },
+    "U487": {
+      "gem_id": "2c8818c68e92",
+      "gem_name": "U487 舍不得用体 ｜ 情绪曲线：舍不得→物尽其用",
+      "verified": true
+    },
+    "U488": {
+      "gem_id": "135a73e2d13b",
+      "gem_name": "U488 幕后被看见体 ｜ 情绪曲线：被忽视→被看见",
+      "verified": true
+    },
+    "U489": {
+      "gem_id": "16e5ca09c6b8",
+      "gem_name": "U489 远程放心体 ｜ 情绪曲线：操心→放心",
+      "verified": true
+    },
+    "U490": {
+      "gem_id": "ca42398b927e",
+      "gem_name": "U490 出租屋归属体 ｜ 情绪曲线：凑合→归属",
+      "verified": true
+    },
+    "U491": {
+      "gem_id": "eee2a64107f8",
+      "gem_name": "U491 下班出口体 ｜ 情绪曲线：高压→出口",
+      "verified": true
+    },
+    "U492": {
+      "gem_id": "c90894ec1f47",
+      "gem_name": "U492 补过节体 ｜ 情绪曲线：遗憾→弥补",
+      "verified": true
+    },
+    "U493": {
+      "gem_id": "eea8ba8745d4",
+      "gem_name": "U493 尴尬期渡劫体 ｜ 情绪曲线：尴尬期→顺利过渡",
+      "verified": true
+    },
+    "U494": {
+      "gem_id": "e51b47695412",
+      "gem_name": "U494 家务变享受体 ｜ 情绪曲线：应付→享受",
+      "verified": true
+    },
+    "U495": {
+      "gem_id": "30bd5f2b6d35",
+      "gem_name": "U495 多线并行体 ｜ 情绪曲线：焦头烂额→游刃有余",
+      "verified": true
+    },
+    "U496": {
+      "gem_id": "060baef18cae",
+      "gem_name": "U496 被宠一下体 ｜ 情绪曲线：心累→被宠",
+      "verified": true
+    },
+    "U497": {
+      "gem_id": "b46615119ceb",
+      "gem_name": "U497 有依据的笃定体 ｜ 情绪曲线：决策不安→笃定",
+      "verified": true
+    },
+    "U498": {
+      "gem_id": "daf768756c66",
+      "gem_name": "U498 平常日子过出节体 ｜ 情绪曲线：单调→节日感",
+      "verified": true
+    },
+    "U499": {
+      "gem_id": "83a1b8131b63",
+      "gem_name": "U499 一起用才香体 ｜ 情绪曲线：疏离→亲密",
+      "verified": true
+    },
+    "U500": {
+      "gem_id": "b7cfefa9691e",
+      "gem_name": "U500 用完一件的告别体 ｜ 情绪曲线：终点→起点（B族压轴）",
+      "verified": true
+    },
+    "U501": {
+      "gem_id": "09905edb80e8",
+      "gem_name": "U501 三秒静默开场体 ｜ 声音签名：反流量的静",
+      "verified": true
+    },
+    "U502": {
+      "gem_id": "cf0f92f9cde6",
+      "gem_name": "U502 单音贯穿体 ｜ 声音签名：一个声音讲完整个故事",
+      "verified": true
+    },
+    "U503": {
+      "gem_id": "61c392a71a9f",
+      "gem_name": "U503 环境音蒙太奇体 ｜ 声音签名：场景靠声音切换",
+      "verified": true
+    },
+    "U504": {
+      "gem_id": "519efd71d26b",
+      "gem_name": "U504 先声夺人体 ｜ 声音签名：every镜头声音先到",
+      "verified": true
+    },
+    "U505": {
+      "gem_id": "0c783be078a5",
+      "gem_name": "U505 心跳节拍体 ｜ 声音签名：BGM是心率",
+      "verified": true
+    },
+    "U506": {
+      "gem_id": "e87ed89be6ff",
+      "gem_name": "U506 吵静对切体 ｜ 声音签名：噪音与安静硬剪对撞",
+      "verified": true
+    },
+    "U507": {
+      "gem_id": "74d2f7d5536f",
+      "gem_name": "U507 拟音戏法体 ｜ 声音签名：给画面配\"错位拟音\"再揭晓",
+      "verified": true
+    },
+    "U508": {
+      "gem_id": "622949d9aaf1",
+      "gem_name": "U508 呼吸节奏体 ｜ 声音签名：呼吸声是剪辑点",
+      "verified": true
+    },
+    "U509": {
+      "gem_id": "be6d0c62904f",
+      "gem_name": "U509 一句歌词点题体 ｜ 声音签名：原创哼唱记忆点",
+      "verified": true
+    },
+    "U510": {
+      "gem_id": "e18a97c5440e",
+      "gem_name": "U510 音量阶梯体 ｜ 声音签名：整片音量从耳语到放开",
+      "verified": true
+    },
+    "U511": {
+      "gem_id": "d28386827984",
+      "gem_name": "U511 无人声纯音体 ｜ 声音签名：零口播，音效即台词",
+      "verified": true
+    },
+    "U512": {
+      "gem_id": "0ab4dd50d9ff",
+      "gem_name": "U512 声音前后对比体 ｜ 声音签名：同一动作的两种声音",
+      "verified": true
+    },
+    "U513": {
+      "gem_id": "7020eaa03e30",
+      "gem_name": "U513 单色宇宙体 ｜ 视觉签名：一集一个主色",
+      "verified": true
+    },
+    "U514": {
+      "gem_id": "fa8d339a69cf",
+      "gem_name": "U514 光影时钟体 ｜ 视觉签名：用光讲时间",
+      "verified": true
+    },
+    "U515": {
+      "gem_id": "17e688c1f8da",
+      "gem_name": "U515 影子先行体 ｜ 视觉签名：影子是第一叙事者",
+      "verified": true
+    },
+    "U516": {
+      "gem_id": "2e492a7b9390",
+      "gem_name": "U516 对称强迫症体 ｜ 视觉签名：镜像构图的秩序美",
+      "verified": true
+    },
+    "U517": {
+      "gem_id": "74447bda0309",
+      "gem_name": "U517 负空间体 ｜ 视觉签名：大留白构图",
+      "verified": true
+    },
+    "U518": {
+      "gem_id": "9857d4eceea9",
+      "gem_name": "U518 贴地视角体 ｜ 视觉签名：5厘米高度看世界",
+      "verified": true
+    },
+    "U519": {
+      "gem_id": "8d4605bdc5e5",
+      "gem_name": "U519 门框画框体 ｜ 视觉签名：框中框窥视构图",
+      "verified": true
+    },
+    "U520": {
+      "gem_id": "1b04467fcafd",
+      "gem_name": "U520 手部芭蕾体 ｜ 视觉签名：手是唯一演员",
+      "verified": true
+    },
+    "U521": {
+      "gem_id": "fdea8407aee8",
+      "gem_name": "U521 纯白舞台体 ｜ 视觉签名：极简白棚感的反差用法",
+      "verified": true
+    },
+    "U522": {
+      "gem_id": "9713b5a9d1f5",
+      "gem_name": "U522 生活痕迹美学体 ｜ 视觉签名：把\"乱\"拍成生活的证据",
+      "verified": true
+    },
+    "U523": {
+      "gem_id": "036a093b520f",
+      "gem_name": "U523 天气情绪滤镜体 ｜ 视觉签名：真实天气当调色师",
+      "verified": true
+    },
+    "U524": {
+      "gem_id": "71d2fb62d7fb",
+      "gem_name": "U524 夜光世界体 ｜ 视觉签名：暗环境的光点叙事",
+      "verified": true
+    },
+    "U525": {
+      "gem_id": "864247f47860",
+      "gem_name": "U525 逆光剪影体 ｜ 视觉签名：剪影开场·实体揭晓",
+      "verified": true
+    },
+    "U526": {
+      "gem_id": "1566eee149fa",
+      "gem_name": "U526 颜色接力体 ｜ 视觉签名：色彩当转场语言",
+      "verified": true
+    },
+    "U527": {
+      "gem_id": "413ecb0eec8f",
+      "gem_name": "U527 形状接力体 ｜ 视觉签名：圆接圆·方接方",
+      "verified": true
+    },
+    "U528": {
+      "gem_id": "e2001ccad9b3",
+      "gem_name": "U528 大小错觉体 ｜ 视觉签名：比例游戏开场",
+      "verified": true
+    },
+    "U529": {
+      "gem_id": "4efc4543feb1",
+      "gem_name": "U529 镜面反射体 ｜ 视觉签名：用反射面拍摄（防穿帮版）",
+      "verified": true
+    },
+    "U530": {
+      "gem_id": "da51f107b7a9",
+      "gem_name": "U530 俯拍格子体 ｜ 视觉签名：上帝视角+网格摆位",
+      "verified": true
+    },
+    "U531": {
+      "gem_id": "7151500de97f",
+      "gem_name": "U531 三拍重复体 ｜ 节奏签名：同动作三遍递进",
+      "verified": true
+    },
+    "U532": {
+      "gem_id": "9a7c72655af9",
+      "gem_name": "U532 加速蒙太奇体 ｜ 节奏签名：越剪越快到骤停",
+      "verified": true
+    },
+    "U533": {
+      "gem_id": "eb16f56bdfdc",
+      "gem_name": "U533 骤停定格体 ｜ 节奏签名：高速中突然冻结",
+      "verified": true
+    },
+    "U534": {
+      "gem_id": "e07cbebbed72",
+      "gem_name": "U534 倒放悬念体 ｜ 节奏签名：从结果倒回原因",
+      "verified": true
+    },
+    "U535": {
+      "gem_id": "bf4c286fdf2c",
+      "gem_name": "U535 定格章节体 ｜ 节奏签名：定格帧当章节页",
+      "verified": true
+    },
+    "U536": {
+      "gem_id": "6e8bc1176e1b",
+      "gem_name": "U536 一秒一景体 ｜ 节奏签名：极速场景连切",
+      "verified": true
+    },
+    "U537": {
+      "gem_id": "9303b664caae",
+      "gem_name": "U537 全程慢速体 ｜ 节奏签名：0.5倍速的庄严仪式",
+      "verified": true
+    },
+    "U538": {
+      "gem_id": "0d2b2b68fc2b",
+      "gem_name": "U538 现实节拍器体 ｜ 节奏签名：生活声当鼓点",
+      "verified": true
+    },
+    "U539": {
+      "gem_id": "c75cd820924c",
+      "gem_name": "U539 完美循环体 ｜ 节奏签名：结尾无缝接开头",
+      "verified": true
+    },
+    "U540": {
+      "gem_id": "a096d3477314",
+      "gem_name": "U540 快慢快三明治体 ｜ 节奏签名：快-慢-快的节奏夹心",
+      "verified": true
+    },
+    "U541": {
+      "gem_id": "cc21078551c2",
+      "gem_name": "U541 伪一镜到底体 ｜ 节奏签名：看不见剪辑的长镜感",
+      "verified": true
+    },
+    "U542": {
+      "gem_id": "000d9c046627",
+      "gem_name": "U542 跳切人生体 ｜ 节奏签名：jump cut讲时间流逝",
+      "verified": true
+    },
+    "U543": {
+      "gem_id": "f608dbe1be1e",
+      "gem_name": "U543 万物皆可切体 ｜ 转场签名：match cut链条全片",
+      "verified": true
+    },
+    "U544": {
+      "gem_id": "482a9147b8af",
+      "gem_name": "U544 遮挡穿越体 ｜ 转场签名：每次遮挡=一次空间跳跃",
+      "verified": true
+    },
+    "U545": {
+      "gem_id": "d6090855cd0a",
+      "gem_name": "U545 甩镜宇宙体 ｜ 转场签名：whip pan串起平行场景",
+      "verified": true
+    },
+    "U546": {
+      "gem_id": "16305fbdb15e",
+      "gem_name": "U546 开合转场体 ｜ 转场签名：每个\"开/合\"动作都是门",
+      "verified": true
+    },
+    "U547": {
+      "gem_id": "65dfa2cb688f",
+      "gem_name": "U547 布幕魔术体 ｜ 转场签名：织物掀落间换世界",
+      "verified": true
+    },
+    "U548": {
+      "gem_id": "b806c5c5c2e0",
+      "gem_name": "U548 过曝白闪体 ｜ 转场签名：光作幕，白闪换场",
+      "verified": true
+    },
+    "U549": {
+      "gem_id": "f1996f936250",
+      "gem_name": "U549 分屏对照体 ｜ 转场签名：同框AB世界",
+      "verified": true
+    },
+    "U550": {
+      "gem_id": "ea844288c800",
+      "gem_name": "U550 找不到剪辑点挑战体 ｜ 转场签名：隐形剪辑大赏（C族压轴）",
+      "verified": true
+    },
+    "U551": {
+      "gem_id": "ec6bd02d6ff6",
+      "gem_name": "U551 小破绽钓评体 ｜ 生态签名：留一个无伤大雅的口误",
+      "verified": true
+    },
+    "U552": {
+      "gem_id": "02a8d77028f1",
+      "gem_name": "U552 置顶彩蛋体 ｜ 生态签名：评论区藏后续",
+      "verified": true
+    },
+    "U553": {
+      "gem_id": "1fba945f00ab",
+      "gem_name": "U553 神评论翻拍体 ｜ 生态签名：把评论演出来",
+      "verified": true
+    },
+    "U554": {
+      "gem_id": "b0272e72c226",
+      "gem_name": "U554 评论区连续剧体 ｜ 生态签名：剧情在评论区更新",
+      "verified": true
+    },
+    "U555": {
+      "gem_id": "3340c635cc20",
+      "gem_name": "U555 提问接龙体 ｜ 生态签名：结尾问题设计成可接龙",
+      "verified": true
+    },
+    "U556": {
+      "gem_id": "9d8f2874d722",
+      "gem_name": "U556 谢谢差评体 ｜ 生态签名：公开感谢一条批评",
+      "verified": true
+    },
+    "U557": {
+      "gem_id": "a0fdb4ed09a7",
+      "gem_name": "U557 评论区投票分叉体 ｜ 生态签名：下集走向观众定",
+      "verified": true
+    },
+    "U558": {
+      "gem_id": "e3826a758dd4",
+      "gem_name": "U558 点名答疑体 ｜ 生态签名：每条视频认领三个提问",
+      "verified": true
+    },
+    "U559": {
+      "gem_id": "facfd4688ba5",
+      "gem_name": "U559 替你发弹幕体 ｜ 生态签名：口播说出观众正想发的话",
+      "verified": true
+    },
+    "U560": {
+      "gem_id": "0529cef85a9b",
+      "gem_name": "U560 两派都对体 ｜ 生态签名：争议话题的平衡演绎",
+      "verified": true
+    },
+    "U561": {
+      "gem_id": "a4f26d06f6c0",
+      "gem_name": "U561 半屏留白合拍体 ｜ 生态签名：构图给合拍者留位置",
+      "verified": true
+    },
+    "U562": {
+      "gem_id": "d9bec8bcb906",
+      "gem_name": "U562 接话茬体 ｜ 生态签名：结尾半句话等人接",
+      "verified": true
+    },
+    "U563": {
+      "gem_id": "ea3b51633e14",
+      "gem_name": "U563 三秒挑战体 ｜ 生态签名：发起一个人人可复制的动作挑战",
+      "verified": true
+    },
+    "U564": {
+      "gem_id": "e3eb6a4de244",
+      "gem_name": "U564 开源模板体 ｜ 生态签名：把自己的拍法做成可套用模板",
+      "verified": true
+    },
+    "U565": {
+      "gem_id": "03589d44a545",
+      "gem_name": "U565 晒你的vs我的体 ｜ 生态签名：对比式合拍邀请",
+      "verified": true
+    },
+    "U566": {
+      "gem_id": "610e37e63ad7",
+      "gem_name": "U566 作业闭环体 ｜ 生态签名：教程+交作业+点评的三段生态",
+      "verified": true
+    },
+    "U567": {
+      "gem_id": "4e519c8aa316",
+      "gem_name": "U567 值得被拍反应体 ｜ 生态签名：设计\"送给别人拍反应\"的画面",
+      "verified": true
+    },
+    "U568": {
+      "gem_id": "58bba454f620",
+      "gem_name": "U568 百人一秒体 ｜ 生态签名：征集碎片合成大合集",
+      "verified": true
+    },
+    "U569": {
+      "gem_id": "c76f52c2b8ff",
+      "gem_name": "U569 口音接力体 ｜ 生态签名：同一句话各地口音版",
+      "verified": true
+    },
+    "U570": {
+      "gem_id": "324ee152c654",
+      "gem_name": "U570 全家挑战体 ｜ 生态签名：需要拉家人完成的双人任务",
+      "verified": true
+    },
+    "U571": {
+      "gem_id": "6c5e69ea5317",
+      "gem_name": "U571 角色宇宙体 ｜ 生态签名：固定配角跨系列客串",
+      "verified": true
+    },
+    "U572": {
+      "gem_id": "693ee0ce5ef5",
+      "gem_name": "U572 世界观设定体 ｜ 生态签名：给账号一个可持续的设定",
+      "verified": true
+    },
+    "U573": {
+      "gem_id": "c0908c18b893",
+      "gem_name": "U573 编号收集体 ｜ 生态签名：作品编号化的收集心理",
+      "verified": true
+    },
+    "U574": {
+      "gem_id": "3083d75c1a43",
+      "gem_name": "U574 固定栏目时刻体 ｜ 生态签名：每周同一时间同一栏目",
+      "verified": true
+    },
+    "U575": {
+      "gem_id": "3706622e08d2",
+      "gem_name": "U575 进度条人生体 ｜ 生态签名：一个长期目标的公开进度",
+      "verified": true
+    },
+    "U576": {
+      "gem_id": "a43494fadd8a",
+      "gem_name": "U576 回顾即内容体 ｜ 生态签名：把\"前情回顾\"拍成看点",
+      "verified": true
+    },
+    "U577": {
+      "gem_id": "1affd19ef9bf",
+      "gem_name": "U577 彩蛋考古体 ｜ 生态签名：旧视频埋雷新视频引爆",
+      "verified": true
+    },
+    "U578": {
+      "gem_id": "ce29319acf83",
+      "gem_name": "U578 平行结局体 ｜ 生态签名：同一开头两个结局分两条发",
+      "verified": true
+    },
+    "U579": {
+      "gem_id": "d0a146b6a5d1",
+      "gem_name": "U579 观众编剧部体 ｜ 生态签名：下集剧本评论区众筹",
+      "verified": true
+    },
+    "U580": {
+      "gem_id": "0f2caa08a33b",
+      "gem_name": "U580 跨号客串体 ｜ 生态签名：矩阵账号剧情互相串门",
+      "verified": true
+    },
+    "U581": {
+      "gem_id": "51b2c4154625",
+      "gem_name": "U581 搜索问题体 ｜ 分发签名：标题=用户会搜的那句话",
+      "verified": true
+    },
+    "U582": {
+      "gem_id": "c1424a4a1a11",
+      "gem_name": "U582 封面三分体 ｜ 分发签名：封面帧按三分区设计",
+      "verified": true
+    },
+    "U583": {
+      "gem_id": "2b1cc53ff72d",
+      "gem_name": "U583 二刷彩蛋体 ｜ 分发签名：第一遍看不完整的设计",
+      "verified": true
+    },
+    "U584": {
+      "gem_id": "d62ead917f4b",
+      "gem_name": "U584 黄金三帧体 ｜ 分发签名：前三帧静止也成立",
+      "verified": true
+    },
+    "U585": {
+      "gem_id": "5f6d6b989539",
+      "gem_name": "U585 静音可看体 ｜ 分发签名：无声播放也看得懂",
+      "verified": true
+    },
+    "U586": {
+      "gem_id": "93f5a53178a6",
+      "gem_name": "U586 竖屏安全区体 ｜ 分发签名：关键信息全在中央安全区",
+      "verified": true
+    },
+    "U587": {
+      "gem_id": "ba9f1d5122d6",
+      "gem_name": "U587 字幕空间体 ｜ 分发签名：给平台自动字幕留好位置",
+      "verified": true
+    },
+    "U588": {
+      "gem_id": "b554c07a9867",
+      "gem_name": "U588 时段人格体 ｜ 分发签名：发布时段×内容情绪匹配",
+      "verified": true
+    },
+    "U589": {
+      "gem_id": "aeabb2dcf652",
+      "gem_name": "U589 标签语义体 ｜ 分发签名：话题标签的语义组合法",
+      "verified": true
+    },
+    "U590": {
+      "gem_id": "ee6f9aedf942",
+      "gem_name": "U590 数据坦白局体 ｜ 分发签名：把上条数据做成这条内容",
+      "verified": true
+    },
+    "U591": {
+      "gem_id": "fc54725daf0b",
+      "gem_name": "U591 双封面实验体 ｜ 分发签名：同内容两封面的公开AB实验",
+      "verified": true
+    },
+    "U592": {
+      "gem_id": "283aa9016fe4",
+      "gem_name": "U592 完播曲线自修体 ｜ 分发签名：按掉人曲线迭代下一条",
+      "verified": true
+    },
+    "U593": {
+      "gem_id": "65e5c51fb0c4",
+      "gem_name": "U593 一母多子体 ｜ 矩阵签名：一次拍摄裁出N条变体",
+      "verified": true
+    },
+    "U594": {
+      "gem_id": "40ebdf8e2645",
+      "gem_name": "U594 人格分工矩阵体 ｜ 矩阵签名：矩阵号各持一个人设测同品",
+      "verified": true
+    },
+    "U595": {
+      "gem_id": "d0219fc4fcbd",
+      "gem_name": "U595 快慢双轨体 ｜ 矩阵签名：同品同天发快版与慢版",
+      "verified": true
+    },
+    "U596": {
+      "gem_id": "62aa99f8c24e",
+      "gem_name": "U596 地域换皮体 ｜ 矩阵签名：同框架按国家换皮清单",
+      "verified": true
+    },
+    "U597": {
+      "gem_id": "d7ffeb1c844a",
+      "gem_name": "U597 主页动线体 ｜ 矩阵签名：视频→主页→转化的路径设计",
+      "verified": true
+    },
+    "U598": {
+      "gem_id": "4df60d8d753e",
+      "gem_name": "U598 直播蓄水体 ｜ 矩阵签名：短视频给直播间蓄水",
+      "verified": true
+    },
+    "U599": {
+      "gem_id": "59a39faef550",
+      "gem_name": "U599 无声品牌印记体 ｜ 矩阵签名：不露logo的品牌记忆系统",
+      "verified": true
+    },
+    "U600": {
+      "gem_id": "aa47d6847dea",
+      "gem_name": "U600 生态总装体 ｜ 矩阵签名：单条视频装载全生态接口（D族压轴·全库总压轴）",
+      "verified": true
+    },
+    "U601": {
+      "gem_id": "3ef619d1b3da",
+      "gem_name": "U601 尺码翻译官体 ｜ 服饰壁垒：尺码焦虑",
+      "verified": true
+    },
+    "U602": {
+      "gem_id": "0934fd2eb6b7",
+      "gem_name": "U602 版型立体书体 ｜ 服饰壁垒：版型隔屏不可感",
+      "verified": true
+    },
+    "U603": {
+      "gem_id": "332d334f60db",
+      "gem_name": "U603 色差判决体 ｜ 服饰壁垒：色差恐惧",
+      "verified": true
+    },
+    "U604": {
+      "gem_id": "45abffd8ea6e",
+      "gem_name": "U604 隔屏摸布体 ｜ 服饰壁垒：面料手感不可传",
+      "verified": true
+    },
+    "U605": {
+      "gem_id": "a891f3c8240d",
+      "gem_name": "U605 鞋子磨合期体 ｜ 鞋靴壁垒：磨脚恐惧",
+      "verified": true
+    },
+    "U606": {
+      "gem_id": "d38848801c0a",
+      "gem_name": "U606 包包内容量实录体 ｜ 鞋包壁垒：容量与自重不可感",
+      "verified": true
+    },
+    "U607": {
+      "gem_id": "e509d47c603e",
+      "gem_name": "U607 一衣三穿体 ｜ 服饰壁垒：搭配想象力缺失",
+      "verified": true
+    },
+    "U608": {
+      "gem_id": "b94ed4a6bff8",
+      "gem_name": "U608 洗后见真章体 ｜ 服饰壁垒：洗护存疑",
+      "verified": true
+    },
+    "U609": {
+      "gem_id": "5604c13fa92b",
+      "gem_name": "U609 场合安全牌体 ｜ 服饰壁垒：穿着场合不确定",
+      "verified": true
+    },
+    "U610": {
+      "gem_id": "0709a777b6ff",
+      "gem_name": "U610 断码之前体 ｜ 服饰壁垒：换季与断码周期（合规时机版）",
+      "verified": true
+    },
+    "U611": {
+      "gem_id": "8b63e6d9ef01",
+      "gem_name": "U611 肤色对表体 ｜ 美妆壁垒：色号与肤色匹配",
+      "verified": true
+    },
+    "U612": {
+      "gem_id": "946f9acaba6c",
+      "gem_name": "U612 上脸头三天体 ｜ 美妆个护壁垒：致敏担忧（合规版）",
+      "verified": true
+    },
+    "U613": {
+      "gem_id": "9c82700685f8",
+      "gem_name": "U613 一瓶用多久体 ｜ 美妆个护壁垒：用量成本不透明",
+      "verified": true
+    },
+    "U614": {
+      "gem_id": "82c7cb952385",
+      "gem_name": "U614 手笨友好度体 ｜ 美妆壁垒：手法门槛恐惧",
+      "verified": true
+    },
+    "U615": {
+      "gem_id": "f51610ebd3a5",
+      "gem_name": "U615 气味翻译体 ｜ 美妆个护壁垒：气味隔屏失传",
+      "verified": true
+    },
+    "U616": {
+      "gem_id": "3dd20debcc26",
+      "gem_name": "U616 空瓶资格体 ｜ 美妆壁垒：真假口碑辨别",
+      "verified": true
+    },
+    "U617": {
+      "gem_id": "4f5a90e99c07",
+      "gem_name": "U617 男士第一次体 ｜ 个护壁垒：男性护理入门羞耻",
+      "verified": true
+    },
+    "U618": {
+      "gem_id": "affa02affccd",
+      "gem_name": "U618 化妆台考古体 ｜ 美妆壁垒：过期与吃灰治理",
+      "verified": true
+    },
+    "U619": {
+      "gem_id": "baa2fab340ee",
+      "gem_name": "U619 通勤十分钟妆体 ｜ 美妆壁垒：时间预算不足",
+      "verified": true
+    },
+    "U620": {
+      "gem_id": "3baa9aceee4b",
+      "gem_name": "U620 卸妆才是答案体 ｜ 美妆壁垒：收尾环节被忽视",
+      "verified": true
+    },
+    "U621": {
+      "gem_id": "5cdd7234e0c4",
+      "gem_name": "U621 口感拟声体 ｜ 食品壁垒：口感隔屏失传",
+      "verified": true
+    },
+    "U622": {
+      "gem_id": "636364c73cfd",
+      "gem_name": "U622 配料表白话体 ｜ 食品壁垒：配料表阅读障碍",
+      "verified": true
+    },
+    "U623": {
+      "gem_id": "201e14d33d7a",
+      "gem_name": "U623 一人份刚好体 ｜ 食品壁垒：份量直觉缺失",
+      "verified": true
+    },
+    "U624": {
+      "gem_id": "297bbe9b97f1",
+      "gem_name": "U624 囤货科学体 ｜ 食品壁垒：囤货与保质的边界",
+      "verified": true
+    },
+    "U625": {
+      "gem_id": "09c5470d9ae5",
+      "gem_name": "U625 敢吃第一口体 ｜ 食品壁垒：尝新恐惧",
+      "verified": true
+    },
+    "U626": {
+      "gem_id": "b10a4f7184e9",
+      "gem_name": "U626 冲泡仪式体 ｜ 饮品壁垒：冲泡参数门槛",
+      "verified": true
+    },
+    "U627": {
+      "gem_id": "2c922c88ef40",
+      "gem_name": "U627 伴手礼资格体 ｜ 食品壁垒：送得出手吗",
+      "verified": true
+    },
+    "U628": {
+      "gem_id": "64e69402b04f",
+      "gem_name": "U628 热量透明体 ｜ 食品壁垒：热量心理负担（合规版）",
+      "verified": true
+    },
+    "U629": {
+      "gem_id": "dcd50a4dc310",
+      "gem_name": "U629 地域口味翻译体 ｜ 食品壁垒：跨地域口味落差",
+      "verified": true
+    },
+    "U630": {
+      "gem_id": "33afcd748b98",
+      "gem_name": "U630 剩下的它体 ｜ 食品壁垒：吃不完的处理焦虑",
+      "verified": true
+    },
+    "U631": {
+      "gem_id": "d6516f416722",
+      "gem_name": "U631 安装恐惧粉碎体 ｜ 家电壁垒：安装门槛想象",
+      "verified": true
+    },
+    "U632": {
+      "gem_id": "4f50d40f0998",
+      "gem_name": "U632 参数人话十问体 ｜ 家电数码壁垒：参数眩晕",
+      "verified": true
+    },
+    "U633": {
+      "gem_id": "d3dd777b3884",
+      "gem_name": "U633 家里兼容吗体 ｜ 家电数码壁垒：兼容与适配担忧",
+      "verified": true
+    },
+    "U634": {
+      "gem_id": "fd9cb5e4fd98",
+      "gem_name": "U634 噪音功耗实测体 ｜ 家电壁垒：运行成本不可见",
+      "verified": true
+    },
+    "U635": {
+      "gem_id": "228b47a35bb8",
+      "gem_name": "U635 旧机去哪儿体 ｜ 家电数码壁垒：旧机处置负担",
+      "verified": true
+    },
+    "U636": {
+      "gem_id": "8fabe9f7679c",
+      "gem_name": "U636 学习成本七日体 ｜ 家电数码壁垒：上手学习曲线",
+      "verified": true
+    },
+    "U637": {
+      "gem_id": "77f3b2ef7741",
+      "gem_name": "U637 待机刺客体 ｜ 家电壁垒：隐性待机耗电",
+      "verified": true
+    },
+    "U638": {
+      "gem_id": "c26f95dd0d06",
+      "gem_name": "U638 保修流程预演体 ｜ 家电数码壁垒：售后流程未知恐惧",
+      "verified": true
+    },
+    "U639": {
+      "gem_id": "80ee8bc0b797",
+      "gem_name": "U639 数码防悔期体 ｜ 数码壁垒：买完就出新的贬值焦虑",
+      "verified": true
+    },
+    "U640": {
+      "gem_id": "d8fdf3f08f7e",
+      "gem_name": "U640 一台顶几台体 ｜ 家电壁垒：功能整合vs专机专用",
+      "verified": true
+    },
+    "U641": {
+      "gem_id": "4f3b4bcc9143",
+      "gem_name": "U641 尺寸想象补全体 ｜ 家居壁垒：尺寸在我家的想象",
+      "verified": true
+    },
+    "U642": {
+      "gem_id": "f53428d9ba52",
+      "gem_name": "U642 甲醛焦虑理性体 ｜ 家居壁垒：新品异味与安全担忧（合规版）",
+      "verified": true
+    },
+    "U643": {
+      "gem_id": "39e349aca1c0",
+      "gem_name": "U643 软硬亲测代言体 ｜ 家纺壁垒：软硬支撑不可感",
+      "verified": true
+    },
+    "U644": {
+      "gem_id": "35134b24faae",
+      "gem_name": "U644 全屋风格及格线体 ｜ 家居壁垒：怕买了不搭",
+      "verified": true
+    },
+    "U645": {
+      "gem_id": "0b8e82eb4be3",
+      "gem_name": "U645 深洗恐惧终结体 ｜ 家纺壁垒：大件清洗难",
+      "verified": true
+    },
+    "U646": {
+      "gem_id": "e92c97ae42d4",
+      "gem_name": "U646 搬家友好度体 ｜ 家居壁垒：搬家难带的顾虑",
+      "verified": true
+    },
+    "U647": {
+      "gem_id": "6f1380946b62",
+      "gem_name": "U647 四季一床体 ｜ 家纺壁垒：季节切换的收纳与成本",
+      "verified": true
+    },
+    "U648": {
+      "gem_id": "3a66f54b4b2d",
+      "gem_name": "U648 灯光氛围学体 ｜ 家居壁垒：灯光效果不可预知",
+      "verified": true
+    },
+    "U649": {
+      "gem_id": "6063aefb0522",
+      "gem_name": "U649 儿童宠物友好度体 ｜ 家居壁垒：家有破坏王的耐造焦虑",
+      "verified": true
+    },
+    "U650": {
+      "gem_id": "fcde57b4afbf",
+      "gem_name": "U650 二手保值体 ｜ 家居壁垒：大件的退出成本",
+      "verified": true
+    },
+    "U651": {
+      "gem_id": "04e45b58e8e0",
+      "gem_name": "U651 月龄对位体 ｜ 母婴壁垒：月龄适配的精确焦虑",
+      "verified": true
+    },
+    "U652": {
+      "gem_id": "0abd5f573f0b",
+      "gem_name": "U652 用三个月就换体 ｜ 母婴壁垒：成长期短的值不值",
+      "verified": true
+    },
+    "U653": {
+      "gem_id": "0ed2ce996b30",
+      "gem_name": "U653 独自带娃神器体 ｜ 母婴壁垒：单人带娃的操作可行性",
+      "verified": true
+    },
+    "U654": {
+      "gem_id": "37f47ffbc9fb",
+      "gem_name": "U654 婆媳育儿和解体 ｜ 母婴壁垒：隔代育儿观念冲突",
+      "verified": true
+    },
+    "U655": {
+      "gem_id": "7098e3de37d5",
+      "gem_name": "U655 娃的真实投票体 ｜ 玩具壁垒：娃喜欢吗的不可预测",
+      "verified": true
+    },
+    "U656": {
+      "gem_id": "eb78212226ad",
+      "gem_name": "U656 出片率玩具体 ｜ 玩具壁垒：陪玩产出与仪式感",
+      "verified": true
+    },
+    "U657": {
+      "gem_id": "6f79ceee876c",
+      "gem_name": "U657 玩具收纳反攻体 ｜ 玩具壁垒：玩具爆炸的空间治理",
+      "verified": true
+    },
+    "U658": {
+      "gem_id": "be09be34b899",
+      "gem_name": "U658 安全冗余检查体 ｜ 母婴壁垒：安全细节的看不见",
+      "verified": true
+    },
+    "U659": {
+      "gem_id": "a3778703ad3f",
+      "gem_name": "U659 二手母婴纠结体 ｜ 母婴壁垒：二手的省钱与心理关",
+      "verified": true
+    },
+    "U660": {
+      "gem_id": "1631d4fa3269",
+      "gem_name": "U660 入园装备清单体 ｜ 母婴壁垒：人生节点的装备焦虑",
+      "verified": true
+    },
+    "U661": {
+      "gem_id": "14543fa913f3",
+      "gem_name": "U661 锅的一生体 ｜ 厨房壁垒：锅具选择与寿命认知",
+      "verified": true
+    },
+    "U662": {
+      "gem_id": "7d3e53013928",
+      "gem_name": "U662 刀工不背锅体 ｜ 厨房壁垒：切不好赖手还是赖刀",
+      "verified": true
+    },
+    "U663": {
+      "gem_id": "490791beb0ba",
+      "gem_name": "U663 小电鸡肋审判体 ｜ 厨房壁垒：小家电的吃灰率恐惧",
+      "verified": true
+    },
+    "U664": {
+      "gem_id": "0efa8f91aa7b",
+      "gem_name": "U664 洗碗黑洞体 ｜ 厨房壁垒：清洗成本被隐藏",
+      "verified": true
+    },
+    "U665": {
+      "gem_id": "5548665b557c",
+      "gem_name": "U665 一人食餐桌体 ｜ 厨房壁垒：一人份的烹饪动力",
+      "verified": true
+    },
+    "U666": {
+      "gem_id": "0f658cde1694",
+      "gem_name": "U666 宴客压力测试体 ｜ 厨房壁垒：待客场景的容量与颜值双考",
+      "verified": true
+    },
+    "U667": {
+      "gem_id": "6b91b1a15161",
+      "gem_name": "U667 冰箱考古体 ｜ 厨房壁垒：存储管理失控",
+      "verified": true
+    },
+    "U668": {
+      "gem_id": "b6b6704c29ab",
+      "gem_name": "U668 外卖成本对撞体 ｜ 厨房壁垒：做饭动力的经济账",
+      "verified": true
+    },
+    "U669": {
+      "gem_id": "62f71e40ce67",
+      "gem_name": "U669 厨房动线三步体 ｜ 厨房壁垒：布局低效的隐形消耗",
+      "verified": true
+    },
+    "U670": {
+      "gem_id": "20d95beabf21",
+      "gem_name": "U670 餐具的场合升降体 ｜ 餐厨壁垒：日用与待客的两套纠结",
+      "verified": true
+    },
+    "U671": {
+      "gem_id": "12feac3f22d2",
+      "gem_name": "U671 顽渍分型体 ｜ 清洁壁垒：污渍不分型乱用力",
+      "verified": true
+    },
+    "U672": {
+      "gem_id": "74efaa604307",
+      "gem_name": "U672 清洁顺序纠错体 ｜ 清洁壁垒：顺序错=白干",
+      "verified": true
+    },
+    "U673": {
+      "gem_id": "b5ce53858ea1",
+      "gem_name": "U673 收纳幸存者体 ｜ 收纳壁垒：收纳产品自身成为杂物",
+      "verified": true
+    },
+    "U674": {
+      "gem_id": "af8302d44a4c",
+      "gem_name": "U674 换季打包手册体 ｜ 收纳壁垒：换季衣物的仓储工程",
+      "verified": true
+    },
+    "U675": {
+      "gem_id": "23fcc1eb72d3",
+      "gem_name": "U675 深度清洁日体 ｜ 清洁壁垒：日常清洁与深度清洁的分层缺失",
+      "verified": true
+    },
+    "U676": {
+      "gem_id": "86ccf13ed15d",
+      "gem_name": "U676 阳台改造平米学体 ｜ 收纳壁垒：小空间的功能贪心",
+      "verified": true
+    },
+    "U677": {
+      "gem_id": "6477fec71dc0",
+      "gem_name": "U677 洗衣分篮革命体 ｜ 清洁壁垒：混洗的慢性毁衣",
+      "verified": true
+    },
+    "U678": {
+      "gem_id": "287ccfbe5b56",
+      "gem_name": "U678 玄关三十秒体 ｜ 收纳壁垒：进出门动线的杂物淤积",
+      "verified": true
+    },
+    "U679": {
+      "gem_id": "c0dc04a8dfa4",
+      "gem_name": "U679 大扫除分工体 ｜ 清洁壁垒：一人干全家看的怨气",
+      "verified": true
+    },
+    "U680": {
+      "gem_id": "1b74c4c1320d",
+      "gem_name": "U680 清洁剂断舍离体 ｜ 清洁壁垒：瓶瓶罐罐的冗余囤积",
+      "verified": true
+    },
+    "U681": {
+      "gem_id": "bb7050ae77a9",
+      "gem_name": "U681 三分钟热度保险体 ｜ 运动壁垒：怕自己坚持不了",
+      "verified": true
+    },
+    "U682": {
+      "gem_id": "2c4aa85a1152",
+      "gem_name": "U682 居家噪音刑体 ｜ 运动壁垒：扰邻恐惧",
+      "verified": true
+    },
+    "U683": {
+      "gem_id": "6f8a06184445",
+      "gem_name": "U683 装备先行斩体 ｜ 运动壁垒：装备党的本末倒置",
+      "verified": true
+    },
+    "U684": {
+      "gem_id": "1d08699c675f",
+      "gem_name": "U684 户外新手怕丢人体 ｜ 户外壁垒：新手的专业场景社恐",
+      "verified": true
+    },
+    "U685": {
+      "gem_id": "68a04a47743d",
+      "gem_name": "U685 通勤运动化体 ｜ 运动壁垒：没时间运动的时间账",
+      "verified": true
+    },
+    "U686": {
+      "gem_id": "6af320ab584a",
+      "gem_name": "U686 全家运动最大公约数体 ｜ 运动壁垒：家庭成员需求分裂",
+      "verified": true
+    },
+    "U687": {
+      "gem_id": "24cf99ceb4d6",
+      "gem_name": "U687 雨天不断练体 ｜ 运动壁垒：天气中断的习惯崩塌",
+      "verified": true
+    },
+    "U688": {
+      "gem_id": "340b1005c233",
+      "gem_name": "U688 运动后勤学体 ｜ 运动壁垒：练后的狼狈与恢复忽视",
+      "verified": true
+    },
+    "U689": {
+      "gem_id": "6a17f6e1d1b7",
+      "gem_name": "U689 户外装备的城市兼职体 ｜ 户外壁垒：低频使用的闲置负罪",
+      "verified": true
+    },
+    "U690": {
+      "gem_id": "fbe013d2c312",
+      "gem_name": "U690 运动社交货币体 ｜ 运动壁垒：坚持缺乏反馈的孤独感",
+      "verified": true
+    },
+    "U691": {
+      "gem_id": "7611d69854d3",
+      "gem_name": "U691 主子验收体 ｜ 宠物壁垒：花钱的是人用的是猫",
+      "verified": true
+    },
+    "U692": {
+      "gem_id": "8591889d99de",
+      "gem_name": "U692 换粮过渡体 ｜ 宠物壁垒：换粮的肠胃风险认知",
+      "verified": true
+    },
+    "U693": {
+      "gem_id": "c2bd7c9704f8",
+      "gem_name": "U693 独留焦虑观察体 ｜ 宠物壁垒：上班后家里发生了什么",
+      "verified": true
+    },
+    "U694": {
+      "gem_id": "cb2708b24ad7",
+      "gem_name": "U694 掉毛季生存体 ｜ 宠物壁垒：毛发治理的全屋战争",
+      "verified": true
+    },
+    "U695": {
+      "gem_id": "3686b57b72e3",
+      "gem_name": "U695 宠物开销审计体 ｜ 宠物壁垒：养宠成本的失控",
+      "verified": true
+    },
+    "U696": {
+      "gem_id": "e949ecc09eb7",
+      "gem_name": "U696 植物杀手自救体 ｜ 园艺壁垒：养啥死啥的自我放弃",
+      "verified": true
+    },
+    "U697": {
+      "gem_id": "e022fb4480d4",
+      "gem_name": "U697 阳台菜园回本体 ｜ 园艺壁垒：种菜的投入产出怀疑",
+      "verified": true
+    },
+    "U698": {
+      "gem_id": "1c3911190107",
+      "gem_name": "U698 遛狗装备动线体 ｜ 宠物壁垒：遛狗的手忙脚乱",
+      "verified": true
+    },
+    "U699": {
+      "gem_id": "3beb9c5e9bda",
+      "gem_name": "U699 多宠和平体 ｜ 宠物壁垒：多宠家庭的资源战争",
+      "verified": true
+    },
+    "U700": {
+      "gem_id": "83af6102934c",
+      "gem_name": "U700 绿植角改造体 ｜ 园艺壁垒：想要绿意不知从何下手（E族收尾）",
+      "verified": true
+    },
+    "U701": {
+      "gem_id": "00cf54337f5e",
+      "gem_name": "U701 安全一票否决体 ｜ 宝妈心智：安全>一切的决策序",
+      "verified": true
+    },
+    "U702": {
+      "gem_id": "5b45acbfdeaf",
+      "gem_name": "U702 碎片时间适配体 ｜ 宝妈心智：整块时间已死",
+      "verified": true
+    },
+    "U703": {
+      "gem_id": "7595c268838f",
+      "gem_name": "U703 过来人黑话体 ｜ 宝妈心智：只信同类不信广告",
+      "verified": true
+    },
+    "U704": {
+      "gem_id": "572dc117d1c4",
+      "gem_name": "U704 愧疚消费拆弹体 ｜ 宝妈心智：为愧疚买单的陷阱",
+      "verified": true
+    },
+    "U705": {
+      "gem_id": "0a331d270916",
+      "gem_name": "U705 睡眠碎片求生体 ｜ 宝妈心智：睡眠是最硬的刚需",
+      "verified": true
+    },
+    "U706": {
+      "gem_id": "00aecaceca24",
+      "gem_name": "U706 出门如搬家体 ｜ 宝妈心智：带娃出门的装备工程",
+      "verified": true
+    },
+    "U707": {
+      "gem_id": "e3e42a7ae223",
+      "gem_name": "U707 辅食翻车互助体 ｜ 宝妈心智：喂养的挫败与互助",
+      "verified": true
+    },
+    "U708": {
+      "gem_id": "caca9e51d44f",
+      "gem_name": "U708 自己也算人体 ｜ 宝妈心智：自我需求的合法化",
+      "verified": true
+    },
+    "U709": {
+      "gem_id": "d47969800c7d",
+      "gem_name": "U709 长辈说不用买体 ｜ 宝妈心智：两代育儿消费观的夹缝",
+      "verified": true
+    },
+    "U710": {
+      "gem_id": "ac93344baea4",
+      "gem_name": "U710 二手群冲浪体 ｜ 宝妈心智：母婴二手的圈层交易文化",
+      "verified": true
+    },
+    "U711": {
+      "gem_id": "e88a8761ea92",
+      "gem_name": "U711 百元大关体 ｜ 学生党心智：价格锚的心理关口",
+      "verified": true
+    },
+    "U712": {
+      "gem_id": "f399ba81ab45",
+      "gem_name": "U712 宿舍空间政治体 ｜ 学生党心智：一张床位的领土经营",
+      "verified": true
+    },
+    "U713": {
+      "gem_id": "5f3b8d502c9b",
+      "gem_name": "U713 平替侦探体 ｜ 学生党心智：平替是尊严不是将就",
+      "verified": true
+    },
+    "U714": {
+      "gem_id": "e44ab39fe809",
+      "gem_name": "U714 开学装备断舍离体 ｜ 学生党心智：开学季的清单轰炸防御",
+      "verified": true
+    },
+    "U715": {
+      "gem_id": "7ef309f3fd8c",
+      "gem_name": "U715 熬夜配套体 ｜ 学生党心智：熬夜是常态的务实应对",
+      "verified": true
+    },
+    "U716": {
+      "gem_id": "d45569a9832b",
+      "gem_name": "U716 合租分摊体 ｜ 学生党心智：共用物的出资政治",
+      "verified": true
+    },
+    "U717": {
+      "gem_id": "6b2650e74211",
+      "gem_name": "U717 实习第一周体面体 ｜ 学生党心智：校园到职场的形象换装",
+      "verified": true
+    },
+    "U718": {
+      "gem_id": "8ceaff364af3",
+      "gem_name": "U718 学生证隐藏福利体 ｜ 学生党心智：身份权益的信息差",
+      "verified": true
+    },
+    "U719": {
+      "gem_id": "a6adfeef6297",
+      "gem_name": "U719 考试周状态管理体 ｜ 学生党心智：极限周期的后勤自动化",
+      "verified": true
+    },
+    "U720": {
+      "gem_id": "6f0c0d16994a",
+      "gem_name": "U720 毕业断舍离体 ｜ 学生党心智：搬离校园的物品清算",
+      "verified": true
+    },
+    "U721": {
+      "gem_id": "5636745c3f3a",
+      "gem_name": "U721 怕麻烦子女体 ｜ 银发心智：需求隐瞒的代际哑谜",
+      "verified": true
+    },
+    "U722": {
+      "gem_id": "929d067ce69d",
+      "gem_name": "U722 一学就会红线体 ｜ 银发心智：学习成本的一票否决",
+      "verified": true
+    },
+    "U723": {
+      "gem_id": "ea826cff19df",
+      "gem_name": "U723 老伙伴社交体 ｜ 银发心智：退休后的社交资产重建",
+      "verified": true
+    },
+    "U724": {
+      "gem_id": "6eeb61b2fe54",
+      "gem_name": "U724 子女远程照护体 ｜ 银发心智：异地牵挂的技术解法",
+      "verified": true
+    },
+    "U725": {
+      "gem_id": "6410a686f850",
+      "gem_name": "U725 大字化生存体 ｜ 银发心智：视觉退化的日常适配",
+      "verified": true
+    },
+    "U726": {
+      "gem_id": "3813fe8a205d",
+      "gem_name": "U726 老物件的对手体 ｜ 银发心智：\"旧的还能用\"的替换阻力",
+      "verified": true
+    },
+    "U727": {
+      "gem_id": "5850de908ad0",
+      "gem_name": "U727 银发防骗铠甲体 ｜ 银发心智：消费安全的守护刚需",
+      "verified": true
+    },
+    "U728": {
+      "gem_id": "99bec163972e",
+      "gem_name": "U728 孝心代购踩坑体 ｜ 银发心智：子女买≠老人要的错位",
+      "verified": true
+    },
+    "U729": {
+      "gem_id": "d0a8eab4cd95",
+      "gem_name": "U729 银发独居安全网体 ｜ 银发心智：独居风险的系统防护",
+      "verified": true
+    },
+    "U730": {
+      "gem_id": "eac5197fa08e",
+      "gem_name": "U730 返聘长辈体 ｜ 银发心智：被需要感的价值供给",
+      "verified": true
+    },
+    "U731": {
+      "gem_id": "4b77a70f9a6e",
+      "gem_name": "U731 通勤两小时体 ｜ 打工人心智：通勤时间的价值重构",
+      "verified": true
+    },
+    "U732": {
+      "gem_id": "45c10ebbf271",
+      "gem_name": "U732 工位人权体 ｜ 打工人心智：八小时栖息地的最低尊严",
+      "verified": true
+    },
+    "U733": {
+      "gem_id": "36417917b61c",
+      "gem_name": "U733 下班半小时结界体 ｜ 打工人心智：工作与生活的切换仪式",
+      "verified": true
+    },
+    "U734": {
+      "gem_id": "38e14b2000ae",
+      "gem_name": "U734 工作日晚餐十五分钟体 ｜ 打工人心智：下班后的做饭能量赤字",
+      "verified": true
+    },
+    "U735": {
+      "gem_id": "3e339f8c212a",
+      "gem_name": "U735 差旅生存包体 ｜ 打工人心智：高频出差的行李工程",
+      "verified": true
+    },
+    "U736": {
+      "gem_id": "04c1eeb47ee9",
+      "gem_name": "U736 摸鱼回血角体 ｜ 打工人心智：工间恢复的微休息科学",
+      "verified": true
+    },
+    "U737": {
+      "gem_id": "c0485a9ca1b9",
+      "gem_name": "U737 周一制服体 ｜ 打工人心智：穿搭决策的每周外包",
+      "verified": true
+    },
+    "U738": {
+      "gem_id": "1c184e71a11a",
+      "gem_name": "U738 办公室生存装备黑话体 ｜ 打工人心智：职场圈层的默契识别",
+      "verified": true
+    },
+    "U739": {
+      "gem_id": "39818f38dec8",
+      "gem_name": "U739 加班夜的第二顿体 ｜ 打工人心智：深夜工作餐的将就治理",
+      "verified": true
+    },
+    "U740": {
+      "gem_id": "626ff755b2bc",
+      "gem_name": "U740 年假出逃计划体 ｜ 打工人心智：稀缺假期的最大化工程",
+      "verified": true
+    },
+    "U741": {
+      "gem_id": "742c55066f53",
+      "gem_name": "U741 不留痕改造体 ｜ 租房心智：押金是悬在头上的剑",
+      "verified": true
+    },
+    "U742": {
+      "gem_id": "20bbdee10696",
+      "gem_name": "U742 十平米功能折叠体 ｜ 租房心智：一间房当一套房用",
+      "verified": true
+    },
+    "U743": {
+      "gem_id": "8b410ba02da7",
+      "gem_name": "U743 搬家轻量化体 ｜ 租房心智：一年一搬的资产纪律",
+      "verified": true
+    },
+    "U744": {
+      "gem_id": "c2693ad26f46",
+      "gem_name": "U744 合租公区外交体 ｜ 租房心智：共享空间的边界政治",
+      "verified": true
+    },
+    "U745": {
+      "gem_id": "5a75562bb1e3",
+      "gem_name": "U745 出租屋灯光救赎体 ｜ 租房心智：白炽惨光里的生活质感",
+      "verified": true
+    },
+    "U746": {
+      "gem_id": "e21b9bae5d55",
+      "gem_name": "U746 房东的家具改良体 ｜ 租房心智：不能扔的旧家具共处学",
+      "verified": true
+    },
+    "U747": {
+      "gem_id": "96399b5e87b3",
+      "gem_name": "U747 一人食尊严体 ｜ 租房心智：独居饮食的自我关照",
+      "verified": true
+    },
+    "U748": {
+      "gem_id": "62ef23994463",
+      "gem_name": "U748 隔音自救体 ｜ 租房心智：薄墙人生的声音边界",
+      "verified": true
+    },
+    "U749": {
+      "gem_id": "9ff1cc30e255",
+      "gem_name": "U749 出租屋安全加装体 ｜ 租房心智：独居安全感的可控部分",
+      "verified": true
+    },
+    "U750": {
+      "gem_id": "f492fb9b6daa",
+      "gem_name": "U750 押金保卫战体 ｜ 租房心智：退租博弈的证据工程",
+      "verified": true
+    },
+    "U751": {
+      "gem_id": "c62efb69c64e",
+      "gem_name": "U751 两套习惯合并体 ｜ 新婚心智：生活系统的合并冲突",
+      "verified": true
+    },
+    "U752": {
+      "gem_id": "0de9f35dae73",
+      "gem_name": "U752 婚品预算排序体 ｜ 新婚心智：一次性大采购的优先级",
+      "verified": true
+    },
+    "U753": {
+      "gem_id": "a034a8a3b381",
+      "gem_name": "U753 家务股份制体 ｜ 新婚心智：家务分配的制度化",
+      "verified": true
+    },
+    "U754": {
+      "gem_id": "803089a473b8",
+      "gem_name": "U754 两个家庭的年节体 ｜ 新婚心智：双边孝心的平衡工程",
+      "verified": true
+    },
+    "U755": {
+      "gem_id": "1f07181393a8",
+      "gem_name": "U755 家庭账本合并体 ｜ 新婚心智：钱的透明化工程",
+      "verified": true
+    },
+    "U756": {
+      "gem_id": "2da3fa039fd6",
+      "gem_name": "U756 二人餐桌升级体 ｜ 新婚心智：从凑合到经营的饮食升级",
+      "verified": true
+    },
+    "U757": {
+      "gem_id": "5c48d5769ff4",
+      "gem_name": "U757 亲密边界保卫体 ｜ 新婚心智：同居后的个人空间设计",
+      "verified": true
+    },
+    "U758": {
+      "gem_id": "9d108407b120",
+      "gem_name": "U758 客房到婴儿房预备体 ｜ 新婚心智：空房间的阶段规划",
+      "verified": true
+    },
+    "U759": {
+      "gem_id": "dc94a7e6a6d4",
+      "gem_name": "U759 周年纪念的反套路体 ｜ 新婚心智：仪式感的自定义",
+      "verified": true
+    },
+    "U760": {
+      "gem_id": "b7cddccabd09",
+      "gem_name": "U760 婚后朋友保卫体 ｜ 新婚心智：社交圈的婚姻税",
+      "verified": true
+    },
+    "U761": {
+      "gem_id": "2d2313840c46",
+      "gem_name": "U761 体重秤下岗体 ｜ 健身心智：数字焦虑的度量替换",
+      "verified": true
+    },
+    "U762": {
+      "gem_id": "388604cf98a9",
+      "gem_name": "U762 健身房社恐体 ｜ 健身心智：新手的器械区恐惧",
+      "verified": true
+    },
+    "U763": {
+      "gem_id": "51558c47b26b",
+      "gem_name": "U763 饮食执行力体 ｜ 健身心智：知道吃什么但做不到",
+      "verified": true
+    },
+    "U764": {
+      "gem_id": "2dfd64e8531e",
+      "gem_name": "U764 居家五平米健身角体 ｜ 健身心智：去健身房的启动成本",
+      "verified": true
+    },
+    "U765": {
+      "gem_id": "c3fb9d84d29c",
+      "gem_name": "U765 运动损伤预防体 ｜ 健身心智：热身的被跳过与代价",
+      "verified": true
+    },
+    "U766": {
+      "gem_id": "4ad844158c80",
+      "gem_name": "U766 平台期陪伴体 ｜ 健身心智：进步停滞的心理危机",
+      "verified": true
+    },
+    "U767": {
+      "gem_id": "01fbbec42c54",
+      "gem_name": "U767 深夜食欲谈判体 ｜ 健身心智：晚上十点的自我拉扯",
+      "verified": true
+    },
+    "U768": {
+      "gem_id": "9004b5336f20",
+      "gem_name": "U768 运动数据的祛魅体 ｜ 健身心智：手环数字的迷信与真相",
+      "verified": true
+    },
+    "U769": {
+      "gem_id": "e1cc4d93d2d8",
+      "gem_name": "U769 碎片运动叠加体 ｜ 健身心智：没有整块时间的积分制",
+      "verified": true
+    },
+    "U770": {
+      "gem_id": "85eb2068bc4c",
+      "gem_name": "U770 健身餐外食生存体 ｜ 健身心智：外食环境的选择策略",
+      "verified": true
+    },
+    "U771": {
+      "gem_id": "374b7bf51fad",
+      "gem_name": "U771 养宠成本知情体 ｜ 宠物家长心智：冲动养宠的劝退与负责",
+      "verified": true
+    },
+    "U772": {
+      "gem_id": "513c5f2d3527",
+      "gem_name": "U772 宠物医疗基金体 ｜ 宠物家长心智：医疗账单的恐惧管理",
+      "verified": true
+    },
+    "U773": {
+      "gem_id": "578ed61a7a4f",
+      "gem_name": "U773 宠物老龄陪伴体 ｜ 宠物家长心智：它老了的适老改造",
+      "verified": true
+    },
+    "U774": {
+      "gem_id": "852c7f3ef33a",
+      "gem_name": "U774 宠物社交礼仪体 ｜ 宠物家长心智：带宠出行的公共边界",
+      "verified": true
+    },
+    "U775": {
+      "gem_id": "2241ca4dd4a7",
+      "gem_name": "U775 上班族养宠时间表体 ｜ 宠物家长心智：陪伴不足的愧疚管理",
+      "verified": true
+    },
+    "U776": {
+      "gem_id": "e37aaf3feaf4",
+      "gem_name": "U776 宠物拆家法庭体 ｜ 宠物家长心智：破坏行为的归因错位",
+      "verified": true
+    },
+    "U777": {
+      "gem_id": "6a04d683bb17",
+      "gem_name": "U777 宠物友好家装体 ｜ 宠物家长心智：人宠共居的空间冲突",
+      "verified": true
+    },
+    "U778": {
+      "gem_id": "381e9213729a",
+      "gem_name": "U778 多口之家的宠物地位体 ｜ 宠物家长心智：家庭成员的接纳分歧",
+      "verified": true
+    },
+    "U779": {
+      "gem_id": "ff96d474ad08",
+      "gem_name": "U779 宠物内容创作者体 ｜ 宠物家长心智：晒宠的表达升级",
+      "verified": true
+    },
+    "U780": {
+      "gem_id": "76a87f097793",
+      "gem_name": "U780 异宠家长正名体 ｜ 宠物家长心智：小众宠物的理解荒漠",
+      "verified": true
+    },
+    "U781": {
+      "gem_id": "5f789a74b78a",
+      "gem_name": "U781 开店成本祛魅体 ｜ 小店主心智：创业启动的成本迷雾",
+      "verified": true
+    },
+    "U782": {
+      "gem_id": "aff62f54fe6e",
+      "gem_name": "U782 一人店动线体 ｜ 小店主心智：单人运营的极限效率",
+      "verified": true
+    },
+    "U783": {
+      "gem_id": "c89d54827c78",
+      "gem_name": "U783 回头客制造机体 ｜ 小店主心智：复购率的生死线",
+      "verified": true
+    },
+    "U784": {
+      "gem_id": "2550b898371a",
+      "gem_name": "U784 小店拍出大片体 ｜ 小店主心智：线上门面的形象差距",
+      "verified": true
+    },
+    "U785": {
+      "gem_id": "06e6d9d7acfa",
+      "gem_name": "U785 库存周转救命体 ｜ 小店主心智：压货是慢性死亡",
+      "verified": true
+    },
+    "U786": {
+      "gem_id": "585f76f815a0",
+      "gem_name": "U786 差评急救室体 ｜ 小店主心智：负面评价的应对慌乱",
+      "verified": true
+    },
+    "U787": {
+      "gem_id": "808c95a5374c",
+      "gem_name": "U787 淡季生存手册体 ｜ 小店主心智：季节性现金流的恐慌",
+      "verified": true
+    },
+    "U788": {
+      "gem_id": "9a289e271d4d",
+      "gem_name": "U788 店主形象IP体 ｜ 小店主心智：老板本人是最大流量",
+      "verified": true
+    },
+    "U789": {
+      "gem_id": "8dc88ef295f6",
+      "gem_name": "U789 供应商谈判入门体 ｜ 小店主心智：进货议价的信息弱势",
+      "verified": true
+    },
+    "U790": {
+      "gem_id": "e6992a9c45c2",
+      "gem_name": "U790 打烊后的老板体 ｜ 小店主心智：经营者的自我损耗",
+      "verified": true
+    },
+    "U791": {
+      "gem_id": "354b2b205fd4",
+      "gem_name": "U791 参数直男体 ｜ 男性心智：拒绝氛围只认规格",
+      "verified": true
+    },
+    "U792": {
+      "gem_id": "63f0e407f183",
+      "gem_name": "U792 男士护肤扫盲体 ｜ 男性心智：护理需求的羞耻门槛",
+      "verified": true
+    },
+    "U793": {
+      "gem_id": "52d1f22a50e3",
+      "gem_name": "U793 装备库男人体 ｜ 男性心智：工具收藏的天性合理化",
+      "verified": true
+    },
+    "U794": {
+      "gem_id": "ad604842d687",
+      "gem_name": "U794 三十秒送礼救援体 ｜ 男性心智：送礼无能的即效方案",
+      "verified": true
+    },
+    "U795": {
+      "gem_id": "dfc50f0ea8f5",
+      "gem_name": "U795 中年男人的腰体 ｜ 男性心智：身体信号的沉默硬扛",
+      "verified": true
+    },
+    "U796": {
+      "gem_id": "0bed04e05a3c",
+      "gem_name": "U796 车库圣殿体 ｜ 男性心智：专属空间的精神刚需",
+      "verified": true
+    },
+    "U797": {
+      "gem_id": "8e99e28b829f",
+      "gem_name": "U797 爸爸的带娃装备体 ｜ 男性心智：父职参与的工具化路径",
+      "verified": true
+    },
+    "U798": {
+      "gem_id": "0d95081c6c3a",
+      "gem_name": "U798 兄弟局装备体 ｜ 男性心智：男性友谊的场景载体",
+      "verified": true
+    },
+    "U799": {
+      "gem_id": "7d038b424e81",
+      "gem_name": "U799 面子工程审计体 ｜ 男性心智：面子消费的理性重构",
+      "verified": true
+    },
+    "U800": {
+      "gem_id": "7f1c6bcbae76",
+      "gem_name": "U800 直男审美自救体 ｜ 男性心智：生活审美的低成本入门（F族收尾）",
+      "verified": true
+    },
+    "U801": {
+      "gem_id": "3bcee288d3b4",
+      "gem_name": "U801 大促前夜清单体 ｜ 时机：大促开抢前24小时",
+      "verified": true
+    },
+    "U802": {
+      "gem_id": "7ca969450977",
+      "gem_name": "U802 价格历史侦探体 ｜ 时机：大促价格迷雾期",
+      "verified": true
+    },
+    "U803": {
+      "gem_id": "1a998f681064",
+      "gem_name": "U803 凑单陷阱拆解体 ｜ 时机：大促凑单纠结时刻",
+      "verified": true
+    },
+    "U804": {
+      "gem_id": "076d3c7003e3",
+      "gem_name": "U804 大促售后高峰体 ｜ 时机：大促后的收货潮",
+      "verified": true
+    },
+    "U805": {
+      "gem_id": "14a0a35b6189",
+      "gem_name": "U805 错峰捡漏体 ｜ 时机：大促后的冷静期",
+      "verified": true
+    },
+    "U806": {
+      "gem_id": "28b12f8d9088",
+      "gem_name": "U806 大促囤货科学体 ｜ 时机：囤货冲动的高峰期",
+      "verified": true
+    },
+    "U807": {
+      "gem_id": "ed57fd0487c4",
+      "gem_name": "U807 直播间清醒指南体 ｜ 时机：大促直播的上头时刻",
+      "verified": true
+    },
+    "U808": {
+      "gem_id": "7768c864aeba",
+      "gem_name": "U808 大促预算信封体 ｜ 时机：大促预算失控的普遍时刻",
+      "verified": true
+    },
+    "U809": {
+      "gem_id": "da8fb3698852",
+      "gem_name": "U809 礼物季物流倒计时体 ｜ 时机：节日礼物的物流死线",
+      "verified": true
+    },
+    "U810": {
+      "gem_id": "eb33c25e3f17",
+      "gem_name": "U810 年末清点体 ｜ 时机：年末的盘点情绪期",
+      "verified": true
+    },
+    "U811": {
+      "gem_id": "65109bb75ff6",
+      "gem_name": "U811 第一间自己的房体 ｜ 时机：人生节点·独立居住的开始",
+      "verified": true
+    },
+    "U812": {
+      "gem_id": "89b98f962275",
+      "gem_name": "U812 婚礼倒计时百日体 ｜ 时机：人生节点·婚礼筹备期",
+      "verified": true
+    },
+    "U813": {
+      "gem_id": "669d1ba586ec",
+      "gem_name": "U813 新生儿百天准备体 ｜ 时机：人生节点·迎接新生命",
+      "verified": true
+    },
+    "U814": {
+      "gem_id": "551c9bb3b88a",
+      "gem_name": "U814 乔迁头七天体 ｜ 时机：人生节点·搬入新家的第一周",
+      "verified": true
+    },
+    "U815": {
+      "gem_id": "00ef261b85a0",
+      "gem_name": "U815 第一份工资体 ｜ 时机：人生节点·经济独立的开端",
+      "verified": true
+    },
+    "U816": {
+      "gem_id": "bfc1088b4156",
+      "gem_name": "U816 退休第一年体 ｜ 时机：人生节点·职业生涯的落幕与重启",
+      "verified": true
+    },
+    "U817": {
+      "gem_id": "2fd992286e6f",
+      "gem_name": "U817 空巢第一晚体 ｜ 时机：人生节点·孩子离家的家庭重构",
+      "verified": true
+    },
+    "U818": {
+      "gem_id": "2b43bb831b46",
+      "gem_name": "U818 康复期居家改造体 ｜ 时机：人生节点·术后/伤后的居家过渡",
+      "verified": true
+    },
+    "U819": {
+      "gem_id": "09fe31224331",
+      "gem_name": "U819 异国第一个月体 ｜ 时机：人生节点·移居海外的落地期",
+      "verified": true
+    },
+    "U820": {
+      "gem_id": "7060aec3c83f",
+      "gem_name": "U820 告别与整理体 ｜ 时机：人生节点·亲人离开后的遗物整理",
+      "verified": true
+    },
+    "U821": {
+      "gem_id": "ac8ba0a7a7ad",
+      "gem_name": "U821 换季衣柜交接体 ｜ 时机：季节节点·换季的第一个周末",
+      "verified": true
+    },
+    "U822": {
+      "gem_id": "7a76066a7897",
+      "gem_name": "U822 入夏防线体 ｜ 时机：季节节点·第一波热浪来袭",
+      "verified": true
+    },
+    "U823": {
+      "gem_id": "9bebfd50d6a2",
+      "gem_name": "U823 入冬储备体 ｜ 时机：季节节点·第一波寒流预警",
+      "verified": true
+    },
+    "U824": {
+      "gem_id": "7a88132d9015",
+      "gem_name": "U824 雨季防御工事体 ｜ 时机：季节节点·雨季/梅雨的来临",
+      "verified": true
+    },
+    "U825": {
+      "gem_id": "211924e00e22",
+      "gem_name": "U825 开学季家长战备体 ｜ 时机：季节节点·开学前两周",
+      "verified": true
+    },
+    "U826": {
+      "gem_id": "5716d372b4d9",
+      "gem_name": "U826 丰收季厨房体 ｜ 时机：季节节点·食材的当季高峰",
+      "verified": true
+    },
+    "U827": {
+      "gem_id": "82d92e9f528a",
+      "gem_name": "U827 长假前的家封印体 ｜ 时机：季节节点·长假出行前的关门仪式",
+      "verified": true
+    },
+    "U828": {
+      "gem_id": "e9f836baf38f",
+      "gem_name": "U828 年末大扫除体 ｜ 时机：季节节点·辞旧迎新的清洁仪式",
+      "verified": true
+    },
+    "U829": {
+      "gem_id": "a48203dc3811",
+      "gem_name": "U829 花粉与柳絮防御体 ｜ 时机：季节节点·过敏高发季",
+      "verified": true
+    },
+    "U830": {
+      "gem_id": "6cabc356af8d",
+      "gem_name": "U830 季节限定的心动体 ｜ 时机：季节节点·限定款的心理窗口",
+      "verified": true
+    },
+    "U831": {
+      "gem_id": "576a719dca96",
+      "gem_name": "U831 清晨六点的人体 ｜ 时机：日内时刻·早起者的黄金一小时",
+      "verified": true
+    },
+    "U832": {
+      "gem_id": "177c0f610717",
+      "gem_name": "U832 午休二十分钟体 ｜ 时机：日内时刻·午间的恢复窗口",
+      "verified": true
+    },
+    "U833": {
+      "gem_id": "1d18023ea21b",
+      "gem_name": "U833 下午四点低谷体 ｜ 时机：日内时刻·午后能量低谷",
+      "verified": true
+    },
+    "U834": {
+      "gem_id": "de13436321cc",
+      "gem_name": "U834 深夜十一点购物车体 ｜ 时机：日内时刻·深夜的情绪消费高峰",
+      "verified": true
+    },
+    "U835": {
+      "gem_id": "dbe44ace5630",
+      "gem_name": "U835 通勤晚高峰治愈体 ｜ 时机：日内时刻·下班路上的疲惫峰值",
+      "verified": true
+    },
+    "U836": {
+      "gem_id": "165769fd24e4",
+      "gem_name": "U836 晚八点亲子档体 ｜ 时机：日内时刻·晚饭后的家庭黄金档",
+      "verified": true
+    },
+    "U837": {
+      "gem_id": "59cad195f652",
+      "gem_name": "U837 睡前一小时降落体 ｜ 时机：日内时刻·入睡前的过渡带",
+      "verified": true
+    },
+    "U838": {
+      "gem_id": "621aa20a3fa9",
+      "gem_name": "U838 周五下班仪式体 ｜ 时机：日内时刻·一周终点的解放时刻",
+      "verified": true
+    },
+    "U839": {
+      "gem_id": "811c7c81d09c",
+      "gem_name": "U839 周日晚焦虑体 ｜ 时机：日内时刻·周日夜的下周预感",
+      "verified": true
+    },
+    "U840": {
+      "gem_id": "69679e6a12af",
+      "gem_name": "U840 凌晨喂奶的陪伴体 ｜ 时机：日内时刻·凌晨三点的育儿孤岛",
+      "verified": true
+    }
+  }
+}

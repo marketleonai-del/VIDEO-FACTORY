@@ -1,0 +1,31 @@
+{
+  "gemini": {
+    "gem_id": "",
+    "gemcli_path": "gemcli",
+    "model": "flash"
+  },
+  "custom_providers": {
+    "hfsy_image": {
+      "base_url": "https://www.hfsyapi.cn",
+      "api_key": "",
+      "timeout": 180,
+      "api_key_env": "HFSY_IMAGE_API_KEY"
+    }
+  },
+  "v4": {
+    "video_provider": "auto",
+    "newapi_base_url": "https://aihubcc.cc",
+    "newapi_api_key_env": "NEWAPI_API_KEY",
+    "physical_mode": "strict",
+    "reference_strategy": "image2-chain",
+    "reference_host": "auto",
+    "cloudflared_path": "D:\\tools\\cloudflared\\cloudflared.exe",
+    "qc_mode": "risk",
+    "max_regenerations": 1,
+    "feishu_sync": "async"
+  },
+  "feishu": {
+    "config_path": "D:\\Feishu\\video-feishu-sync\\config\\config.yaml",
+    "tables": ["批次", "创意计划", "视频分段"]
+  }
+}

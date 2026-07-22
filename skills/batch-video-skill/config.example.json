@@ -1,0 +1,486 @@
+// =============================================================================
+// batch-video-skill 完整配置示例文件
+// =============================================================================
+// 配置文件: config.example.json
+// 说明: 本文件包含所有可配置项的完整说明和示例值
+// 复制到: ~/.batch-video-skill/config.json（用户配置文件）
+// 格式: JSON with Comments（支持 // 和 /* */ 注释，解析时自动去除）
+// 优先级: 用户配置 > 环境变量 > 命令行参数 > 本默认配置
+// 安全提示: 敏感信息（API Key、Cookie 等）建议使用安全存储，配置文件中用 ******** 占位
+// =============================================================================
+{
+  // ── 版本控制 ──────────────────────────────────────────────────────────────
+  // config_version: 配置版本号，用于配置迁移和兼容性检查
+  // config_schema_version: 配置 Schema 版本号（整数，从 1 开始）
+  "config_version": "1.0",
+  "config_schema_version": 1,
+
+  // ── 认证配置 (auth) ───────────────────────────────────────────────────────
+  // 管理所有服务提供商的认证信息，支持 API Key、Cookie、OAuth2、服务账号
+  // 敏感信息建议通过安全存储（系统密钥环/加密文件）管理，不在配置文件中明文存储
+  "auth": {
+    // preferred_storage: 首选安全存储后端
+    //   可选值: "keyring"（系统密钥环，最安全）
+    //          "encrypted_file"（加密文件，适合服务器）
+    //          "env_only"（仅环境变量，适合 CI/开发）
+    "preferred_storage": "keyring",
+
+    // encrypted_file_password: 加密文件密码（如使用 encrypted_file 存储后端）
+    // 仅在 preferred_storage 为 "encrypted_file" 时需要
+    // 建议通过环境变量或交互式输入设置，不在配置文件中硬编码
+    "encrypted_file_password": null,
+
+    // ── Gemini 认证配置 ──
+    // Gemini 用于智能路由的图片分析和 Prompt 生成
+    "gemini": {
+      "enabled": true,
+      "auth_type": "cookie",
+      "endpoint": "https://gemini.google.com",
+      "credentials": {
+        // Cookie 认证方式（从浏览器开发者工具复制）
+        "cookie_name": "YOUR_GEMINI_COOKIE_NAME",
+        "cookie_value": "YOUR_GEMINI_COOKIE_VALUE",
+        "api_keys": [],
+        "client_id": null,
+        "client_secret": null,
+        "refresh_token": null,
+        "service_account_file": null
+      },
+      "scopes": []
+    },
+
+    // ── Google Workspace 认证配置 ──
+    // 用于 Google Sheets 读取、Drive 上传、Gmail 通知
+    "google_workspace": {
+      "enabled": true,
+      "auth_type": "service_account",
+      "endpoint": "https://www.googleapis.com",
+      "credentials": {
+        // 服务账号 JSON 文件路径（从 Google Cloud Console 下载）
+        "service_account_file": "~/.batch-video-skill/gcp-service-account.json",
+        "api_keys": [],
+        "cookie_name": null,
+        "cookie_value": null,
+        "client_id": null,
+        "client_secret": null,
+        "refresh_token": null
+      },
+      "scopes": [
+        "https://www.googleapis.com/auth/drive",
+        "https://www.googleapis.com/auth/spreadsheets",
+        "https://www.googleapis.com/auth/documents.readonly"
+      ]
+    },
+
+    // ── 即梦 (Jimeng) 认证配置 ──
+    // 即梦视频生成平台，通过火山引擎 API 接入
+    "jimeng": {
+      "enabled": true,
+      "auth_type": "api_key",
+      "endpoint": "https://ark.cn-beijing.volces.com",
+      "credentials": {
+        // API Key 列表（支持多 Key 轮询负载均衡）
+        "api_keys": ["your-jimeng-api-key-1", "your-jimeng-api-key-2"],
+        "cookie_name": null,
+        "cookie_value": null,
+        "client_id": null,
+        "client_secret": null,
+        "refresh_token": null,
+        "service_account_file": null
+      },
+      "scopes": []
+    },
+
+    // ── 可灵 (Kling) 认证配置 ──
+    // 可灵 AI 视频生成平台
+    "kling": {
+      "enabled": true,
+      "auth_type": "api_key",
+      "endpoint": "https://api-beijing.klingai.com",
+      "credentials": {
+        "api_keys": ["your-kling-api-key-1", "your-kling-api-key-2"],
+        "cookie_name": null,
+        "cookie_value": null,
+        "client_id": null,
+        "client_secret": null,
+        "refresh_token": null,
+        "service_account_file": null
+      },
+      "scopes": []
+    },
+
+    // ── Vidu 认证配置 ──
+    // Vidu 视频生成平台
+    "vidu": {
+      "enabled": true,
+      "auth_type": "api_key",
+      "endpoint": "https://api.vidu.com",
+      "credentials": {
+        "api_keys": ["your-vidu-api-key-1", "your-vidu-api-key-2"],
+        "cookie_name": null,
+        "cookie_value": null,
+        "client_id": null,
+        "client_secret": null,
+        "refresh_token": null,
+        "service_account_file": null
+      },
+      "scopes": []
+    },
+
+    // ── Veo 3 认证配置 ──
+    // Google Veo 3 视频生成模型（通过 Google AI API）
+    "veo3": {
+      "enabled": true,
+      "auth_type": "api_key",
+      "endpoint": "https://generativelanguage.googleapis.com/v1beta",
+      "credentials": {
+        "api_keys": ["your-google-ai-api-key-1"],
+        "cookie_name": null,
+        "cookie_value": null,
+        "client_id": null,
+        "client_secret": null,
+        "refresh_token": null,
+        "service_account_file": null
+      },
+      "scopes": []
+    }
+  },
+
+  // ── 视频生成配置 (video_generation) ───────────────────────────────────────
+  // 视频生成模块的核心配置，包括默认参数、提供商列表、智能路由、下载设置
+  "video_generation": {
+    // 默认生成参数（当任务未指定时使用的默认值）
+    // default_resolution: 默认分辨率，可选值: "540p", "720p", "1080p", "4k"
+    "default_resolution": "720p",
+
+    // default_aspect_ratio: 默认宽高比，可选值: "16:9", "9:16", "1:1", "4:3", "3:4", "21:9"
+    // 9:16 适合短视频平台（抖音、快手等）
+    "default_aspect_ratio": "9:16",
+
+    // default_duration: 默认视频时长(秒)，范围: 4-15
+    "default_duration": 5,
+
+    // default_generate_audio: 默认是否生成音频
+    "default_generate_audio": true,
+
+    // default_quality_preference: 默认质量偏好
+    //   可选值: "best"（最高质量）
+    //          "balanced"（平衡质量与速度）
+    //          "fast"（最快生成）
+    //          "cheapest"（最低成本）
+    "default_quality_preference": "balanced",
+
+    // ── 视频提供商列表 ──
+    // 每个提供商的配置包括认证、限流、权重、成本等参数
+    // 提供商标识格式: 小写字母+数字+下划线，如 "kling_3_0", "vidu_q3_turbo"
+    "providers": [
+      {
+        // 提供商1: 可灵 3.0（高质量标准选择）
+        "provider": "kling_3_0",
+        "enabled": true,
+        "model": "kling-v3",
+        // API Key 列表，支持多 Key 轮询（从各平台官网获取）
+        "api_keys": ["your-kling-api-key"],
+        // weight: 路由权重 (0-10)，数值越高被选中概率越大
+        "weight": 5,
+        // priority: 优先级 (1-10, 1最高)，用于 Provider 选择排序
+        "priority": 2,
+        // 限流配置（根据服务商实际限制调整）
+        "rate_limit_rpm": 10,
+        "rate_limit_rpd": 1000,
+        "concurrency_limit": 3,
+        // 成本层级: "premium"（高）, "standard"（中）, "budget"（低）
+        "cost_tier": "standard",
+        // 单个视频最大成本(USD)，超过将不会被路由到该提供商
+        "max_cost_per_video_usd": 1.0,
+        // 提供商特有配置扩展字段
+        "extra": {}
+      },
+      {
+        // 提供商2: Vidu Q3 Turbo（快速低成本选择）
+        "provider": "vidu_q3_turbo",
+        "enabled": true,
+        "model": "vidu-q3-turbo",
+        "api_keys": ["your-vidu-api-key"],
+        "weight": 3,
+        "priority": 3,
+        "rate_limit_rpm": 20,
+        "rate_limit_rpd": 2000,
+        "concurrency_limit": 5,
+        "cost_tier": "budget",
+        "max_cost_per_video_usd": 0.5,
+        "extra": {}
+      },
+      {
+        // 提供商3: Veo 3（Google 高质量选择）
+        "provider": "veo3",
+        "enabled": true,
+        "model": "veo-3",
+        "api_keys": ["your-google-ai-api-key"],
+        "weight": 4,
+        "priority": 1,
+        "rate_limit_rpm": 5,
+        "rate_limit_rpd": 500,
+        "concurrency_limit": 2,
+        "cost_tier": "premium",
+        "max_cost_per_video_usd": 2.0,
+        "extra": {}
+      },
+      {
+        // 提供商4: 即梦（字节跳动，国内场景优选）
+        "provider": "jimeng_2_0",
+        "enabled": true,
+        "model": "jimeng-v2",
+        "api_keys": ["your-jimeng-api-key"],
+        "weight": 3,
+        "priority": 4,
+        "rate_limit_rpm": 15,
+        "rate_limit_rpd": 1500,
+        "concurrency_limit": 4,
+        "cost_tier": "standard",
+        "max_cost_per_video_usd": 0.8,
+        "extra": {}
+      }
+    ],
+
+    // ── 智能路由配置 ──
+    // smart_routing_enabled: 是否启用基于图片特征的智能路由
+    //   启用后，系统会分析产品图片特征，自动匹配最适合的视频提供商
+    "smart_routing_enabled": true,
+
+    // ── 失败回退配置 ──
+    // fallback_enabled: 当首选提供商失败时是否自动尝试其他提供商
+    "fallback_enabled": true,
+    // fallback_max_attempts: 最大回退尝试次数 (1-5)
+    "fallback_max_attempts": 3,
+
+    // ── 下载配置 ──
+    // download_output_dir: 生成视频的本地下载目录（支持 ~/ 展开）
+    "download_output_dir": "./output/videos",
+    // auto_download: 视频生成完成后是否自动下载到本地
+    "auto_download": true,
+    // download_timeout_sec: 下载超时时间(秒)，最小 30 秒
+    "download_timeout_sec": 300
+  },
+
+  // ── Google Sheets 配置 (sheets) ───────────────────────────────────────────
+  // 用于读取 Gem 元数据和任务队列的 Google Sheets 配置
+  "sheets": {
+    // Spreadsheet ID（从 Google Sheets URL 中获取）
+    // URL 格式: https://docs.google.com/spreadsheets/d/<SPREADSHEET_ID>/edit
+    "gem_metadata_spreadsheet_id": "YOUR_GEM_METADATA_SPREADSHEET_ID",
+    "task_queue_spreadsheet_id": "YOUR_TASK_QUEUE_SPREADSHEET_ID",
+
+    // 工作表名称
+    "gem_metadata_sheet_name": "gem-metadata",
+    "task_queue_sheet_name": "task-queue",
+
+    // 数据读取范围（A1 表示法）
+    "gem_metadata_range": "A1:Z1000",
+    "task_queue_range": "A1:AD10000",
+
+    // GCP 服务账号 JSON 文件路径（用于 API 认证，与 auth.google_workspace 共享）
+    "service_account_file": "~/.batch-video-skill/gcp-service-account.json",
+
+    // use_gws_cli: 是否使用 gws CLI 工具读取 Sheets（替代直接 API 调用）
+    // gws CLI 工具需要单独安装和配置，适合已配置 gws 的环境
+    "use_gws_cli": true,
+    "gws_cli_path": "gws"
+  },
+
+  // ── Google Drive 配置 (drive) ─────────────────────────────────────────────
+  // 生成视频的云端存储和分享配置
+  "drive": {
+    // enabled: 是否启用 Google Drive 上传
+    "enabled": true,
+    // output_folder_id: Google Drive 输出文件夹 ID（从 URL 中获取）
+    // URL 格式: https://drive.google.com/drive/folders/<FOLDER_ID>
+    "output_folder_id": "YOUR_DRIVE_OUTPUT_FOLDER_ID",
+    // create_subfolders: 是否为每个批次创建子文件夹
+    "create_subfolders": true,
+    // subfolder_name_template: 子文件夹命名模板
+    //   可用变量: {batch_id}（批次ID）, {date}（当前日期 YYYY-MM-DD）
+    "subfolder_name_template": "batch-{batch_id}-{date}",
+    // share_with_anyone: 是否公开分享上传的视频（任何人可查看）
+    "share_with_anyone": false
+  },
+
+  // ── Gmail 通知配置 (gmail) ────────────────────────────────────────────────
+  // 任务完成/错误时的邮件通知配置
+  "gmail": {
+    // enabled: 是否启用邮件通知（需要配置 SMTP）
+    "enabled": false,
+    // notification_email: 接收通知的邮箱地址
+    "notification_email": "your-email@example.com",
+    // 通知触发条件
+    "notify_on_complete": true,
+    "notify_on_error": true,
+    "notify_on_batch_summary": true,
+    // SMTP 配置（用于发送邮件）
+    "smtp_host": "smtp.gmail.com",
+    "smtp_port": 587,
+    "smtp_username": "your-smtp-username@gmail.com",
+    // smtp_password: SMTP 密码或应用专用密码（敏感信息）
+    "smtp_password": null
+  },
+
+  // ── 智能路由配置 (routing) ────────────────────────────────────────────────
+  // 基于图片特征分析的智能路由配置，用于自动匹配最佳视频提供商
+  "routing": {
+    // enabled: 是否启用智能路由
+    "enabled": true,
+    // top_n: 返回前 N 个推荐提供商 (1-5)
+    "top_n": 3,
+
+    // ── 置信度阈值 ──
+    // high_confidence_threshold: 高置信度阈值 (0-1)，超过此值直接选择最佳匹配
+    // medium_confidence_threshold: 中置信度阈值 (0-1)，低于此值启用多提供商并行
+    // 注意: high 必须大于 medium
+    "high_confidence_threshold": 0.85,
+    "medium_confidence_threshold": 0.70,
+
+    // ── 路由匹配权重 ──
+    // 各维度权重之和必须等于 1.0（允许 0.01 浮点误差）
+    // 这些权重用于图片特征与提供商能力的匹配评分
+    "weights": {
+      // product_category: 产品品类匹配权重（如服装、食品、电子产品等）
+      "product_category": 0.30,
+      // marketing_scene: 营销场景匹配权重（如促销、品牌展示、教程等）
+      "marketing_scene": 0.20,
+      // target_audience: 目标受众匹配权重（如年龄、性别、地域等）
+      "target_audience": 0.15,
+      // price_range: 价格区间匹配权重（高端/中端/低端产品）
+      "price_range": 0.10,
+      // video_style: 视频风格匹配权重（如写实、动画、抽象等）
+      "video_style": 0.10,
+      // history_data: 历史数据匹配权重（基于过往生成效果反馈）
+      "history_data": 0.10,
+      // other: 其他因素权重
+      "other": 0.05
+    },
+
+    // ── 图片分析模型配置 ──
+    // analysis_model: 用于分析产品图片的 Gemini 模型名称
+    "analysis_model": "gemini-2.5-flash",
+    // analysis_prompt_template: 自定义分析 Prompt 模板（可选，留空使用默认模板）
+    "analysis_prompt_template": null,
+    // analysis_timeout_sec: 图片分析超时时间(秒)，最小 10 秒
+    "analysis_timeout_sec": 60,
+
+    // ── 自学习配置 ──
+    // self_learning_enabled: 是否启用自学习（根据生成效果反馈自动调整权重）
+    "self_learning_enabled": true,
+    // learning_data_file: 自学习数据文件路径（存储历史反馈数据）
+    "learning_data_file": "~/.batch-video-skill/learning_data.json",
+    // learning_weight_adjustment: 自学习权重调整幅度 (0-0.5)
+    "learning_weight_adjustment": 0.1
+  },
+
+  // ── 批量任务配置 (batch) ──────────────────────────────────────────────────
+  // 批量视频生成任务的执行控制配置
+  "batch": {
+    // max_concurrency: 最大并发任务数 (1-10)
+    //   建议值: 3-5（根据网络带宽和提供商限流调整）
+    "max_concurrency": 3,
+    // task_timeout_sec: 单个任务超时时间(秒) (60-3600)
+    "task_timeout_sec": 600,
+    // max_retries: 任务失败后的最大重试次数 (0-5)
+    "max_retries": 3,
+    // retry_delay_sec: 重试间隔(秒)
+    "retry_delay_sec": 10,
+    // retry_backoff_multiplier: 重试退避倍数（每次重试间隔 = delay * multiplier^attempt）
+    "retry_backoff_multiplier": 2.0,
+
+    // ── 断点续传配置 ──
+    // resume_from_last: 是否从上次中断位置继续执行
+    "resume_from_last": true,
+    // checkpoint_interval_sec: 检查点保存间隔(秒)，用于断点续传
+    "checkpoint_interval_sec": 60,
+
+    // ── 进度显示配置 ──
+    // progress_update_interval_sec: 进度更新间隔(秒)
+    "progress_update_interval_sec": 30,
+    // progress_display_format: 进度显示格式
+    //   可选值: "simple"（简洁）, "detailed"（详细）, "json"（JSON格式，便于程序解析）
+    "progress_display_format": "detailed",
+
+    // ── 临时文件清理配置 ──
+    // auto_cleanup_temp: 是否自动清理临时文件
+    "auto_cleanup_temp": true,
+    // temp_retention_hours: 临时文件保留时长(小时)，0 表示立即删除
+    "temp_retention_hours": 24
+  },
+
+  // ── 监控配置 (monitoring) ─────────────────────────────────────────────────
+  // 性能指标收集、成本追踪、健康检查配置
+  "monitoring": {
+    // enable_metrics: 是否启用性能指标收集（成功率、延迟、吞吐量等）
+    "enable_metrics": true,
+    // metrics_output_file: 指标输出文件路径（JSON 格式）
+    "metrics_output_file": "~/.batch-video-skill/metrics.json",
+    // enable_cost_tracking: 是否启用成本追踪（累计 API 调用费用）
+    "enable_cost_tracking": true,
+    // cost_alert_threshold_usd: 成本告警阈值(USD)，超过时发出警告
+    "cost_alert_threshold_usd": 50.0,
+    // health_check_interval_sec: 健康检查间隔(秒)，定期检查提供商可用性
+    "health_check_interval_sec": 300,
+    // auto_validate_credentials: 启动时是否自动验证所有凭证有效性
+    "auto_validate_credentials": true
+  },
+
+  // ── 安全配置 (security) ───────────────────────────────────────────────────
+  // 敏感信息存储和访问控制配置
+  "security": {
+    // storage_backend: 安全存储后端类型
+    //   可选值: "keyring"（系统密钥环）
+    //          "encrypted_file"（加密文件）
+    //          "env_only"（仅环境变量）
+    "storage_backend": "keyring",
+    // encryption_key_file: 自定义加密密钥文件路径（可选，留空使用默认）
+    "encryption_key_file": null,
+    // sensitive_fields: 敏感字段模式列表（支持 * 通配符）
+    //   匹配这些路径的字段会被自动加密存储
+    "sensitive_fields": [
+      "auth.*.credentials.api_keys",
+      "auth.*.credentials.cookie_value",
+      "auth.*.credentials.client_secret",
+      "auth.*.credentials.refresh_token",
+      "auth.encrypted_file_password",
+      "video_generation.providers.*.api_keys",
+      "sheets.service_account_file",
+      "gmail.smtp_password"
+    ],
+    // config_file_permissions: 配置文件权限模式（八进制字符串）
+    //   0o600 = 仅所有者可读写（推荐）
+    "config_file_permissions": "0o600"
+  },
+
+  // ── 日志配置 (全局) ───────────────────────────────────────────────────────
+  // log_level: 日志级别
+  //   可选值: "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"
+  "log_level": "INFO",
+  // log_file: 日志文件路径（支持 ~/ 展开），null 表示仅输出到控制台
+  "log_file": "~/.batch-video-skill/skill.log",
+  // log_format: 日志格式
+  //   可选值: "simple"（简单文本）, "detailed"（带时间戳和级别）, "json"（JSON结构化）
+  "log_format": "detailed",
+  // log_max_bytes: 单个日志文件最大字节数（默认 10MB）
+  "log_max_bytes": 10485760,
+  // log_backup_count: 日志文件备份数量（轮转保留）
+  "log_backup_count": 5,
+
+  // ── 目录配置 ──────────────────────────────────────────────────────────────
+  // cache_dir: 缓存目录（存储图片分析结果、路由缓存等）
+  "cache_dir": "~/.batch-video-skill/cache",
+  // temp_dir: 临时文件目录（下载中间文件等）
+  "temp_dir": "./tmp"
+}
+// =============================================================================
+// 配置文件结束
+// 使用说明:
+//   1. 复制本文件到 ~/.batch-video-skill/config.json
+//   2. 替换所有 YOUR_xxx 占位符为实际值
+//   3. 根据需要调整各配置项
+//   4. 建议 API Key 等敏感信息通过安全存储管理，不在配置文件中明文存储
+//   5. 首次运行时会自动验证配置，如有错误会提示具体原因
+// =============================================================================

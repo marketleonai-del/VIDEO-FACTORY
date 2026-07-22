@@ -1,0 +1,479 @@
+// =============================================================================
+// MCP (Model Context Protocol) Server 配置示例文件
+// =============================================================================
+// 配置文件: mcp-config.example.json
+// 说明: 本文件定义 MCP Server 的连接配置和可用工具
+// 用途: batch-video-skill 作为 MCP Server 运行时的配置
+// 格式: JSON with Comments（支持 // 和 /* */ 注释，解析时自动去除）
+// 参考: https://modelcontextprotocol.io/specification
+// =============================================================================
+{
+  // ── MCP Server 基本信息 ───────────────────────────────────────────────────
+  // server_name: MCP Server 名称标识
+  "server_name": "batch-video-skill",
+  // server_version: MCP Server 版本号
+  "server_version": "1.0.0",
+  // description: MCP Server 功能描述
+  "description": "批量视频生成 Skill — 支持多提供商智能路由的视频生成服务",
+
+  // ── 传输层配置 ────────────────────────────────────────────────────────────
+  // transport: MCP 传输协议配置
+  "transport": {
+    // type: 传输类型
+    //   可选值: "stdio"（标准输入输出，用于本地进程通信）
+    //          "sse"（Server-Sent Events，用于 HTTP 流式通信）
+    //          "http"（HTTP REST API）
+    "type": "stdio",
+    // stdio 配置（type 为 stdio 时使用）
+    "stdio": {
+      // command: 启动命令
+      "command": "python",
+      // args: 启动参数
+      "args": ["-m", "batch_video_skill.mcp_server"],
+      // env: 环境变量
+      "env": {
+        // BATCH_VIDEO_CONFIG_PATH: 配置文件路径
+        "BATCH_VIDEO_CONFIG_PATH": "~/.batch-video-skill/config.json",
+        // BATCH_VIDEO_LOG_LEVEL: 日志级别
+        "BATCH_VIDEO_LOG_LEVEL": "INFO"
+      },
+      // encoding: 编码格式
+      "encoding": "utf-8"
+    },
+    // sse 配置（type 为 sse 时使用）
+    "sse": {
+      // host: 监听地址
+      "host": "127.0.0.1",
+      // port: 监听端口
+      "port": 8765,
+      // path: SSE 端点路径
+      "path": "/mcp/sse",
+      // message_path: 消息接收端点路径
+      "message_path": "/mcp/message",
+      // cors: CORS 跨域配置
+      "cors": {
+        "enabled": true,
+        "allow_origins": ["*"],
+        "allow_methods": ["GET", "POST"],
+        "allow_headers": ["*"]
+      }
+    },
+    // http 配置（type 为 http 时使用）
+    "http": {
+      // host: 监听地址
+      "host": "127.0.0.1",
+      // port: 监听端口
+      "port": 8766,
+      // base_path: API 基础路径
+      "base_path": "/api/v1",
+      // auth: HTTP API 认证配置
+      "auth": {
+        // enabled: 是否启用认证
+        "enabled": true,
+        // type: 认证类型，可选值: "api_key", "bearer", "basic"
+        "type": "api_key",
+        // api_key: API Key（生产环境建议通过环境变量注入）
+        "api_key": "your-mcp-api-key"
+      }
+    }
+  },
+
+  // ── 工具注册配置 ──────────────────────────────────────────────────────────
+  // tools: MCP Server 提供的工具列表
+  // 每个工具对应一个可执行的功能，客户端可通过 MCP 协议调用
+  "tools": [
+    {
+      // tool1: generate_video — 视频生成工具
+      "name": "generate_video",
+      "description": "根据产品图片和提示词生成营销视频，支持智能路由选择最佳提供商",
+      "enabled": true,
+      // timeout_sec: 工具执行超时(秒)
+      "timeout_sec": 300,
+      // parameters: 工具参数定义
+      "parameters": {
+        // image_path: 产品图片路径（本地路径或 URL）
+        "image_path": {
+          "type": "string",
+          "description": "产品图片路径（本地路径或 HTTP URL）",
+          "required": true,
+          "example": "./input/product_001.jpg"
+        },
+        // prompt: 视频生成提示词（可选，未提供时自动生成）
+        "prompt": {
+          "type": "string",
+          "description": "视频生成提示词（可选，未提供时由 AI 自动生成）",
+          "required": false,
+          "example": "A stylish product showcase video with smooth camera movement"
+        },
+        // provider: 指定视频提供商（可选，未提供时使用智能路由）
+        "provider": {
+          "type": "string",
+          "description": "指定视频提供商（可选），如 'kling_3_0', 'vidu_q3_turbo', 'veo3'",
+          "required": false,
+          "enum": ["kling_3_0", "vidu_q3_turbo", "veo3", "jimeng_2_0"],
+          "example": "kling_3_0"
+        },
+        // resolution: 视频分辨率（可选，默认使用配置值）
+        "resolution": {
+          "type": "string",
+          "description": "视频分辨率",
+          "required": false,
+          "enum": ["540p", "720p", "1080p", "4k"],
+          "default": "720p"
+        },
+        // aspect_ratio: 视频宽高比（可选）
+        "aspect_ratio": {
+          "type": "string",
+          "description": "视频宽高比",
+          "required": false,
+          "enum": ["16:9", "9:16", "1:1", "4:3", "3:4", "21:9"],
+          "default": "9:16"
+        },
+        // duration: 视频时长(秒)（可选，范围 4-15）
+        "duration": {
+          "type": "integer",
+          "description": "视频时长(秒)",
+          "required": false,
+          "minimum": 4,
+          "maximum": 15,
+          "default": 5
+        },
+        // generate_audio: 是否生成音频（可选）
+        "generate_audio": {
+          "type": "boolean",
+          "description": "是否生成音频",
+          "required": false,
+          "default": true
+        },
+        // output_dir: 输出目录（可选，覆盖配置默认值）
+        "output_dir": {
+          "type": "string",
+          "description": "视频输出目录（可选）",
+          "required": false,
+          "example": "./output/videos"
+        }
+      }
+    },
+    {
+      // tool2: batch_generate — 批量视频生成工具
+      "name": "batch_generate",
+      "description": "根据任务队列批量生成视频，支持并发和断点续传",
+      "enabled": true,
+      "timeout_sec": 3600,
+      "parameters": {
+        // task_queue_source: 任务队列来源
+        "task_queue_source": {
+          "type": "string",
+          "description": "任务队列数据来源",
+          "required": true,
+          "enum": ["sheets", "csv", "json"],
+          "example": "csv"
+        },
+        // task_queue_path: 任务队列文件路径或 Spreadsheet ID
+        "task_queue_path": {
+          "type": "string",
+          "description": "任务队列文件路径（CSV/JSON）或 Google Sheets Spreadsheet ID",
+          "required": true,
+          "example": "./input/task_queue.csv"
+        },
+        // gem_metadata_source: Gem 元数据来源
+        "gem_metadata_source": {
+          "type": "string",
+          "description": "Gem 元数据来源",
+          "required": true,
+          "enum": ["sheets", "csv", "json"],
+          "example": "csv"
+        },
+        // gem_metadata_path: Gem 元数据文件路径或 Spreadsheet ID
+        "gem_metadata_path": {
+          "type": "string",
+          "description": "Gem 元数据文件路径（CSV/JSON）或 Google Sheets Spreadsheet ID",
+          "required": true,
+          "example": "./input/gem_metadata.csv"
+        },
+        // max_concurrency: 最大并发数（可选，覆盖配置值）
+        "max_concurrency": {
+          "type": "integer",
+          "description": "最大并发数(1-10)",
+          "required": false,
+          "minimum": 1,
+          "maximum": 10,
+          "default": 3
+        },
+        // resume: 是否从上次中断位置继续
+        "resume": {
+          "type": "boolean",
+          "description": "是否从上次中断位置继续（断点续传）",
+          "required": false,
+          "default": true
+        }
+      }
+    },
+    {
+      // tool3: analyze_image — 图片分析工具
+      "name": "analyze_image",
+      "description": "分析产品图片特征，返回品类、场景、风格等标签，用于智能路由决策",
+      "enabled": true,
+      "timeout_sec": 120,
+      "parameters": {
+        // image_path: 产品图片路径
+        "image_path": {
+          "type": "string",
+          "description": "产品图片路径（本地路径或 HTTP URL）",
+          "required": true,
+          "example": "./input/product_001.jpg"
+        },
+        // analysis_type: 分析类型
+        "analysis_type": {
+          "type": "string",
+          "description": "分析类型",
+          "required": false,
+          "enum": ["full", "category", "style", "scene"],
+          "default": "full"
+        }
+      }
+    },
+    {
+      // tool4: get_providers — 获取提供商列表工具
+      "name": "get_providers",
+      "description": "获取所有可用的视频提供商信息，包括状态、限流、成本等",
+      "enabled": true,
+      "timeout_sec": 30,
+      "parameters": {
+        // include_stats: 是否包含统计信息
+        "include_stats": {
+          "type": "boolean",
+          "description": "是否包含提供商统计信息（成功率、平均延迟等）",
+          "required": false,
+          "default": true
+        }
+      }
+    },
+    {
+      // tool5: upload_to_drive — 上传到 Google Drive 工具
+      "name": "upload_to_drive",
+      "description": "将生成的视频上传到 Google Drive 指定文件夹",
+      "enabled": true,
+      "timeout_sec": 300,
+      "parameters": {
+        // video_path: 本地视频文件路径
+        "video_path": {
+          "type": "string",
+          "description": "本地视频文件路径",
+          "required": true,
+          "example": "./output/videos/video_001.mp4"
+        },
+        // folder_id: 目标文件夹 ID（可选，使用配置默认值）
+        "folder_id": {
+          "type": "string",
+          "description": "Google Drive 文件夹 ID（可选）",
+          "required": false,
+          "example": "YOUR_DRIVE_FOLDER_ID"
+        },
+        // share: 是否分享（可选）
+        "share": {
+          "type": "boolean",
+          "description": "是否创建分享链接",
+          "required": false,
+          "default": false
+        }
+      }
+    },
+    {
+      // tool6: get_task_status — 获取任务状态工具
+      "name": "get_task_status",
+      "description": "查询批量任务的执行状态和进度",
+      "enabled": true,
+      "timeout_sec": 30,
+      "parameters": {
+        // task_id: 任务 ID（可选，不提供则返回所有任务状态）
+        "task_id": {
+          "type": "string",
+          "description": "任务 ID（可选，不提供返回所有任务）",
+          "required": false,
+          "example": "batch_20260115_001"
+        }
+      }
+    },
+    {
+      // tool7: update_provider_weight — 更新提供商权重工具
+      "name": "update_provider_weight",
+      "description": "动态调整视频提供商的路由权重（热更新，无需重启）",
+      "enabled": true,
+      "timeout_sec": 30,
+      "parameters": {
+        // provider: 提供商标识
+        "provider": {
+          "type": "string",
+          "description": "提供商标识",
+          "required": true,
+          "enum": ["kling_3_0", "vidu_q3_turbo", "veo3", "jimeng_2_0"],
+          "example": "kling_3_0"
+        },
+        // weight: 新权重值
+        "weight": {
+          "type": "integer",
+          "description": "路由权重 (0-10)",
+          "required": true,
+          "minimum": 0,
+          "maximum": 10,
+          "example": 8
+        }
+      }
+    },
+    {
+      // tool8: generate_prompt — 生成视频提示词工具
+      "name": "generate_prompt",
+      "description": "根据产品图片和元数据自动生成视频生成提示词（Prompt）",
+      "enabled": true,
+      "timeout_sec": 120,
+      "parameters": {
+        // image_path: 产品图片路径
+        "image_path": {
+          "type": "string",
+          "description": "产品图片路径",
+          "required": true,
+          "example": "./input/product_001.jpg"
+        },
+        // product_name: 产品名称（可选）
+        "product_name": {
+          "type": "string",
+          "description": "产品名称（可选）",
+          "required": false,
+          "example": "Wireless Bluetooth Headphones"
+        },
+        // product_description: 产品描述（可选）
+        "product_description": {
+          "type": "string",
+          "description": "产品描述（可选）",
+          "required": false,
+          "example": "High-quality over-ear headphones with active noise cancellation"
+        },
+        // marketing_scene: 营销场景（可选）
+        "marketing_scene": {
+          "type": "string",
+          "description": "营销场景（可选）",
+          "required": false,
+          "enum": ["product_showcase", "promotion", "brand_story", "tutorial", "holiday"],
+          "example": "product_showcase"
+        }
+      }
+    }
+  ],
+
+  // ── 资源注册配置 ──────────────────────────────────────────────────────────
+  // resources: MCP Server 可访问的资源列表
+  "resources": [
+    {
+      // resource1: gem_metadata — Gem 元数据表
+      "name": "gem_metadata",
+      "description": "Gem 产品元数据表（产品名称、图片 URL、描述、品类等）",
+      "uri": "file://./input/gem_metadata.csv",
+      "mime_type": "text/csv",
+      "enabled": true
+    },
+    {
+      // resource2: task_queue — 任务队列表
+      "name": "task_queue",
+      "description": "视频生成任务队列表（任务 ID、状态、参数、结果等）",
+      "uri": "file://./input/task_queue.csv",
+      "mime_type": "text/csv",
+      "enabled": true
+    },
+    {
+      // resource3: provider_stats — 提供商统计
+      "name": "provider_stats",
+      "description": "视频提供商使用统计（成功率、延迟、成本等）",
+      "uri": "memory://provider_stats",
+      "mime_type": "application/json",
+      "enabled": true
+    }
+  ],
+
+  // ── 提示模板配置 ──────────────────────────────────────────────────────────
+  // prompts: MCP Server 可用的提示模板
+  "prompts": [
+    {
+      // prompt1: video_generation — 视频生成提示模板
+      "name": "video_generation",
+      "description": "视频生成任务的系统提示模板",
+      "enabled": true,
+      // template: 提示模板内容（支持变量替换）
+      // 可用变量: {{product_name}}, {{product_description}}, {{category}}, {{style}}
+      "template": "You are a professional video generation assistant. Create a compelling video prompt for the following product:\n\nProduct: {{product_name}}\nDescription: {{product_description}}\nCategory: {{category}}\n\nThe video should be engaging, highlight key features, and be optimized for social media marketing. Use smooth camera movements and professional lighting."
+    },
+    {
+      // prompt2: image_analysis — 图片分析提示模板
+      "name": "image_analysis",
+      "description": "产品图片分析的系统提示模板",
+      "enabled": true,
+      "template": "Analyze the provided product image and extract the following information:\n1. Product category (e.g., electronics, clothing, food)\n2. Visual style (e.g., minimalist, luxury, casual)\n3. Target audience (e.g., young adults, professionals)\n4. Marketing scene recommendation\n5. Price range indication\n\nReturn the analysis in a structured JSON format."
+    }
+  ],
+
+  // ── 采样配置 ──────────────────────────────────────────────────────────────
+  // sampling: MCP 采样（模型补全）配置
+  "sampling": {
+    // enabled: 是否启用采样功能
+    "enabled": true,
+    // model: 默认使用的模型
+    "model": "gemini-2.5-flash",
+    // max_tokens: 最大生成 token 数
+    "max_tokens": 2048,
+    // temperature: 采样温度 (0-2)
+    "temperature": 0.7
+  },
+
+  // ── 日志和监控配置 ────────────────────────────────────────────────────────
+  // logging: MCP Server 日志配置
+  "logging": {
+    // level: 日志级别
+    "level": "INFO",
+    // format: 日志格式
+    //   可选值: "text"（纯文本）, "json"（JSON 结构化）
+    "format": "json",
+    // output: 日志输出目标
+    //   可选值: "stdout", "stderr", "file"
+    "output": "stdout",
+    // file_path: 日志文件路径（output 为 file 时使用）
+    "file_path": "~/.batch-video-skill/mcp-server.log"
+  },
+
+  // ── 安全和限流配置 ────────────────────────────────────────────────────────
+  // rate_limiting: MCP Server 请求限流配置
+  "rate_limiting": {
+    // enabled: 是否启用限流
+    "enabled": true,
+    // max_requests_per_minute: 每分钟最大请求数
+    "max_requests_per_minute": 60,
+    // max_concurrent_requests: 最大并发请求数
+    "max_concurrent_requests": 10,
+    // request_timeout_sec: 请求超时(秒)
+    "request_timeout_sec": 60
+  },
+
+  // ── 通知配置 ──────────────────────────────────────────────────────────────
+  // notifications: MCP Server 通知配置
+  "notifications": {
+    // progress: 进度通知
+    "progress": {
+      // enabled: 是否启用进度通知
+      "enabled": true,
+      // interval_sec: 进度通知间隔(秒)
+      "interval_sec": 5
+    },
+    // completion: 完成通知
+    "completion": {
+      "enabled": true
+    }
+  }
+}
+// =============================================================================
+// MCP 配置结束
+// 使用说明:
+//   1. 复制本文件到 ~/.batch-video-skill/mcp-config.json
+//   2. 根据实际部署方式选择 transport 类型（stdio/sse/http）
+//   3. 根据需要启用/禁用 tools
+//   4. stdio 模式适合本地 Claude Desktop 等客户端
+//   5. sse/http 模式适合远程部署和 Web 应用集成
+// =============================================================================
